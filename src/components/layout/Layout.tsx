@@ -2,8 +2,8 @@ import { useState } from 'react'
 import CssBaseline from '@mui/material/CssBaseline'
 import Box from '@mui/material/Box'
 import Content from './Content'
-import AppBar from './appbar/AppBar'
 import Drawer from './drawer/Drawer'
+import TopBar from './topbar/TopBar'
 
 const drawerWidth = 160
 const appBarHeight = 42
@@ -18,7 +18,7 @@ function Layout() {
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
-      <AppBar
+      <TopBar
         drawerWidth={drawerWidth}
         appBarHeight={appBarHeight}
         toggleDrawer={toggleDrawer}

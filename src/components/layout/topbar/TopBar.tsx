@@ -2,9 +2,9 @@ import Typography from '@mui/material/Typography'
 import Toolbar from '@mui/material/Toolbar'
 import IconButton from '@mui/material/IconButton'
 import MenuIcon from '@mui/icons-material/Menu'
-import Avatar from '@mui/material/Avatar'
-import StyledAppBar from './StyledAppBar'
-import StyledBadge from './StyledBadge'
+
+import StyledTopBar from './StyledTopBar'
+import AccountMenu from './accountMenu/AccountMenu'
 
 type Props = {
   drawerWidth: number
@@ -12,9 +12,9 @@ type Props = {
   toggleDrawer: () => void
 }
 
-function AppBar({ drawerWidth, appBarHeight, toggleDrawer }: Props) {
+function TopBar({ drawerWidth, appBarHeight, toggleDrawer }: Props) {
   return (
-    <StyledAppBar
+    <StyledTopBar
       position="absolute"
       drawerWidth={drawerWidth}
       appBarHeight={appBarHeight}
@@ -42,23 +42,10 @@ function AppBar({ drawerWidth, appBarHeight, toggleDrawer }: Props) {
         >
           shareFlow
         </Typography>
-        <IconButton color="inherit">
-          <StyledBadge
-            overlap="circular"
-            anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-            variant="dot"
-          >
-            <Avatar
-              alt="OP avatar"
-              sx={{ width: 28, height: 28, fontSize: '1rem' }}
-            >
-              OP
-            </Avatar>
-          </StyledBadge>
-        </IconButton>
+        <AccountMenu />
       </Toolbar>
-    </StyledAppBar>
+    </StyledTopBar>
   )
 }
 
-export default AppBar
+export default TopBar

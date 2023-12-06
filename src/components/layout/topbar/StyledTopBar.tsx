@@ -7,8 +7,9 @@ interface AppBarProps extends MuiAppBarProps {
   open?: boolean
 }
 
-const StyledAppBar = styled(MuiAppBar, {
-  shouldForwardProp: prop => prop !== 'open',
+const StyledTopBar = styled(MuiAppBar, {
+  shouldForwardProp: prop =>
+    prop !== 'open' && prop !== 'appBarHeight' && prop !== 'drawerWidth',
 })<AppBarProps>(({ theme, drawerWidth, appBarHeight, open }) => ({
   zIndex: theme.zIndex.drawer + 1,
   '& .MuiToolbar-root': {
@@ -31,4 +32,4 @@ const StyledAppBar = styled(MuiAppBar, {
   }),
 }))
 
-export default StyledAppBar
+export default StyledTopBar
