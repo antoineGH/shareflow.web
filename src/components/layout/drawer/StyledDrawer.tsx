@@ -24,7 +24,7 @@ const StyledDrawer = styled(MuiDrawer, {
         easing: theme.transitions.easing.sharp,
         duration: theme.transitions.duration.leavingScreen,
       }),
-      width: theme.spacing(7),
+      width: theme.spacing(6),
       [theme.breakpoints.up('sm')]: {
         width: theme.spacing(6),
       },

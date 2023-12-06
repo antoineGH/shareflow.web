@@ -5,6 +5,7 @@ import MenuIcon from '@mui/icons-material/Menu'
 
 import StyledTopBar from './StyledTopBar'
 import AccountMenu from './accountMenu/AccountMenu'
+import Search from './Search'
 
 type Props = {
   drawerWidth: number
@@ -42,6 +43,7 @@ function TopBar({ drawerWidth, appBarHeight, toggleDrawer }: Props) {
         >
           shareFlow
         </Typography>
+        <Search />
         <AccountMenu />
       </Toolbar>
     </StyledTopBar>

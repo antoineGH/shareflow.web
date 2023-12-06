@@ -1,4 +1,6 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { useTheme } from '@mui/material/styles'
+import useMediaQuery from '@mui/material/useMediaQuery'
 import CssBaseline from '@mui/material/CssBaseline'
 import Box from '@mui/material/Box'
 import Content from './Content'
@@ -10,6 +12,16 @@ const appBarHeight = 42
 
 function Layout() {
   const [open, setOpen] = useState(true)
+  const theme = useTheme()
+  const matches = useMediaQuery(theme.breakpoints.down('sm'))
+
+  useEffect(() => {
+    if (matches) {
+      setOpen(false)
+    } else {
+      setOpen(true)
+    }
+  }, [matches])
 
   const toggleDrawer = () => {
     setOpen(!open)
