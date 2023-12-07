@@ -1,27 +1,30 @@
+import { Routes, Route, Navigate } from 'react-router-dom'
 import Box from '@mui/material/Box'
 import Container from '@mui/material/Container'
-import Grid from '@mui/material/Grid'
-import Toolbar from '@mui/material/Toolbar'
+import { routes } from 'components/routes/routes'
 
 function Content() {
   return (
-    <>
-      <Box
-        component="main"
-        sx={{
-          height: '100vh',
-        }}
-      >
-        <Toolbar />
-        <Container>
-          <Grid container>
-            {/* <Grid item xs={12} md={12} lg={12}>
-              lol
-            </Grid> */}
-          </Grid>
-        </Container>
-      </Box>
-    </>
+    <Box
+      component="main"
+      sx={{
+        height: '100vh',
+        width: '100%',
+      }}
+    >
+      <Container>
+        <Routes>
+          {routes.map(route => (
+            <Route
+              key={route.name}
+              path={route.path}
+              element={route.component}
+            />
+          ))}
+          <Route path="*" element={<Navigate to="/404" />} />
+        </Routes>
+      </Container>
+    </Box>
   )
 }
 
