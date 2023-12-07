@@ -3,11 +3,13 @@ import Link from '@mui/material/Link'
 import Grid from '@mui/material/Grid'
 import Typography from '@mui/material/Typography'
 import FolderIcon from '@mui/icons-material/Folder'
+import BreadcrumbMenu from '../breadcrumbMenu/breadcrumbMenu'
 
 function useBreadcrumbs() {
+  //   TODO: Testing breadcrumbs only, remove when routes and subroutes has been added
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const location = useLocation()
   const navigate = useNavigate()
-  //   TODO: Testing breadcrumbs only, remove when routes and subroutes has been added
   //   const pathnames = location.pathname.split('/').filter(pathname => pathname)
   const pathnames = ['files', 'folder1', 'folder2', 'folder3']
 
@@ -23,7 +25,6 @@ function useBreadcrumbs() {
 
   const breadcrumbs = pathnames.map((value, index) => {
     const first = index === 0
-    console.log(index, value)
     const to = `/${pathnames.slice(0, index + 1).join('/')}`
 
     return first ? (
@@ -59,6 +60,8 @@ function useBreadcrumbs() {
       </Link>
     )
   })
+
+  breadcrumbs.push(<BreadcrumbMenu />)
 
   return breadcrumbs
 }
