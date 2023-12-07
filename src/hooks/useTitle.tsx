@@ -13,7 +13,7 @@ function useTitle() {
 
   useEffect(() => {
     const pageTitle = getPageTitle(location.pathname)
-    document.title = pageTitle ? `${appName} - ${pageTitle}` : appName
+    document.title = pageTitle ? `${pageTitle} - ${appName}` : appName
   }, [location])
 }
 
