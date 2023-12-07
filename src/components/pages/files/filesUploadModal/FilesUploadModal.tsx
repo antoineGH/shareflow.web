@@ -2,8 +2,6 @@ import { useState, useCallback } from 'react'
 import { FileRejection } from 'react-dropzone'
 import Badge from '@mui/material/Badge'
 import Dialog from '@mui/material/Dialog'
-import Snackbar from '@mui/material/Snackbar'
-import Alert from '@mui/material/Alert'
 import DialogContent from '@mui/material/DialogContent'
 import Stack from '@mui/material/Stack'
 import Typography from '@mui/material/Typography'
@@ -13,7 +11,6 @@ import Header from './Header'
 import Footer from './Footer'
 import { RejectedFiles, ValidFiles } from './filesUploadDragNDrop/Files'
 import type { DroppedFiles, FileState } from './filesUploadDragNDrop/types'
-import { useNotifications } from 'hooks/useNotifications'
 
 type Props = {
   open: boolean
@@ -34,8 +31,6 @@ function DocumentsUploadModal({ open, close, droppedFiles }: Props) {
   >({})
   const [isUploadDone, setIsUploadDone] = useState(false)
   const [submitting, setSubmitting] = useState(false)
-
-  const [notification, notifyAbout] = useNotifications()
 
   const onCloseDocumentsUploaded = () => {
     close()
@@ -97,8 +92,7 @@ function DocumentsUploadModal({ open, close, droppedFiles }: Props) {
     const areAllUploaded = outcomes.every(o => o.status === 'fulfilled')
 
     if (areAllUploaded) {
-      notifyAbout.success('Files uploaded successfully')
-      resetFiles()
+      onClose()
       return
     }
 
@@ -162,18 +156,6 @@ function DocumentsUploadModal({ open, close, droppedFiles }: Props) {
           onUpload={onUpload}
         />
       )}
-      <Snackbar
-        open={notification.open}
-        autoHideDuration={1700}
-        message={notification.message}
-        onClose={notifyAbout.closeNotification}
-        anchorOrigin={{
-          vertical: notification.vertical,
-          horizontal: notification.horizontal,
-        }}
-      >
-        <Alert severity={notification.severity}>{notification.message}</Alert>
-      </Snackbar>
     </Dialog>
   )
 }

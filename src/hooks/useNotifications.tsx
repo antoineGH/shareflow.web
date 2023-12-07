@@ -13,6 +13,21 @@ type NotifyAbout = {
   closeNotification: () => void
 }
 
+{
+  /* <Snackbar
+open={notification.open}
+autoHideDuration={1700}
+message={notification.message}
+onClose={notifyAbout.closeNotification}
+anchorOrigin={{
+  vertical: notification.vertical,
+  horizontal: notification.horizontal,
+}}
+>
+<Alert severity={notification.severity}>{notification.message}</Alert>
+</Snackbar> */
+}
+
 export function useNotifications(): [Notification, NotifyAbout] {
   const [notification, setNotification] = useState<Notification>({
     open: false,
