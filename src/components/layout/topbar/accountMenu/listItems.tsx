@@ -5,8 +5,7 @@ type ListItem = {
   id: string
   label: string
   icon: JSX.Element
-  path?: string
-  action: () => void
+  pathname: string
 }
 
 const listItems: ListItem[] = [
@@ -14,17 +13,13 @@ const listItems: ListItem[] = [
     id: 'settings',
     label: 'Settings',
     icon: <Settings />,
-    action: () => {
-      console.log('settings')
-    },
+    pathname: '/settings',
   },
   {
     id: 'logout',
     label: 'Logout',
     icon: <Logout />,
-    action: () => {
-      console.log('logout')
-    },
+    pathname: '/logout',
   },
 ]
 

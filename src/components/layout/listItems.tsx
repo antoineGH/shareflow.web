@@ -37,7 +37,7 @@ const secondaryListItems: ListItem[] = [
     id: 'deletedFiles',
     label: 'Deleted files',
     icon: <DeleteIcon />,
-    path: '/deleted-files',
+    path: '/deleted',
   },
   {
     id: 'settings',
