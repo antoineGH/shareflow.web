@@ -14,7 +14,10 @@ function DrawerButton({ label, path, icon, handleDrawerNavigation }: Props) {
   const handleClick = () => handleDrawerNavigation(path)
 
   return (
-    <StyledDrawerButton onClick={handleClick}>
+    <StyledDrawerButton
+      onClick={handleClick}
+      active={location.pathname === path}
+    >
       <StyledDrawerIcon>
         <StyledIcon>{icon}</StyledIcon>
       </StyledDrawerIcon>
