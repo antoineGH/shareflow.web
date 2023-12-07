@@ -5,7 +5,11 @@ import Typography from '@mui/material/Typography'
 import FolderIcon from '@mui/icons-material/Folder'
 import BreadcrumbMenu from '../breadcrumbMenu/breadcrumbMenu'
 
-function useBreadcrumbs() {
+type Props = {
+  openModalAddDocs(): void
+}
+
+function useBreadcrumbs({ openModalAddDocs }: Props) {
   //   TODO: Testing breadcrumbs only, remove when routes and subroutes has been added
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const location = useLocation()
@@ -61,7 +65,7 @@ function useBreadcrumbs() {
     )
   })
 
-  breadcrumbs.push(<BreadcrumbMenu />)
+  breadcrumbs.push(<BreadcrumbMenu openModalAddDocs={openModalAddDocs} />)
 
   return breadcrumbs
 }

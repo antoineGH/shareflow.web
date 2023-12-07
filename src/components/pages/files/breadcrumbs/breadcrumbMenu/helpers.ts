@@ -2,13 +2,19 @@ type Props = {
   id: string
   closeMenu: () => void
   openFolder: () => void
+  openModalAddDocs: () => void
 }
 
-const breadcrumbAction = ({ id, closeMenu, openFolder }: Props) => {
+const breadcrumbAction = ({
+  id,
+  closeMenu,
+  openFolder,
+  openModalAddDocs,
+}: Props) => {
   if (id === 'folder') {
     return openFolder()
   }
-  console.log('file')
+  openModalAddDocs()
   closeMenu()
 }
 

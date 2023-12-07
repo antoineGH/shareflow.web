@@ -1,7 +1,17 @@
 import Grid from '@mui/material/Grid'
 import Breadcrumbs from './breadcrumbs/Breadcrumbs'
+import TextContainer from './filesUploadModal/filesUploadDragNDrop/TextContainer'
+import DocumentsUploadModal from './filesUploadModal/FilesUploadModal'
+import useAddDocumentsDropZone from './filesUploadModal/filesUploadDragNDrop/useAddDocumentsDropZone'
 
 function Files() {
+  const {
+    droppedFiles,
+    isModalAddDocumentsOpen,
+    closeModalAddDocs,
+    openModalAddDocs,
+  } = useAddDocumentsDropZone({ disabled: false })
+
   return (
     <Grid
       container
@@ -17,7 +27,13 @@ function Files() {
         mt: '42px',
       }}
     >
-      <Breadcrumbs />
+      <Breadcrumbs openModalAddDocs={openModalAddDocs} />
+      <TextContainer />
+      <DocumentsUploadModal
+        open={isModalAddDocumentsOpen}
+        close={closeModalAddDocs}
+        droppedFiles={droppedFiles}
+      />
     </Grid>
   )
 }

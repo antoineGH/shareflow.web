@@ -4,8 +4,12 @@ import Grid from '@mui/material/Grid'
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos'
 import { useBreadcrumbs } from './hooks/useBreadcrumbs'
 
-function Breadcrumbs() {
-  const breadcrumbs = useBreadcrumbs()
+type Props = {
+  openModalAddDocs(): void
+}
+
+function Breadcrumbs({ openModalAddDocs }: Props) {
+  const breadcrumbs = useBreadcrumbs({ openModalAddDocs })
 
   return (
     <Grid item py={2}>
