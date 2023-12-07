@@ -1,5 +1,5 @@
 import Grid from '@mui/material/Grid'
-import Typography from '@mui/material/Typography'
+import Breadcrumbs from './breadcrumbs/Breadcrumbs'
 
 function Files() {
   return (
@@ -17,11 +17,7 @@ function Files() {
         mt: '42px',
       }}
     >
-      <Grid item>
-        <Typography variant="body1" component="p" lineHeight="1.5rem" mt={2}>
-          Files
-        </Typography>
-      </Grid>
+      <Breadcrumbs />
     </Grid>
   )
 }

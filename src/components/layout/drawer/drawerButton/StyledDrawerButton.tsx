@@ -1,17 +1,22 @@
 import { styled } from '@mui/material/styles'
-import ListItemButton from '@mui/material/ListItemButton'
+import ListItemButton, {
+  ListItemButtonProps,
+} from '@mui/material/ListItemButton'
 
-interface StyledDrawerButtonProps {
-  active?: boolean
+interface StyledDrawerButtonProps extends ListItemButtonProps {
+  activeState: 'active' | 'inactive'
 }
 
-const StyledDrawerButton = styled(ListItemButton)<StyledDrawerButtonProps>(
-  ({ active }) => ({
-    '& .MuiListItemIcon-root': {
-      margin: '0px',
-    },
-    backgroundColor: active ? '#F2F2F2' : 'transparent',
-  }),
-)
+const StyledDrawerButton = styled(
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  ({ activeState, ...otherProps }: StyledDrawerButtonProps) => (
+    <ListItemButton {...otherProps} />
+  ),
+)(({ activeState }) => ({
+  '& .MuiListItemIcon-root': {
+    margin: '0px',
+  },
+  backgroundColor: activeState === 'active' ? '#F2F2F2' : 'transparent',
+}))
 
 export default StyledDrawerButton

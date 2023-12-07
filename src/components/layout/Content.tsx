@@ -12,7 +12,13 @@ function Content() {
         width: '100%',
       }}
     >
-      <Container>
+      <Container
+        sx={{
+          '@media (min-width: 1200px)': {
+            maxWidth: '100%',
+          },
+        }}
+      >
         <Routes>
           {routes.map(route => (
             <Route

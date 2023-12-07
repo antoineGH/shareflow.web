@@ -21,7 +21,7 @@ const routes: Route[] = [
     name: 'Files',
     component: <Files />,
     meta: {
-      title: 'files',
+      title: 'Files',
       requiresAuth: true,
     },
   },
@@ -30,7 +30,7 @@ const routes: Route[] = [
     name: 'Favorites',
     component: <Favorites />,
     meta: {
-      title: 'favorites',
+      title: 'Favorites',
       requiresAuth: true,
     },
   },
@@ -39,7 +39,7 @@ const routes: Route[] = [
     name: 'Tags',
     component: <Tags />,
     meta: {
-      title: 'tags',
+      title: 'Tags',
       requiresAuth: true,
     },
   },
@@ -48,7 +48,7 @@ const routes: Route[] = [
     name: 'Settings',
     component: <Settings />,
     meta: {
-      title: 'settings',
+      title: 'Settings',
       requiresAuth: true,
     },
   },
@@ -57,7 +57,7 @@ const routes: Route[] = [
     name: 'Deleted',
     component: <Deleted />,
     meta: {
-      title: 'deleted',
+      title: 'Deleted',
       requiresAuth: true,
     },
   },
@@ -66,7 +66,7 @@ const routes: Route[] = [
     name: 'Not Found',
     component: <NotFound />,
     meta: {
-      title: 'not found',
+      title: 'Not found',
       requiresAuth: true,
     },
   },

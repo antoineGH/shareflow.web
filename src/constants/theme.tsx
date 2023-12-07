@@ -5,6 +5,9 @@ const theme = createTheme({
     body1: {
       fontSize: '.9rem',
     },
+    body2: {
+      fontSize: '.8rem',
+    },
   },
 })
 
