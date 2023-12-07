@@ -20,12 +20,17 @@
     "noFallthroughCasesInSwitch": true,
     "useUnknownInCatchVariables": false,
     "downlevelIteration": true,
-    "types": ["vite/client", "vite-plugin-svgr/client", "vitest/globals"],
+    "types": ["vite/client", "vitest/globals"],
     "paths": {
       "src/*": ["src/*"],
       "tests/*": ["__tests__/*"]
     }
   },
 
-  "include": ["src"]
+  "include": [
+    "src",
+    "svg.d.ts",
+    "vite-plugin-svgr.d.ts",
+    "vite-plugin-svgr/client"
+  ]
 }
