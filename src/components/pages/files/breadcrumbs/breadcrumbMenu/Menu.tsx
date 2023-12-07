@@ -14,10 +14,11 @@ import { useFolderMenu } from './hooks/useFolderMenu'
 type Props = {
   anchorEl: null | HTMLElement
   open: boolean
+  openModalAddDocs(): void
   closeMenu: () => void
 }
 
-function Menu({ anchorEl, open, closeMenu }: Props) {
+function Menu({ anchorEl, open, openModalAddDocs, closeMenu }: Props) {
   const { isHidden, openFolder, closeFolder } = useFolderMenu()
 
   function handleBreadCrumbAction(
@@ -25,7 +26,7 @@ function Menu({ anchorEl, open, closeMenu }: Props) {
     id: string,
   ) {
     e.stopPropagation()
-    breadcrumbAction({ id, closeMenu, openFolder })
+    breadcrumbAction({ id, closeMenu, openFolder, openModalAddDocs })
   }
 
   function cancelFolder(e: React.MouseEvent<HTMLButtonElement>) {

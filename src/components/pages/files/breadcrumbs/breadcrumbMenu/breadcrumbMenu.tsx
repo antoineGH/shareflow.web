@@ -2,7 +2,11 @@ import { useState, type MouseEvent } from 'react'
 import BreadcrumbButton from './breadcrumbButton'
 import Menu from './Menu'
 
-function BreadcrumbMenu() {
+type Props = {
+  openModalAddDocs(): void
+}
+
+function BreadcrumbMenu({ openModalAddDocs }: Props) {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
 
@@ -16,7 +20,12 @@ function BreadcrumbMenu() {
   return (
     <>
       <BreadcrumbButton openMenu={openMenu} />
-      <Menu anchorEl={anchorEl} open={open} closeMenu={closeMenu} />
+      <Menu
+        anchorEl={anchorEl}
+        open={open}
+        closeMenu={closeMenu}
+        openModalAddDocs={openModalAddDocs}
+      />
     </>
   )
 }
