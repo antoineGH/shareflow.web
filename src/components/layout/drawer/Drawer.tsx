@@ -1,12 +1,13 @@
 import Toolbar from '@mui/material/Toolbar'
+import { useNavigate } from 'react-router-dom'
 import IconButton from '@mui/material/IconButton'
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
 import Divider from '@mui/material/Divider'
 import List from '@mui/material/List'
+import { Box } from '@mui/material'
 import StyledDrawer from './StyledDrawer'
 import { mainListItems, secondaryListItems } from '../listItems'
 import DrawerButton from './drawerButton/DrawerButton'
-import { Box } from '@mui/material'
 
 type Props = {
   open: boolean
@@ -16,8 +17,10 @@ type Props = {
 }
 
 function Drawer({ open, drawerWidth, appBarHeight, toggleDrawer }: Props) {
+  const navigate = useNavigate()
+
   const handleDrawerNavigation = (path: string) => {
-    console.log(path)
+    navigate(path)
   }
 
   return (

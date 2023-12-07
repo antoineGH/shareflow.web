@@ -1,8 +1,10 @@
+import { useLocation, useNavigate } from 'react-router-dom'
 import MenuMUI from '@mui/material/Menu'
 import MenuItem from '@mui/material/MenuItem'
 import ListItemIcon from '@mui/material/ListItemIcon'
 import listItems from './listItems'
 import StyledIcon from './StyledIcon'
+import { drawerNavigation } from './helpers'
 
 type Props = {
   anchorEl: null | HTMLElement
@@ -11,6 +13,13 @@ type Props = {
 }
 
 function Menu({ anchorEl, open, closeMenu }: Props) {
+  const navigate = useNavigate()
+  const { pathname } = useLocation()
+
+  function handleDrawerNavigation(path: string) {
+    drawerNavigation({ path, pathname, navigate, closeMenu })
+  }
+
   return (
     <MenuMUI
       anchorEl={anchorEl}
@@ -47,8 +56,8 @@ function Menu({ anchorEl, open, closeMenu }: Props) {
       transformOrigin={{ horizontal: 'right', vertical: 'top' }}
       anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
     >
-      {listItems.map(({ id, label, icon, action }) => (
-        <MenuItem key={id} onClick={action}>
+      {listItems.map(({ id, label, icon, pathname }) => (
+        <MenuItem key={id} onClick={() => handleDrawerNavigation(pathname)}>
           <ListItemIcon>
             <StyledIcon>{icon}</StyledIcon>
           </ListItemIcon>

@@ -1,8 +1,8 @@
-import Settings from '@mui/icons-material/Settings'
 import Deleted from 'components/pages/deleted/deleted'
 import Favorites from 'components/pages/favorites/Favorites'
 import Files from 'components/pages/files/Files'
 import NotFound from 'components/pages/notFound/NotFound'
+import Settings from 'components/pages/settings/Settings'
 import Tags from 'components/pages/tags/Tags'
 
 type Route = {
