@@ -1,3 +1,4 @@
+import { useLocation } from 'react-router-dom'
 import ListItemText from '@mui/material/ListItemText'
 import StyledIcon from '../StyledIcon'
 import StyledDrawerButton from './StyledDrawerButton'
@@ -11,12 +12,13 @@ type Props = {
 }
 
 function DrawerButton({ label, path, icon, handleDrawerNavigation }: Props) {
+  const { pathname } = useLocation()
   const handleClick = () => handleDrawerNavigation(path)
 
   return (
     <StyledDrawerButton
       onClick={handleClick}
-      active={location.pathname === path}
+      activeState={pathname === path ? 'active' : 'inactive'}
     >
       <StyledDrawerIcon>
         <StyledIcon>{icon}</StyledIcon>
