@@ -6,6 +6,7 @@ import Box from '@mui/material/Box'
 import Content from './Content'
 import Drawer from './drawer/Drawer'
 import TopBar from './topbar/TopBar'
+import useTitle from 'hooks/useTitle'
 
 const drawerWidth = 160
 const appBarHeight = 42
@@ -14,6 +15,7 @@ function Layout() {
   const [open, setOpen] = useState(true)
   const theme = useTheme()
   const matches = useMediaQuery(theme.breakpoints.down('sm'))
+  useTitle()
 
   useEffect(() => {
     if (matches) {

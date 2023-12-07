@@ -17,7 +17,7 @@ function Content() {
           {routes.map(route => (
             <Route
               key={route.name}
-              path={route.path}
+              path={route.pathname}
               element={route.component}
             />
           ))}
