@@ -9,15 +9,16 @@ function NotFound() {
       sx={{
         display: 'flex',
         flexDirection: 'column',
-        justifyContent: 'center',
+        justifyContent: 'start',
         alignItems: 'center',
         height: 'calc(100vh - 42px)',
         width: '100%',
         p: 0,
         m: 0,
+        mt: '42px',
       }}
     >
-      <Grid item>
+      <Grid item mt={10}>
         <NotFoundSVG style={{ width: '350px', height: '350px' }} />
       </Grid>
       <Grid item>

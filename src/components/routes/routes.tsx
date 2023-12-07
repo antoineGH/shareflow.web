@@ -6,7 +6,7 @@ import NotFound from 'components/pages/notFound/NotFound'
 import Tags from 'components/pages/tags/Tags'
 
 type Route = {
-  path: string
+  pathname: string
   name: string
   component: JSX.Element
   meta: {
@@ -17,56 +17,56 @@ type Route = {
 
 const routes: Route[] = [
   {
-    path: '/',
+    pathname: '/',
     name: 'Files',
     component: <Files />,
     meta: {
-      title: 'Files',
+      title: 'files',
       requiresAuth: true,
     },
   },
   {
-    path: '/favorites',
+    pathname: '/favorites',
     name: 'Favorites',
     component: <Favorites />,
     meta: {
-      title: 'Favorites',
+      title: 'favorites',
       requiresAuth: true,
     },
   },
   {
-    path: '/tags',
+    pathname: '/tags',
     name: 'Tags',
     component: <Tags />,
     meta: {
-      title: 'Tags',
+      title: 'tags',
       requiresAuth: true,
     },
   },
   {
-    path: '/settings',
+    pathname: '/settings',
     name: 'Settings',
     component: <Settings />,
     meta: {
-      title: 'Settings',
+      title: 'settings',
       requiresAuth: true,
     },
   },
   {
-    path: '/deleted',
+    pathname: '/deleted',
     name: 'Deleted',
     component: <Deleted />,
     meta: {
-      title: 'Deleted',
+      title: 'deleted',
       requiresAuth: true,
     },
   },
   {
-    path: '/404',
+    pathname: '/404',
     name: 'Not Found',
     component: <NotFound />,
     meta: {
-      title: '404',
+      title: 'not found',
       requiresAuth: true,
     },
   },
