@@ -22,8 +22,13 @@ function NotFound() {
         <NotFoundSVG style={{ width: '350px', height: '350px' }} />
       </Grid>
       <Grid item>
-        <Typography variant="body1" component="p" lineHeight="1.5rem" mt={2}>
+        <Typography variant="h4" component="p" lineHeight="1.5rem" mt={6}>
           Page not found
+        </Typography>
+      </Grid>
+      <Grid item>
+        <Typography variant="body1" component="p" lineHeight="1.5rem" mt={2}>
+          This is not the web page you are looking for. Move along, move along.
         </Typography>
       </Grid>
     </Grid>
