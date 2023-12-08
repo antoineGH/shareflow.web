@@ -1,5 +1,5 @@
 import Grid from '@mui/material/Grid'
-import Typography from '@mui/material/Typography'
+import TagsSeachField from './tagsSearchField/TagsSearchField'
 
 function Tags() {
   return (
@@ -17,10 +17,8 @@ function Tags() {
         mt: '42px',
       }}
     >
-      <Grid item>
-        <Typography variant="body1" component="p" lineHeight="1.5rem" mt={2}>
-          Tags
-        </Typography>
+      <Grid item mt={2} sx={{ width: '100%' }}>
+        <TagsSeachField />
       </Grid>
     </Grid>
   )
