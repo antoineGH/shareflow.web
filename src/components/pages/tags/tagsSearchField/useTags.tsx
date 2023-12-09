@@ -1,9 +1,6 @@
 import { useEffect, useState } from 'react'
-
-type TagData = {
-  id: string
-  name: string
-}
+import { removeDuplicates } from './helpers'
+import type { TagData } from './types'
 
 type HookReturnValue = {
   areSuggestionsOpen: boolean
@@ -75,11 +72,7 @@ function useTags({ debounceSearch }: Props): HookReturnValue {
     //   return
     // }
     setOptions(prev => [...prev, ...(response.options ?? [])])
-
-    // TODO: Remove setTimeout
-    setTimeout(() => {
-      setIsLoading(false)
-    }, 4000)
+    setIsLoading(false)
   }
 
   useEffect(() => {
@@ -90,7 +83,7 @@ function useTags({ debounceSearch }: Props): HookReturnValue {
   return {
     areSuggestionsOpen,
     isLoading,
-    options,
+    options: removeDuplicates(options),
     selectedOptions,
     onCloseSuggestions,
     onOpenSuggestions,

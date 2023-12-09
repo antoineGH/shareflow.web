@@ -1,13 +1,9 @@
+import { TagData } from './types'
+
 type ClassNameObj = Record<string, boolean>
 type ClassNameToCompute = string | ClassNameObj
 
-/**
- * define a tag classes
- * @param  {x args as string | ClassNameObj} args classes as string or object with a class name as key and its display condition as value
- * @return {string}      string of classnames
- */
-
-export function generateClassNames(...args: ClassNameToCompute[]) {
+function generateClassNames(...args: ClassNameToCompute[]) {
   if (!Array.isArray(args)) return ''
 
   return args.reduce((acc: string, current: ClassNameToCompute) => {
@@ -27,3 +23,11 @@ export function generateClassNames(...args: ClassNameToCompute[]) {
     return acc.trim()
   }, '')
 }
+
+function removeDuplicates(array: TagData[]): TagData[] {
+  return array.filter(
+    (value, index, self) => self.findIndex(v => v.id === value.id) === index,
+  )
+}
+
+export { generateClassNames, removeDuplicates }

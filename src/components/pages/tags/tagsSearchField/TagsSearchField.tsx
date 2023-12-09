@@ -9,11 +9,7 @@ import IconButton from '@mui/material/IconButton'
 import ClearIcon from '@mui/icons-material/Clear'
 import SearchIcon from '@mui/icons-material/Search'
 import Option from './Option'
-
-type TagData = {
-  id: string
-  name: string
-}
+import type { TagData } from './types'
 
 function generateInputProps(
   selectedOptions: TagData[],
@@ -73,6 +69,10 @@ function TagsSeachField() {
   }, [])
 
   const onClickOption = (option: TagData) => {
+    onResetSuggestions()
+    if (selectedOptions.some(selected => selected.id === option.id)) {
+      return onRemoveSelectOption(option)
+    }
     onSelectOption(option)
     setSearch('')
   }
@@ -83,13 +83,15 @@ function TagsSeachField() {
 
   const onKeydownEnter = useCallback(
     event => {
-      if (event.key === 'Enter') {
+      if (event.key === 'Enter' && areSuggestionsOpen) {
         if (highlightedOption.current) {
           onClickOption(highlightedOption.current)
         }
       }
       if (event.key === 'Backspace' && selectedOptions) {
-        onCleanSearch()
+        if (!search.length)
+          handleRemoveSelectOption(selectedOptions[selectedOptions.length - 1])
+        return
       }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -108,7 +110,7 @@ function TagsSeachField() {
   return (
     <Autocomplete
       size="small"
-      data-testid="supplier-sirene-search"
+      data-testid="tag-search"
       open={areSuggestionsOpen}
       loading={isLoading}
       loadingText="Loading"

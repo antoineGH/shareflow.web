@@ -2,11 +2,7 @@ import { ListItem, ListItemText } from '@mui/material'
 import type { HTMLAttributes } from 'react'
 import Title from './Title'
 import { generateClassNames } from './helpers'
-
-type TagData = {
-  id: string
-  name: string
-}
+import type { TagData } from './types'
 
 type Props = {
   option: TagData
