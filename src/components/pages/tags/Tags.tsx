@@ -6,18 +6,11 @@ function Tags() {
     <Grid
       container
       sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'start',
-        alignItems: 'start',
-        height: 'calc(100vh - 42px)',
-        width: '100%',
-        p: 0,
-        m: 0,
-        mt: '42px',
+        height: 'calc(100% - 42px)',
+        mt: '34px',
       }}
     >
-      <Grid item mt={2} sx={{ width: '100%' }}>
+      <Grid item mt={2} sx={{ width: '100%' }} py={0} px={1}>
         <TagsSeachField />
       </Grid>
     </Grid>

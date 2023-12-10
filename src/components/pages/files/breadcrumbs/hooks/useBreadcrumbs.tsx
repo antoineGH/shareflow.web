@@ -65,7 +65,9 @@ function useBreadcrumbs({ openModalAddDocs }: Props) {
     )
   })
 
-  breadcrumbs.push(<BreadcrumbMenu openModalAddDocs={openModalAddDocs} />)
+  breadcrumbs.push(
+    <BreadcrumbMenu key="0" openModalAddDocs={openModalAddDocs} />,
+  )
 
   return breadcrumbs
 }
