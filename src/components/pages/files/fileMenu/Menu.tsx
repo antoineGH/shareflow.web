@@ -20,9 +20,7 @@ function Menu({ anchorEl, open, closeMenu, handleClickMore }: Props) {
       open={open}
       onClose={closeMenu}
       onClick={closeMenu}
-      PaperProps={{
-        elevation: 0,
-      }}
+      elevation={0}
       transformOrigin={{ horizontal: 'right', vertical: 'top' }}
       anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
     >

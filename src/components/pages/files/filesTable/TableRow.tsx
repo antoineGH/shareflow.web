@@ -15,9 +15,16 @@ type Props = {
   isItemSelected: boolean
   labelId: string
   handleClick: (event: React.MouseEvent<unknown>, id: number) => void
+  handleDrawerOpen: () => void
 }
 
-function TableRow({ row, isItemSelected, labelId, handleClick }: Props) {
+function TableRow({
+  row,
+  isItemSelected,
+  labelId,
+  handleClick,
+  handleDrawerOpen,
+}: Props) {
   return (
     <TableRowMUI
       hover
@@ -54,7 +61,7 @@ function TableRow({ row, isItemSelected, labelId, handleClick }: Props) {
       <TableCell align="right" colSpan={2}>
         <Stack direction="row" justifyContent="flex-end" gap={4} mr={3}>
           <Stack direction="row" alignItems="center" gap={2}>
-            <FileMenu />
+            <FileMenu handleDrawerOpen={handleDrawerOpen} />
             {row.size}
           </Stack>
           <Stack direction="row" alignItems="center">

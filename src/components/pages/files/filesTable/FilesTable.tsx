@@ -20,7 +20,11 @@ const rows = [
   createData(4, 'Download', '159 KB', '2012-12-14'),
 ]
 
-function FilesTable() {
+type Props = {
+  handleDrawerOpen: () => void
+}
+
+function FilesTable({ handleDrawerOpen }: Props) {
   const [selected, setSelected] = useState<readonly number[]>([])
   const [order, setOrder] = useState<Order>('asc')
   const [orderBy, setOrderBy] = useState<keyof Data>('name')
@@ -106,6 +110,7 @@ function FilesTable() {
                   isItemSelected={isItemSelected}
                   labelId={labelId}
                   handleClick={handleClick}
+                  handleDrawerOpen={handleDrawerOpen}
                 />
               )
             })}

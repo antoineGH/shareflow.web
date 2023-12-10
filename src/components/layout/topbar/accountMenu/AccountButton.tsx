@@ -16,10 +16,10 @@ function AccountButton({ openMenu }: Props) {
         variant="dot"
       >
         <Avatar
-          alt="OP avatar"
+          alt="AR avatar"
           sx={{ width: 28, height: 28, fontSize: '1rem' }}
         >
-          OP
+          AR
         </Avatar>
       </StyledBadge>
     </IconButton>
