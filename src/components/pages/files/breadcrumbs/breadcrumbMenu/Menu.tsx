@@ -60,7 +60,7 @@ function Menu({ anchorEl, open, openModalAddDocs, closeMenu }: Props) {
           <Stack spacing={2} direction="column">
             <TextField
               id="standard-basic"
-              label="Standard"
+              label="Folder name"
               variant="standard"
               size="small"
             />

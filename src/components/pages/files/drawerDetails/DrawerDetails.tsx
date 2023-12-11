@@ -30,7 +30,13 @@ function DrawerDetails({ open, handleDrawerClose }: Props) {
       anchor="right"
       open={open}
     >
-      <DrawerHeader sx={{ mt: '42px', pl: 2, pb: 1 }}>
+      <DrawerHeader
+        sx={{
+          mt: '42px',
+          pl: 2,
+          pb: 1,
+        }}
+      >
         <Stack direction="column" sx={{ width: '100%' }}>
           <Box sx={{ alignSelf: 'flex-end' }}>
             <IconButton onClick={handleDrawerClose}>
