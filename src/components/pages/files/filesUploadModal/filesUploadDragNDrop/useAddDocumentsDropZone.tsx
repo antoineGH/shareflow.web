@@ -33,7 +33,6 @@ function useAddDocumentsDropZone({
     console.log('closeModalAddDocs')
     setIsModalAddDocumentsOpen(false)
     const { accept, reject } = droppedFiles
-    console.log(accept.length || reject.length)
     if (accept.length || reject.length)
       setDroppedFiles({ accept: [], reject: [] })
   }

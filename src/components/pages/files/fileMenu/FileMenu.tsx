@@ -4,7 +4,11 @@ import MoreHorizIcon from '@mui/icons-material/MoreHoriz'
 import IconButton from '@mui/material/IconButton'
 import Menu from './Menu'
 
-function FileMenu() {
+type Props = {
+  handleDrawerOpen: () => void
+}
+
+function FileMenu({ handleDrawerOpen }: Props) {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
 
@@ -19,26 +23,33 @@ function FileMenu() {
   const handleClickDetails = (e: MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation()
     console.log('Clicked Details')
+    handleDrawerOpen()
+    closeMenu()
   }
 
   const handleClickComment = () => {
     console.log('Clicked Comment')
+    handleDrawerOpen()
+    closeMenu()
   }
 
   const handleClickRename = () => {
     console.log('Clicked Rename')
+    closeMenu()
   }
 
   const handleClickDownload = () => {
     console.log('Clicked Download')
+    closeMenu()
   }
 
   const handleClickDelete = () => {
     console.log('Clicked Delete')
+    closeMenu()
   }
 
   const actionMap = {
-    comment: handleClickComment,
+    comments: handleClickComment,
     rename: handleClickRename,
     download: handleClickDownload,
     delete: handleClickDelete,
@@ -46,7 +57,7 @@ function FileMenu() {
 
   const handleClickMore = (e: MouseEvent<HTMLLIElement>, id: string) => {
     e.stopPropagation()
-    actionMap[id]()
+    actionMap[id]?.()
   }
 
   return (

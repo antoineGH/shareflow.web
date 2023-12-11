@@ -15,7 +15,7 @@ function useBreadcrumbs({ openModalAddDocs }: Props) {
   const location = useLocation()
   const navigate = useNavigate()
   //   const pathnames = location.pathname.split('/').filter(pathname => pathname)
-  const pathnames = ['files', 'folder1', 'folder2', 'folder3']
+  const pathnames = ['files', 'Antoine', 'Personal', 'Test']
 
   const handleClick = (
     event: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
@@ -65,7 +65,9 @@ function useBreadcrumbs({ openModalAddDocs }: Props) {
     )
   })
 
-  breadcrumbs.push(<BreadcrumbMenu openModalAddDocs={openModalAddDocs} />)
+  breadcrumbs.push(
+    <BreadcrumbMenu key="0" openModalAddDocs={openModalAddDocs} />,
+  )
 
   return breadcrumbs
 }

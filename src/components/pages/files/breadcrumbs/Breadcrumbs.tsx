@@ -12,7 +12,7 @@ function Breadcrumbs({ openModalAddDocs }: Props) {
   const breadcrumbs = useBreadcrumbs({ openModalAddDocs })
 
   return (
-    <Grid item py={2}>
+    <Grid item py={1} px={2}>
       <BreadcrumbsMUI
         separator={<ArrowForwardIosIcon color="primary" fontSize="medium" />}
         aria-label="breadcrumb"
