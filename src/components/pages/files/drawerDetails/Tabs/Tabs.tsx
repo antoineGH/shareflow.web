@@ -5,6 +5,7 @@ import Box from '@mui/material/Box'
 import StyledTypographyTab from './StyledTypographyTab'
 import { useTheme } from '@mui/material'
 import Comments from '../Comments/Comments'
+import Activities from '../Activity/Activities'
 
 function Tabs() {
   const [value, setValue] = useState(0)
@@ -60,7 +61,11 @@ function Tabs() {
           />
         ))}
       </TabsMUI>
-      {value === 0 && <Box p={3}>{listTabs[0].label}</Box>}
+      {value === 0 && (
+        <Box>
+          <Activities />
+        </Box>
+      )}
       {value === 1 && (
         <Box>
           <Comments />
