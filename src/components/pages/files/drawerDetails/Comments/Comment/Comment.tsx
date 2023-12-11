@@ -21,7 +21,7 @@ function CommentsSection({ comments }: Props) {
       }}
     >
       {comments.map(({ id, comment, createdAt, user }) => (
-        <Box key={id} sx={{ mb: 2, pr: '1rem' }}>
+        <Box key={id} sx={{ my: 2, pr: '1rem' }}>
           <Stack direction="row" alignItems="center" spacing={1}>
             <Avatar
               alt="avatar comment"
@@ -46,7 +46,14 @@ function CommentsSection({ comments }: Props) {
                 'rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px',
             }}
           >
-            <CardContent>
+            <CardContent
+              sx={{
+                p: 1.5,
+                '&:last-child': {
+                  paddingBottom: '1rem',
+                },
+              }}
+            >
               <Typography variant="body2">{comment}</Typography>
             </CardContent>
           </Card>
