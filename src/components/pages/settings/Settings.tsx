@@ -1,4 +1,7 @@
-import Stack from '@mui/material/Stack'
+import Grid from '@mui/material/Grid'
+import Breadcrumbs from '@mui/material/Breadcrumbs'
+import Typography from '@mui/material/Typography'
+import SettingsIcon from '@mui/icons-material/Settings'
 import Storage from './storage/Storage'
 import AccountInfo from './accountInfo/AccountInfo'
 import Password from './password/Password'
@@ -7,19 +10,39 @@ import Version from '../version/Version'
 
 function Settings() {
   return (
-    <Stack
-      direction="column"
+    <Grid
+      container
       sx={{
-        height: 'calc(100vh - 42px)',
+        height: 'calc(100% - 42px)',
         mt: '42px',
       }}
     >
-      <Storage />
-      <AccountInfo />
-      <Password />
-      <Language />
-      <Version />
-    </Stack>
+      <Grid item py={1} px={2}>
+        <Breadcrumbs aria-label="breadcrumb">
+          <Grid
+            container
+            sx={{ display: 'flex', flexDirection: 'row' }}
+            mt={0.5}
+          >
+            <Grid item>
+              <SettingsIcon sx={{ mr: 1 }} fontSize="inherit" />
+            </Grid>
+            <Grid item>
+              <Typography variant="body2" sx={{ lineHeight: 'inherit' }}>
+                My Settings
+              </Typography>
+            </Grid>
+          </Grid>
+        </Breadcrumbs>
+      </Grid>
+      <Grid item sx={{ width: '100%' }} py={0} px={1}>
+        <Storage />
+        <AccountInfo />
+        <Password />
+        <Language />
+        <Version />
+      </Grid>
+    </Grid>
   )
 }
 
