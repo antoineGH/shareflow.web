@@ -8,7 +8,7 @@ function Storage() {
   const totalStorage = 10
 
   return (
-    <Box p={2} pt={3}>
+    <Box p={1}>
       <Box position="relative" display="inline-flex" width="100%">
         <Box sx={{ width: '100%' }}>
           <StyledLinearProgress
