@@ -2,34 +2,13 @@ import { useCallback, useMemo, useRef, useState } from 'react'
 import { useDebounce } from 'hooks/useDebounce'
 import useTags from './useTags'
 import Autocomplete from '@mui/material/Autocomplete'
-import TextField from '@mui/material/TextField'
-import Chip from '@mui/material/Chip'
-import InputAdornment from '@mui/material/InputAdornment'
 import IconButton from '@mui/material/IconButton'
-import ClearIcon from '@mui/icons-material/Clear'
+import TextField from '@mui/material/TextField'
+import InputAdornment from '@mui/material/InputAdornment'
 import SearchIcon from '@mui/icons-material/Search'
+import ClearIcon from '@mui/icons-material/Clear'
 import Option from './Option'
 import type { TagData } from './types'
-
-function generateInputProps(
-  selectedOptions: TagData[],
-  onCleanSearch: () => void,
-) {
-  return {
-    startAdornment: (
-      <InputAdornment position="start">
-        <SearchIcon />
-      </InputAdornment>
-    ),
-    endAdornment: selectedOptions.length ? (
-      <InputAdornment position="end">
-        <IconButton onClick={onCleanSearch}>
-          <ClearIcon fontSize="small" />
-        </IconButton>
-      </InputAdornment>
-    ) : null,
-  }
-}
 
 function TagsSeachField() {
   const [search, setSearch] = useState('')
@@ -47,8 +26,24 @@ function TagsSeachField() {
     onResetselectedOptions,
     onResetSuggestions,
     onSelectOption,
-    onRemoveSelectOption,
   } = useTags({ debounceSearch })
+
+  function generateInputProps(search: string, onCleanSearch: () => void) {
+    return {
+      startAdornment: (
+        <InputAdornment position="start">
+          <SearchIcon />
+        </InputAdornment>
+      ),
+      endAdornment: search ? (
+        <InputAdornment position="end">
+          <IconButton onClick={onCleanSearch}>
+            <ClearIcon />
+          </IconButton>
+        </InputAdornment>
+      ) : null,
+    }
+  }
 
   const onCleanSearch = useCallback(() => {
     setSearch('')
@@ -56,6 +51,11 @@ function TagsSeachField() {
     onResetselectedOptions()
     if (highlightedOption.current) highlightedOption.current = null
   }, [onResetselectedOptions, onResetSuggestions])
+
+  const inputProps = useMemo(
+    () => generateInputProps(search, onCleanSearch),
+    [onCleanSearch, search],
+  )
 
   const onHighlightChange = (_, option) => {
     highlightedOption.current = option
@@ -70,15 +70,8 @@ function TagsSeachField() {
 
   const onClickOption = (option: TagData) => {
     onResetSuggestions()
-    if (selectedOptions.some(selected => selected.id === option.id)) {
-      return onRemoveSelectOption(option)
-    }
     onSelectOption(option)
     setSearch('')
-  }
-
-  const handleRemoveSelectOption = (option: TagData) => {
-    onRemoveSelectOption(option)
   }
 
   const onKeydownEnter = useCallback(
@@ -89,8 +82,7 @@ function TagsSeachField() {
         }
       }
       if (event.key === 'Backspace' && selectedOptions) {
-        if (!search.length)
-          handleRemoveSelectOption(selectedOptions[selectedOptions.length - 1])
+        onCleanSearch()
         return
       }
     },
@@ -98,14 +90,11 @@ function TagsSeachField() {
     [onCleanSearch, selectedOptions],
   )
 
-  const inputProps = useMemo(
-    () => generateInputProps(selectedOptions, onCleanSearch),
-    [onCleanSearch, selectedOptions],
-  )
-
   const getOptionLabel = (option: TagData) => {
     return `${option.name}`
   }
+
+  console.log('selectedOptions', selectedOptions)
 
   return (
     <Autocomplete
@@ -115,8 +104,8 @@ function TagsSeachField() {
       loading={isLoading}
       loadingText="Loading"
       noOptionsText={
-        search.length >= 3
-          ? 'No result, please refine your search.'
+        search.length >= 3 || !selectedOptions
+          ? null
           : 'Please fill in at least 3 characters.'
       }
       options={options}
@@ -134,7 +123,6 @@ function TagsSeachField() {
       inputValue={search}
       getOptionLabel={option => getOptionLabel(option)}
       filterOptions={opts => opts}
-      multiple
       value={selectedOptions}
       renderInput={params => (
         <TextField
@@ -146,33 +134,15 @@ function TagsSeachField() {
           }}
           variant="outlined"
           size="small"
-          placeholder={selectedOptions?.length ? '' : 'Search tag to filter by'}
-          InputProps={{
-            ...params.InputProps,
-            startAdornment: (
-              <>
-                {inputProps.startAdornment}
-                {selectedOptions.map(option => (
-                  <Chip
-                    key={option.id}
-                    label={option.name}
-                    onDelete={() => handleRemoveSelectOption(option)}
-                    sx={{ p: 0, mr: 0.5, borderRadius: '5px' }}
-                  />
-                ))}
-              </>
-            ),
-            endAdornment: inputProps.endAdornment,
-          }}
+          placeholder={selectedOptions ? '' : 'Add a new tag '}
+          InputProps={{ ...params.InputProps, ...inputProps }}
         />
       )}
       renderOption={(optionAttr, option) => (
         <Option
           key={option.name}
           option={option}
-          isSelected={selectedOptions.some(
-            selected => selected.id === option.id,
-          )}
+          isSelected={selectedOptions.id === option.id}
           optionAttr={optionAttr}
           onClickOption={onClickOption}
         />
