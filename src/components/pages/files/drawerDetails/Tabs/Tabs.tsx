@@ -1,11 +1,12 @@
 import { useState, type SyntheticEvent } from 'react'
+import { useTheme } from '@mui/material'
 import TabsMUI from '@mui/material/Tabs'
 import Tab from '@mui/material/Tab'
 import Box from '@mui/material/Box'
 import StyledTypographyTab from './StyledTypographyTab'
-import { useTheme } from '@mui/material'
 import Comments from '../Comments/Comments'
 import Activities from '../Activity/Activities'
+import Tags from '../Tags/Tags'
 
 function Tabs() {
   const [value, setValue] = useState(0)
@@ -61,17 +62,9 @@ function Tabs() {
           />
         ))}
       </TabsMUI>
-      {value === 0 && (
-        <Box>
-          <Activities />
-        </Box>
-      )}
-      {value === 1 && (
-        <Box>
-          <Comments />
-        </Box>
-      )}
-      {value === 2 && <Box p={3}>{listTabs[2].label}</Box>}
+      {value === 0 && <Activities />}
+      {value === 1 && <Comments />}
+      {value === 2 && <Tags />}
     </Box>
   )
 }
