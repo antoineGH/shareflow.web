@@ -1,21 +1,25 @@
-import Grid from '@mui/material/Grid'
-import Typography from '@mui/material/Typography'
+import Stack from '@mui/material/Stack'
+import Storage from './storage/Storage'
+import AccountInfo from './accountInfo/AccountInfo'
+import Password from './password/Password'
+import Language from './Language'
+import Version from '../version/Version'
 
 function Settings() {
   return (
-    <Grid
-      container
+    <Stack
+      direction="column"
       sx={{
         height: 'calc(100vh - 42px)',
         mt: '42px',
       }}
     >
-      <Grid item>
-        <Typography variant="body1" component="p" lineHeight="1.5rem" p={1}>
-          Settings
-        </Typography>
-      </Grid>
-    </Grid>
+      <Storage />
+      <AccountInfo />
+      <Password />
+      <Language />
+      <Version />
+    </Stack>
   )
 }
 

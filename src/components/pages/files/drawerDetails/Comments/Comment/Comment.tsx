@@ -21,7 +21,7 @@ function CommentsSection({ comments }: Props) {
       }}
     >
       {comments.map(({ id, comment, createdAt, user }) => (
-        <Box key={id} sx={{ my: 2, pr: '1rem' }}>
+        <Box key={id} sx={{ mt: 2, mb: 3, pr: '1rem' }}>
           <Stack direction="row" alignItems="center" spacing={1}>
             <Avatar
               alt="avatar comment"
