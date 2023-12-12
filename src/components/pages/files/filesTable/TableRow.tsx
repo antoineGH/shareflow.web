@@ -1,9 +1,12 @@
 import Stack from '@mui/material/Stack'
+import IconButton from '@mui/material/IconButton'
 import Checkbox from '@mui/material/Checkbox'
 import FolderIcon from '@mui/icons-material/Folder'
 import TableRowMUI from '@mui/material/TableRow'
 import TableCell from '@mui/material/TableCell'
 import FileMenu from '../fileMenu/FileMenu'
+import GradeIcon from '@mui/icons-material/Grade'
+import type { MouseEvent } from 'react'
 
 type Props = {
   row: {
@@ -14,7 +17,9 @@ type Props = {
   }
   isItemSelected: boolean
   labelId: string
-  handleClick: (event: React.MouseEvent<unknown>, id: number) => void
+  isFavorite?: boolean
+  onRowClick: (id: number) => void
+  onFavoriteClick: (id: number) => void
   handleDrawerOpen: () => void
 }
 
@@ -22,13 +27,25 @@ function TableRow({
   row,
   isItemSelected,
   labelId,
-  handleClick,
+  isFavorite,
+  onRowClick,
+  onFavoriteClick,
   handleDrawerOpen,
 }: Props) {
+  const handleClickRow = (e: MouseEvent<HTMLTableRowElement>) => {
+    e.stopPropagation()
+    onRowClick(row.id)
+  }
+
+  const handleClickFavorite = (e: MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation()
+    onFavoriteClick(row.id)
+  }
+
   return (
     <TableRowMUI
       hover
-      onClick={event => handleClick(event, row.id)}
+      onClick={event => handleClickRow(event)}
       role="checkbox"
       aria-checked={isItemSelected}
       tabIndex={-1}
@@ -45,14 +62,20 @@ function TableRow({
         colSpan={2}
       >
         <Stack direction="row" alignItems="center" gap={1}>
-          <Checkbox
-            color="primary"
-            size="small"
-            checked={isItemSelected}
-            inputProps={{
-              'aria-labelledby': labelId,
-            }}
-          />
+          {isFavorite ? (
+            <IconButton onClick={event => handleClickFavorite(event)}>
+              <GradeIcon />
+            </IconButton>
+          ) : (
+            <Checkbox
+              color="primary"
+              size="small"
+              checked={isItemSelected}
+              inputProps={{
+                'aria-labelledby': labelId,
+              }}
+            />
+          )}
           <FolderIcon color="secondary" fontSize="medium" />
           {row.name}
         </Stack>
@@ -61,7 +84,12 @@ function TableRow({
       <TableCell align="right" colSpan={2}>
         <Stack direction="row" justifyContent="flex-end" gap={4} mr={3}>
           <Stack direction="row" alignItems="center" gap={2}>
-            <FileMenu handleDrawerOpen={handleDrawerOpen} />
+            <FileMenu
+              id={row.id}
+              isFavorite={isFavorite}
+              handleDrawerOpen={handleDrawerOpen}
+              onFavoriteClick={onFavoriteClick}
+            />
             {row.size}
           </Stack>
           <Stack direction="row" alignItems="center">

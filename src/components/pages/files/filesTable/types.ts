@@ -24,4 +24,12 @@ export type EnhancedTableProps = {
   order: Order
   orderBy: string
   rowCount: number
+  isFavorite?: boolean
+}
+
+export type FileData = {
+  readonly id: number
+  readonly name: string
+  readonly size: string
+  readonly date: string
 }

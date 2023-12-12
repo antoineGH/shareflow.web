@@ -2,13 +2,22 @@ import { useState, type MouseEvent } from 'react'
 import InfoIcon from '@mui/icons-material/Info'
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz'
 import IconButton from '@mui/material/IconButton'
+import GradeIcon from '@mui/icons-material/Grade'
 import Menu from './Menu'
 
 type Props = {
+  id: number
+  isFavorite?: boolean
+  onFavoriteClick: (id: number) => void
   handleDrawerOpen: () => void
 }
 
-function FileMenu({ handleDrawerOpen }: Props) {
+function FileMenu({
+  id,
+  isFavorite,
+  onFavoriteClick,
+  handleDrawerOpen,
+}: Props) {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
 
@@ -20,11 +29,14 @@ function FileMenu({ handleDrawerOpen }: Props) {
     setAnchorEl(null)
   }
 
+  const handleClickFavorite = (e: MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation()
+    onFavoriteClick(id)
+  }
+
   const handleClickDetails = (e: MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation()
-    console.log('Clicked Details')
     handleDrawerOpen()
-    closeMenu()
   }
 
   const handleClickComment = () => {
@@ -62,6 +74,11 @@ function FileMenu({ handleDrawerOpen }: Props) {
 
   return (
     <>
+      {isFavorite ? null : (
+        <IconButton size="small" onClick={e => handleClickFavorite(e)}>
+          <GradeIcon color="disabled" />
+        </IconButton>
+      )}
       <IconButton size="small" onClick={e => handleClickDetails(e)}>
         <InfoIcon color="disabled" />
       </IconButton>
