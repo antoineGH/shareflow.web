@@ -11,20 +11,15 @@ import TableRow from './TableRow'
 import TableHead from './TableHead'
 import { createData, stableSort, getComparator } from './helpers'
 
-import type { Data, Order } from './types'
-
-const rows = [
-  createData(1, 'Documents', '305 KB', '2012-12-14'),
-  createData(2, 'Photos', '452 KB', '2012-12-14'),
-  createData(3, 'Images', '262 KB', '2012-12-14'),
-  createData(4, 'Download', '159 KB', '2012-12-14'),
-]
+import type { Data, FileData, Order } from './types'
 
 type Props = {
+  filesData: FileData[]
+  isFavorite?: boolean
   handleDrawerOpen: () => void
 }
 
-function FilesTable({ handleDrawerOpen }: Props) {
+function FilesTable({ filesData, isFavorite, handleDrawerOpen }: Props) {
   const [selected, setSelected] = useState<readonly number[]>([])
   const [order, setOrder] = useState<Order>('asc')
   const [orderBy, setOrderBy] = useState<keyof Data>('name')
@@ -32,7 +27,11 @@ function FilesTable({ handleDrawerOpen }: Props) {
 
   const rowsPerPage = 20
 
-  const handleClick = (event: React.MouseEvent<unknown>, id: number) => {
+  const rows = filesData.map(file =>
+    createData(file.id, file.name, file.size, file.date),
+  )
+
+  const onRowClick = (id: number) => {
     const selectedIndex = selected.indexOf(id)
     let newSelected: readonly number[] = []
 
@@ -49,6 +48,10 @@ function FilesTable({ handleDrawerOpen }: Props) {
       )
     }
     setSelected(newSelected)
+  }
+
+  const onFavoriteClick = (id: number) => {
+    console.log('onFavoriteClick', id)
   }
 
   const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -84,7 +87,7 @@ function FilesTable({ handleDrawerOpen }: Props) {
         page * rowsPerPage,
         page * rowsPerPage + rowsPerPage,
       ),
-    [order, orderBy, page, rowsPerPage],
+    [order, orderBy, page, rows],
   )
 
   return (
@@ -98,6 +101,7 @@ function FilesTable({ handleDrawerOpen }: Props) {
             onSelectAllClick={handleSelectAllClick}
             onRequestSort={handleRequestSort}
             rowCount={rows.length}
+            isFavorite={isFavorite}
           />
           <TableBody>
             {visibleRows.map((row, index) => {
@@ -109,7 +113,9 @@ function FilesTable({ handleDrawerOpen }: Props) {
                   row={row}
                   isItemSelected={isItemSelected}
                   labelId={labelId}
-                  handleClick={handleClick}
+                  isFavorite={isFavorite}
+                  onRowClick={onRowClick}
+                  onFavoriteClick={onFavoriteClick}
                   handleDrawerOpen={handleDrawerOpen}
                 />
               )

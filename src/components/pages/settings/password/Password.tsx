@@ -38,6 +38,7 @@ function Password() {
             size="small"
             variant="contained"
             onClick={handleClickChangePassword}
+            sx={{ mt: 0.25 }}
           >
             Change password
           </Button>

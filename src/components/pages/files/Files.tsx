@@ -6,6 +6,7 @@ import useAddDocumentsDropZone from './filesUploadModal/filesUploadDragNDrop/use
 import useDrawerDetails from './drawerDetails/useDrawerDetails'
 import FilesTable from './filesTable/FilesTable'
 import DrawerDetails from './drawerDetails/DrawerDetails'
+import type { FileData } from './filesTable/types'
 
 function Files() {
   const {
@@ -18,6 +19,33 @@ function Files() {
   const { isDrawerOpen, handleDrawerOpen, handleDrawerClose } =
     useDrawerDetails()
 
+  const filesData: FileData[] = [
+    {
+      id: 1,
+      name: 'Documents',
+      size: '305 KB',
+      date: '2012-12-14',
+    },
+    {
+      id: 2,
+      name: 'Photos',
+      size: '452 KB',
+      date: '2012-12-14',
+    },
+    {
+      id: 3,
+      name: 'Images',
+      size: '262 KB',
+      date: '2012-12-14',
+    },
+    {
+      id: 4,
+      name: 'Download',
+      size: '159 KB',
+      date: '2012-12-14',
+    },
+  ]
+
   return (
     <Grid
       container
@@ -29,7 +57,7 @@ function Files() {
     >
       <Breadcrumbs openModalAddDocs={openModalAddDocs} />
       <TextContainer />
-      <FilesTable handleDrawerOpen={handleDrawerOpen} />
+      <FilesTable filesData={filesData} handleDrawerOpen={handleDrawerOpen} />
 
       <DrawerDetails
         open={isDrawerOpen}
