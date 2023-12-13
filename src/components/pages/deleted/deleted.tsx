@@ -1,7 +1,6 @@
 import Grid from '@mui/material/Grid'
-import Typography from '@mui/material/Typography'
 import Breadcrumbs from '@mui/material/Breadcrumbs'
-import DeleteIcon from '@mui/icons-material/Delete'
+import BreadcrumbEntry from 'components/common/breadcrumbEntry/BreadcrumbEntry'
 
 function Deleted() {
   return (
@@ -12,22 +11,9 @@ function Deleted() {
         mt: '42px',
       }}
     >
-      <Grid item py={1} px={2}>
+      <Grid item py={1.5} px={2}>
         <Breadcrumbs aria-label="breadcrumb">
-          <Grid
-            container
-            sx={{ display: 'flex', flexDirection: 'row' }}
-            mt={0.5}
-          >
-            <Grid item>
-              <DeleteIcon sx={{ mr: 1 }} fontSize="inherit" />
-            </Grid>
-            <Grid item>
-              <Typography variant="body2" sx={{ lineHeight: 'inherit' }}>
-                My deleted files
-              </Typography>
-            </Grid>
-          </Grid>
+          <BreadcrumbEntry pageName="Deleted" />
         </Breadcrumbs>
       </Grid>
     </Grid>

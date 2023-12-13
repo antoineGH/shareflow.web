@@ -1,11 +1,10 @@
 import Breadcrumbs from '@mui/material/Breadcrumbs'
 import Grid from '@mui/material/Grid'
-import Typography from '@mui/material/Typography'
-import GradeIcon from '@mui/icons-material/Grade'
 import FilesTable from '../files/filesTable/FilesTable'
 import DrawerDetails from '../files/drawerDetails/DrawerDetails'
 import useDrawerDetails from '../files/drawerDetails/useDrawerDetails'
 import type { FileData } from './types'
+import BreadcrumbEntry from 'components/common/breadcrumbEntry/BreadcrumbEntry'
 
 function Favorites() {
   const {
@@ -51,22 +50,9 @@ function Favorites() {
         mt: '42px',
       }}
     >
-      <Grid item py={1} px={2}>
+      <Grid item pt={1.5} px={2}>
         <Breadcrumbs aria-label="breadcrumb">
-          <Grid
-            container
-            sx={{ display: 'flex', flexDirection: 'row' }}
-            mt={0.5}
-          >
-            <Grid item>
-              <GradeIcon sx={{ mr: 1 }} fontSize="inherit" />
-            </Grid>
-            <Grid item>
-              <Typography variant="body2" sx={{ lineHeight: 'inherit' }}>
-                My Favorites
-              </Typography>
-            </Grid>
-          </Grid>
+          <BreadcrumbEntry pageName="Favorites" />
         </Breadcrumbs>
       </Grid>
       <FilesTable
