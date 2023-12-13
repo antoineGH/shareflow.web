@@ -6,9 +6,8 @@ import useAddDocumentsDropZone from './filesUploadModal/filesUploadDragNDrop/use
 import useDrawerDetails from './drawerDetails/useDrawerDetails'
 import FilesTable from './filesTable/FilesTable'
 import DrawerDetails from './drawerDetails/DrawerDetails'
-import type { FileData, FilesData } from './filesTable/types'
+import type { FilesData } from './filesTable/types'
 import CountFiles from './countFiles/CountFiles'
-import { count } from 'console'
 
 function Files() {
   const {
