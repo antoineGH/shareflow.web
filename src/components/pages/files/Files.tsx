@@ -6,7 +6,8 @@ import useAddDocumentsDropZone from './filesUploadModal/filesUploadDragNDrop/use
 import useDrawerDetails from './drawerDetails/useDrawerDetails'
 import FilesTable from './filesTable/FilesTable'
 import DrawerDetails from './drawerDetails/DrawerDetails'
-import type { FileData } from './filesTable/types'
+import type { FilesData } from './filesTable/types'
+import CountFiles from './countFiles/CountFiles'
 
 function Files() {
   const {
@@ -24,32 +25,39 @@ function Files() {
     handleDrawerClose,
   } = useDrawerDetails()
 
-  const filesData: FileData[] = [
-    {
-      id: 1,
-      name: 'Documents',
-      size: '305 KB',
-      date: '2012-12-14',
-    },
-    {
-      id: 2,
-      name: 'Photos',
-      size: '452 KB',
-      date: '2012-12-14',
-    },
-    {
-      id: 3,
-      name: 'Images',
-      size: '262 KB',
-      date: '2012-12-14',
-    },
-    {
-      id: 4,
-      name: 'Download',
-      size: '159 KB',
-      date: '2012-12-14',
-    },
-  ]
+  const filesData: FilesData = {
+    files: [
+      {
+        id: 1,
+        name: 'Documents',
+        size: '305 KB',
+        date: '2012-12-14',
+      },
+      {
+        id: 2,
+        name: 'Photos',
+        size: '452 KB',
+        date: '2012-12-14',
+      },
+      {
+        id: 3,
+        name: 'Images',
+        size: '262 KB',
+        date: '2012-12-14',
+      },
+      {
+        id: 4,
+        name: 'Download',
+        size: '159 KB',
+        date: '2012-12-14',
+      },
+    ],
+    countFiles: 4,
+    countFolders: 4,
+    totalSize: '1.17 MB',
+  }
+
+  const { files, countFiles, countFolders, totalSize } = filesData
 
   return (
     <Grid
@@ -63,11 +71,15 @@ function Files() {
       <Breadcrumbs openModalAddDocs={openModalAddDocs} />
       <TextContainer />
       <FilesTable
-        filesData={filesData}
+        filesData={files}
         handleDrawerOpen={handleDrawerOpen}
         handleChangeDrawerTab={handleChangeDrawerTab}
       />
-
+      <CountFiles
+        countFiles={countFiles}
+        countFolders={countFolders}
+        totalSize={totalSize}
+      />
       <DrawerDetails
         open={isDrawerOpen}
         activeDrawerTab={activeDrawerTab}

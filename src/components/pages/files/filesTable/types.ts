@@ -33,3 +33,10 @@ export type FileData = {
   readonly size: string
   readonly date: string
 }
+
+export type FilesData = {
+  readonly files: FileData[]
+  countFiles: number
+  countFolders: number
+  totalSize: string
+}
