@@ -1,9 +1,9 @@
 import { useLocation, Link as RouterLink, useNavigate } from 'react-router-dom'
 import Link from '@mui/material/Link'
-import Grid from '@mui/material/Grid'
 import Typography from '@mui/material/Typography'
-import FolderIcon from '@mui/icons-material/Folder'
 import BreadcrumbMenu from '../breadcrumbMenu/breadcrumbMenu'
+import BreadcrumbEntry from 'components/common/breadcrumbEntry/BreadcrumbEntry'
+import { useTheme } from '@mui/material'
 
 type Props = {
   openModalAddDocs(): void
@@ -14,6 +14,7 @@ function useBreadcrumbs({ openModalAddDocs }: Props) {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const location = useLocation()
   const navigate = useNavigate()
+  const theme = useTheme()
   //   const pathnames = location.pathname.split('/').filter(pathname => pathname)
   const pathnames = ['files', 'Antoine', 'Personal', 'Test']
 
@@ -40,16 +41,7 @@ function useBreadcrumbs({ openModalAddDocs }: Props) {
         key={index}
         onClick={e => handleClick(e, index)}
       >
-        <Grid container sx={{ display: 'flex', flexDirection: 'row' }}>
-          <Grid item>
-            <FolderIcon sx={{ mr: 1 }} fontSize="inherit" />
-          </Grid>
-          <Grid item>
-            <Typography variant="body2" sx={{ lineHeight: 'inherit' }}>
-              All Files
-            </Typography>
-          </Grid>
-        </Grid>
+        <BreadcrumbEntry pageName="Files" />
       </Link>
     ) : (
       <Link
@@ -60,7 +52,15 @@ function useBreadcrumbs({ openModalAddDocs }: Props) {
         key={index}
         onClick={e => handleClick(e, index)}
       >
-        <Typography variant="body2">{value}</Typography>
+        <Typography
+          variant="body2"
+          fontWeight={600}
+          sx={{
+            color: theme.palette.secondary.contrastText,
+          }}
+        >
+          {value}
+        </Typography>
       </Link>
     )
   })
