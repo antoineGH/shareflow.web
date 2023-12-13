@@ -18,9 +18,10 @@ type Props = {
   isItemSelected: boolean
   labelId: string
   isFavorite?: boolean
-  onRowClick: (id: number) => void
+  onCheckBoxClick: (id: number) => void
   onFavoriteClick: (id: number) => void
   handleDrawerOpen: () => void
+  handleChangeDrawerTab: (tab: number) => void
 }
 
 function TableRow({
@@ -28,13 +29,14 @@ function TableRow({
   isItemSelected,
   labelId,
   isFavorite,
-  onRowClick,
+  onCheckBoxClick,
   onFavoriteClick,
   handleDrawerOpen,
+  handleChangeDrawerTab,
 }: Props) {
-  const handleClickRow = (e: MouseEvent<HTMLTableRowElement>) => {
+  const handleCheckBoxClick = (e: MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation()
-    onRowClick(row.id)
+    onCheckBoxClick(row.id)
   }
 
   const handleClickFavorite = (e: MouseEvent<HTMLButtonElement>) => {
@@ -45,7 +47,7 @@ function TableRow({
   return (
     <TableRowMUI
       hover
-      onClick={event => handleClickRow(event)}
+      // onClick={event => handleClickRow(event)}
       role="checkbox"
       aria-checked={isItemSelected}
       tabIndex={-1}
@@ -71,6 +73,7 @@ function TableRow({
               color="primary"
               size="small"
               checked={isItemSelected}
+              onClick={event => handleCheckBoxClick(event)}
               inputProps={{
                 'aria-labelledby': labelId,
               }}
@@ -89,6 +92,7 @@ function TableRow({
               isFavorite={isFavorite}
               handleDrawerOpen={handleDrawerOpen}
               onFavoriteClick={onFavoriteClick}
+              handleChangeDrawerTab={handleChangeDrawerTab}
             />
             {row.size}
           </Stack>

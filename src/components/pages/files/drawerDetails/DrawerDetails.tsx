@@ -13,10 +13,17 @@ import Tabs from './Tabs/Tabs'
 
 type Props = {
   open: boolean
+  activeDrawerTab: number
+  handleChangeDrawerTab: (tab: number) => void
   handleDrawerClose: () => void
 }
 
-function DrawerDetails({ open, handleDrawerClose }: Props) {
+function DrawerDetails({
+  open,
+  activeDrawerTab,
+  handleChangeDrawerTab,
+  handleDrawerClose,
+}: Props) {
   return (
     <Drawer
       sx={{
@@ -82,7 +89,10 @@ function DrawerDetails({ open, handleDrawerClose }: Props) {
         </Stack>
       </DrawerHeader>
       <Divider />
-      <Tabs />
+      <Tabs
+        activeDrawerTab={activeDrawerTab}
+        handleChangeDrawerTab={handleChangeDrawerTab}
+      />
     </Drawer>
   )
 }

@@ -16,8 +16,13 @@ function Files() {
     openModalAddDocs,
   } = useAddDocumentsDropZone({ disabled: false })
 
-  const { isDrawerOpen, handleDrawerOpen, handleDrawerClose } =
-    useDrawerDetails()
+  const {
+    isDrawerOpen,
+    activeDrawerTab,
+    handleChangeDrawerTab,
+    handleDrawerOpen,
+    handleDrawerClose,
+  } = useDrawerDetails()
 
   const filesData: FileData[] = [
     {
@@ -57,10 +62,16 @@ function Files() {
     >
       <Breadcrumbs openModalAddDocs={openModalAddDocs} />
       <TextContainer />
-      <FilesTable filesData={filesData} handleDrawerOpen={handleDrawerOpen} />
+      <FilesTable
+        filesData={filesData}
+        handleDrawerOpen={handleDrawerOpen}
+        handleChangeDrawerTab={handleChangeDrawerTab}
+      />
 
       <DrawerDetails
         open={isDrawerOpen}
+        activeDrawerTab={activeDrawerTab}
+        handleChangeDrawerTab={handleChangeDrawerTab}
         handleDrawerClose={handleDrawerClose}
       />
       <DocumentsUploadModal

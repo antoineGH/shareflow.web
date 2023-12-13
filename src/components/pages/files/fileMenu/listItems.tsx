@@ -2,6 +2,7 @@ import CommentIcon from '@mui/icons-material/Comment'
 import EditIcon from '@mui/icons-material/Edit'
 import DeleteIcon from '@mui/icons-material/Delete'
 import DownloadIcon from '@mui/icons-material/Download'
+import StyleIcon from '@mui/icons-material/Style'
 
 type ListItem = {
   id: string
@@ -21,6 +22,12 @@ const listItems: ListItem[] = [
     id: 'comments',
     label: 'Comments',
     icon: <CommentIcon />,
+    active: true,
+  },
+  {
+    id: 'tags',
+    label: 'Tags',
+    icon: <StyleIcon />,
     active: true,
   },
   {

@@ -8,8 +8,13 @@ import useDrawerDetails from '../files/drawerDetails/useDrawerDetails'
 import type { FileData } from './types'
 
 function Favorites() {
-  const { isDrawerOpen, handleDrawerOpen, handleDrawerClose } =
-    useDrawerDetails()
+  const {
+    isDrawerOpen,
+    activeDrawerTab,
+    handleChangeDrawerTab,
+    handleDrawerOpen,
+    handleDrawerClose,
+  } = useDrawerDetails()
 
   const filesData: FileData[] = [
     {
@@ -68,9 +73,12 @@ function Favorites() {
         filesData={filesData}
         isFavorite={true}
         handleDrawerOpen={handleDrawerOpen}
+        handleChangeDrawerTab={handleChangeDrawerTab}
       />
       <DrawerDetails
         open={isDrawerOpen}
+        activeDrawerTab={activeDrawerTab}
+        handleChangeDrawerTab={handleChangeDrawerTab}
         handleDrawerClose={handleDrawerClose}
       />
     </Grid>

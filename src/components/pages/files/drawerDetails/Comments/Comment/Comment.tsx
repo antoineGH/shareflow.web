@@ -17,7 +17,7 @@ function CommentsSection({ comments }: Props) {
       sx={{
         width: '100%',
         overflowY: 'auto',
-        maxHeight: 'calc(100vh - 420px)',
+        maxHeight: 'calc(100vh - 440px)',
       }}
     >
       {comments.map(({ id, comment, createdAt, user }) => (

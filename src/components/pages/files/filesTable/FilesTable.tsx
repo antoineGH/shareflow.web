@@ -17,9 +17,15 @@ type Props = {
   filesData: FileData[]
   isFavorite?: boolean
   handleDrawerOpen: () => void
+  handleChangeDrawerTab: (tab: number) => void
 }
 
-function FilesTable({ filesData, isFavorite, handleDrawerOpen }: Props) {
+function FilesTable({
+  filesData,
+  isFavorite,
+  handleDrawerOpen,
+  handleChangeDrawerTab,
+}: Props) {
   const [selected, setSelected] = useState<readonly number[]>([])
   const [order, setOrder] = useState<Order>('asc')
   const [orderBy, setOrderBy] = useState<keyof Data>('name')
@@ -31,7 +37,7 @@ function FilesTable({ filesData, isFavorite, handleDrawerOpen }: Props) {
     createData(file.id, file.name, file.size, file.date),
   )
 
-  const onRowClick = (id: number) => {
+  const onCheckBoxClick = (id: number) => {
     const selectedIndex = selected.indexOf(id)
     let newSelected: readonly number[] = []
 
@@ -114,9 +120,10 @@ function FilesTable({ filesData, isFavorite, handleDrawerOpen }: Props) {
                   isItemSelected={isItemSelected}
                   labelId={labelId}
                   isFavorite={isFavorite}
-                  onRowClick={onRowClick}
+                  onCheckBoxClick={onCheckBoxClick}
                   onFavoriteClick={onFavoriteClick}
                   handleDrawerOpen={handleDrawerOpen}
+                  handleChangeDrawerTab={handleChangeDrawerTab}
                 />
               )
             })}
