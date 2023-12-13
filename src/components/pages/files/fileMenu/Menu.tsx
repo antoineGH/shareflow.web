@@ -8,7 +8,7 @@ import listItems from './listItems'
 type Props = {
   anchorEl: null | HTMLElement
   open: boolean
-  closeMenu: () => void
+  closeMenu: (e) => void
   handleClickMore: (e: MouseEvent<HTMLLIElement>, id: string) => void
 }
 
@@ -18,8 +18,8 @@ function Menu({ anchorEl, open, closeMenu, handleClickMore }: Props) {
       anchorEl={anchorEl}
       id="account-menu"
       open={open}
-      onClose={closeMenu}
-      onClick={closeMenu}
+      onClose={e => closeMenu(e)}
+      onClick={e => closeMenu(e)}
       elevation={0}
       transformOrigin={{ horizontal: 'right', vertical: 'top' }}
       anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}

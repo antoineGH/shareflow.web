@@ -94,8 +94,6 @@ function TagsSeachField() {
     return `${option.name}`
   }
 
-  console.log('selectedOptions', selectedOptions)
-
   return (
     <Autocomplete
       size="small"

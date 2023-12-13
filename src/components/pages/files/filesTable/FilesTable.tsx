@@ -16,14 +16,18 @@ import type { Data, FileData, Order } from './types'
 type Props = {
   filesData: FileData[]
   isFavorite?: boolean
+  isDelete?: boolean
   handleDrawerOpen: () => void
+  toggleDrawer: () => void
   handleChangeDrawerTab: (tab: number) => void
 }
 
 function FilesTable({
   filesData,
   isFavorite,
+  isDelete,
   handleDrawerOpen,
+  toggleDrawer,
   handleChangeDrawerTab,
 }: Props) {
   const [selected, setSelected] = useState<readonly number[]>([])
@@ -108,6 +112,7 @@ function FilesTable({
             onRequestSort={handleRequestSort}
             rowCount={rows.length}
             isFavorite={isFavorite}
+            isDelete={isDelete}
           />
           <TableBody>
             {visibleRows.map((row, index) => {
@@ -120,10 +125,12 @@ function FilesTable({
                   isItemSelected={isItemSelected}
                   labelId={labelId}
                   isFavorite={isFavorite}
+                  isDelete={isDelete}
                   onCheckBoxClick={onCheckBoxClick}
                   onFavoriteClick={onFavoriteClick}
                   handleDrawerOpen={handleDrawerOpen}
                   handleChangeDrawerTab={handleChangeDrawerTab}
+                  toggleDrawer={toggleDrawer}
                 />
               )
             })}

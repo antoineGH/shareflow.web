@@ -13,6 +13,7 @@ function Favorites() {
     handleChangeDrawerTab,
     handleDrawerOpen,
     handleDrawerClose,
+    toggleDrawer,
   } = useDrawerDetails()
 
   const filesData: FileData[] = [
@@ -60,6 +61,7 @@ function Favorites() {
         isFavorite={true}
         handleDrawerOpen={handleDrawerOpen}
         handleChangeDrawerTab={handleChangeDrawerTab}
+        toggleDrawer={toggleDrawer}
       />
       <DrawerDetails
         open={isDrawerOpen}
