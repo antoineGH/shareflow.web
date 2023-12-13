@@ -1,4 +1,4 @@
-import { useState, type SyntheticEvent } from 'react'
+import type { SyntheticEvent } from 'react'
 import { useTheme } from '@mui/material'
 import TabsMUI from '@mui/material/Tabs'
 import Tab from '@mui/material/Tab'
@@ -8,12 +8,16 @@ import Comments from '../Comments/Comments'
 import Activities from '../Activity/Activities'
 import Tags from '../Tags/Tags'
 
-function Tabs() {
-  const [value, setValue] = useState(0)
+type Props = {
+  activeDrawerTab: number
+  handleChangeDrawerTab: (tab: number) => void
+}
+
+function Tabs({ activeDrawerTab, handleChangeDrawerTab }: Props) {
   const theme = useTheme()
 
   const handleChange = (event: SyntheticEvent, newValue: number) => {
-    setValue(newValue)
+    handleChangeDrawerTab(newValue)
   }
 
   type ListTab = {
@@ -44,7 +48,7 @@ function Tabs() {
     >
       <TabsMUI
         centered
-        value={value}
+        value={activeDrawerTab}
         onChange={handleChange}
         aria-label="tabs-area"
       >
@@ -62,9 +66,9 @@ function Tabs() {
           />
         ))}
       </TabsMUI>
-      {value === 0 && <Activities />}
-      {value === 1 && <Comments />}
-      {value === 2 && <Tags />}
+      {activeDrawerTab === 0 && <Activities />}
+      {activeDrawerTab === 1 && <Comments />}
+      {activeDrawerTab === 2 && <Tags />}
     </Box>
   )
 }

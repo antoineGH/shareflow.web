@@ -10,6 +10,7 @@ type Props = {
   isFavorite?: boolean
   onFavoriteClick: (id: number) => void
   handleDrawerOpen: () => void
+  handleChangeDrawerTab: (tab: number) => void
 }
 
 function FileMenu({
@@ -17,6 +18,7 @@ function FileMenu({
   isFavorite,
   onFavoriteClick,
   handleDrawerOpen,
+  handleChangeDrawerTab,
 }: Props) {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
@@ -36,12 +38,19 @@ function FileMenu({
 
   const handleClickDetails = (e: MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation()
+    handleChangeDrawerTab(0)
     handleDrawerOpen()
   }
 
   const handleClickComment = () => {
-    console.log('Clicked Comment')
     handleDrawerOpen()
+    handleChangeDrawerTab(1)
+    closeMenu()
+  }
+
+  const handleClickTag = () => {
+    handleDrawerOpen()
+    handleChangeDrawerTab(2)
     closeMenu()
   }
 
@@ -62,6 +71,7 @@ function FileMenu({
 
   const actionMap = {
     comments: handleClickComment,
+    tags: handleClickTag,
     rename: handleClickRename,
     download: handleClickDownload,
     delete: handleClickDelete,
