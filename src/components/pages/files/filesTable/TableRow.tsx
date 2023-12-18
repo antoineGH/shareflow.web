@@ -77,7 +77,7 @@ function TableRow({
           direction="row"
           alignItems="center"
           gap={1}
-          ml={isDelete ? 5 : 0}
+          ml={isDelete ? 2 : 0}
         >
           {isDelete ? null : isFavorite ? (
             <IconButton onClick={event => handleClickFavorite(event)}>

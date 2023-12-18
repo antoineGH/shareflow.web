@@ -5,7 +5,19 @@ import IconButton from '@mui/material/IconButton'
 import GradeIcon from '@mui/icons-material/Grade'
 import Menu from './Menu'
 import { useTheme } from '@mui/material'
-import { e } from 'vitest/dist/reporters-LLiOBu3g'
+import {
+  getAvailableActions,
+  handleClickComment,
+  handleClickDelete,
+  handleClickDetails,
+  handleClickDownload,
+  handleClickFavorite,
+  handleClickRemove,
+  handleClickRename,
+  handleClickRestore,
+  handleClickTag,
+} from './helpers'
+import type { ListItem } from './listItems'
 
 type Props = {
   id: number
@@ -31,6 +43,15 @@ function FileMenu({
   const open = Boolean(anchorEl)
   const shouldDisplayFavoriteButton = !isFavorite && !isDelete && isHovered
 
+  // TODO: GET actions active status from backend  (redux selector)
+  const actions: ListItem['id'][] = [
+    'comments',
+    'restore',
+    'download',
+    'delete',
+  ]
+  const filteredAction = getAvailableActions(actions)
+
   const openMenu = (e: MouseEvent<HTMLElement>) => {
     e.stopPropagation()
     setAnchorEl(e.currentTarget)
@@ -41,50 +62,14 @@ function FileMenu({
     setAnchorEl(null)
   }
 
-  const handleClickFavorite = (e: MouseEvent<HTMLButtonElement>) => {
-    e.stopPropagation()
-    onFavoriteClick(id)
-  }
-
-  const handleClickDetails = (e: MouseEvent<HTMLButtonElement>) => {
-    e.stopPropagation()
-    handleChangeDrawerTab(0)
-    handleDrawerOpen()
-  }
-
-  const handleClickComment = e => {
-    handleDrawerOpen()
-    handleChangeDrawerTab(1)
-    closeMenu(e)
-  }
-
-  const handleClickTag = e => {
-    handleDrawerOpen()
-    handleChangeDrawerTab(2)
-    closeMenu(e)
-  }
-
-  const handleClickRename = e => {
-    console.log('Clicked Rename')
-    closeMenu(e)
-  }
-
-  const handleClickDownload = e => {
-    console.log('Clicked Download')
-    closeMenu(e)
-  }
-
-  const handleClickDelete = e => {
-    console.log('Clicked Delete')
-    closeMenu(e)
-  }
-
   const actionMap = {
     comments: handleClickComment,
     tags: handleClickTag,
     rename: handleClickRename,
     download: handleClickDownload,
     delete: handleClickDelete,
+    restore: handleClickRestore,
+    remove: handleClickRemove,
   }
 
   const handleClickMore = (e: MouseEvent<HTMLLIElement>, id: string) => {
@@ -95,22 +80,35 @@ function FileMenu({
   return (
     <>
       {shouldDisplayFavoriteButton && (
-        <IconButton size="small" onClick={e => handleClickFavorite(e)}>
+        <IconButton
+          size="small"
+          onClick={e => handleClickFavorite({ e, id, onFavoriteClick })}
+        >
           <GradeIcon sx={{ color: theme.palette.secondary.light }} />
         </IconButton>
       )}
-      <IconButton size="small" onClick={e => handleClickDetails(e)}>
+      <IconButton
+        size="small"
+        onClick={e =>
+          handleClickDetails({ e, handleChangeDrawerTab, handleDrawerOpen })
+        }
+      >
         <InfoIcon sx={{ color: theme.palette.secondary.light }} />
       </IconButton>
-      <IconButton size="small" sx={{ mr: 3 }} onClick={openMenu}>
-        <MoreHorizIcon sx={{ color: theme.palette.secondary.light }} />
-      </IconButton>
-      <Menu
-        anchorEl={anchorEl}
-        open={open}
-        closeMenu={closeMenu}
-        handleClickMore={handleClickMore}
-      />
+      {filteredAction.length > 0 && (
+        <>
+          <IconButton size="small" sx={{ mr: 3 }} onClick={openMenu}>
+            <MoreHorizIcon sx={{ color: theme.palette.secondary.light }} />
+          </IconButton>
+          <Menu
+            anchorEl={anchorEl}
+            open={open}
+            actions={filteredAction}
+            closeMenu={closeMenu}
+            handleClickMore={handleClickMore}
+          />
+        </>
+      )}
     </>
   )
 }

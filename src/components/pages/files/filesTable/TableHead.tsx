@@ -48,7 +48,10 @@ function TableHead({
   return (
     <TableHeadMUI>
       <TableRow>
-        <TableCell padding="checkbox">
+        <TableCell
+          padding="checkbox"
+          sx={{ width: isDelete ? '1.2rem' : null }}
+        >
           {isFavorite || isDelete ? null : (
             <Checkbox
               color="primary"

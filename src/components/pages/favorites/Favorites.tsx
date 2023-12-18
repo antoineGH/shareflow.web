@@ -51,7 +51,7 @@ function Favorites() {
         mt: '42px',
       }}
     >
-      <Grid item pt={1.5} px={2}>
+      <Grid item pt={1.5} px={2} mb={1.5}>
         <Breadcrumbs aria-label="breadcrumb">
           <BreadcrumbEntry pageName="Favorites" />
         </Breadcrumbs>
