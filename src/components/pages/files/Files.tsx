@@ -23,6 +23,7 @@ function Files() {
     handleChangeDrawerTab,
     handleDrawerOpen,
     handleDrawerClose,
+    toggleDrawer,
   } = useDrawerDetails()
 
   const filesData: FilesData = {
@@ -74,6 +75,7 @@ function Files() {
         filesData={files}
         handleDrawerOpen={handleDrawerOpen}
         handleChangeDrawerTab={handleChangeDrawerTab}
+        toggleDrawer={toggleDrawer}
       />
       <CountFiles
         countFiles={countFiles}

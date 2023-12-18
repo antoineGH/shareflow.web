@@ -4,10 +4,26 @@ import MoreHorizIcon from '@mui/icons-material/MoreHoriz'
 import IconButton from '@mui/material/IconButton'
 import GradeIcon from '@mui/icons-material/Grade'
 import Menu from './Menu'
+import { useTheme } from '@mui/material'
+import {
+  getAvailableActions,
+  handleClickComment,
+  handleClickDelete,
+  handleClickDetails,
+  handleClickDownload,
+  handleClickFavorite,
+  handleClickRemove,
+  handleClickRename,
+  handleClickRestore,
+  handleClickTag,
+} from './helpers'
+import type { ListItem } from './listItems'
 
 type Props = {
   id: number
   isFavorite?: boolean
+  isDelete?: boolean
+  isHovered?: boolean
   onFavoriteClick: (id: number) => void
   handleDrawerOpen: () => void
   handleChangeDrawerTab: (tab: number) => void
@@ -16,57 +32,34 @@ type Props = {
 function FileMenu({
   id,
   isFavorite,
+  isDelete,
+  isHovered,
   onFavoriteClick,
   handleDrawerOpen,
   handleChangeDrawerTab,
 }: Props) {
+  const theme = useTheme()
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
+  const shouldDisplayFavoriteButton = !isFavorite && !isDelete && isHovered
 
-  const openMenu = (event: MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget)
+  // TODO: GET actions active status from backend  (redux selector)
+  const actions: ListItem['id'][] = [
+    'comments',
+    'restore',
+    'download',
+    'delete',
+  ]
+  const filteredAction = getAvailableActions(actions)
+
+  const openMenu = (e: MouseEvent<HTMLElement>) => {
+    e.stopPropagation()
+    setAnchorEl(e.currentTarget)
   }
 
-  const closeMenu = () => {
+  const closeMenu = (e: MouseEvent<HTMLElement>) => {
+    e.stopPropagation()
     setAnchorEl(null)
-  }
-
-  const handleClickFavorite = (e: MouseEvent<HTMLButtonElement>) => {
-    e.stopPropagation()
-    onFavoriteClick(id)
-  }
-
-  const handleClickDetails = (e: MouseEvent<HTMLButtonElement>) => {
-    e.stopPropagation()
-    handleChangeDrawerTab(0)
-    handleDrawerOpen()
-  }
-
-  const handleClickComment = () => {
-    handleDrawerOpen()
-    handleChangeDrawerTab(1)
-    closeMenu()
-  }
-
-  const handleClickTag = () => {
-    handleDrawerOpen()
-    handleChangeDrawerTab(2)
-    closeMenu()
-  }
-
-  const handleClickRename = () => {
-    console.log('Clicked Rename')
-    closeMenu()
-  }
-
-  const handleClickDownload = () => {
-    console.log('Clicked Download')
-    closeMenu()
-  }
-
-  const handleClickDelete = () => {
-    console.log('Clicked Delete')
-    closeMenu()
   }
 
   const actionMap = {
@@ -75,32 +68,47 @@ function FileMenu({
     rename: handleClickRename,
     download: handleClickDownload,
     delete: handleClickDelete,
+    restore: handleClickRestore,
+    remove: handleClickRemove,
   }
 
   const handleClickMore = (e: MouseEvent<HTMLLIElement>, id: string) => {
     e.stopPropagation()
-    actionMap[id]?.()
+    actionMap[id]?.(e)
   }
 
   return (
     <>
-      {isFavorite ? null : (
-        <IconButton size="small" onClick={e => handleClickFavorite(e)}>
-          <GradeIcon color="disabled" />
+      {shouldDisplayFavoriteButton && (
+        <IconButton
+          size="small"
+          onClick={e => handleClickFavorite({ e, id, onFavoriteClick })}
+        >
+          <GradeIcon sx={{ color: theme.palette.secondary.light }} />
         </IconButton>
       )}
-      <IconButton size="small" onClick={e => handleClickDetails(e)}>
-        <InfoIcon color="disabled" />
+      <IconButton
+        size="small"
+        onClick={e =>
+          handleClickDetails({ e, handleChangeDrawerTab, handleDrawerOpen })
+        }
+      >
+        <InfoIcon sx={{ color: theme.palette.secondary.light }} />
       </IconButton>
-      <IconButton size="small" sx={{ mr: 3 }} onClick={openMenu}>
-        <MoreHorizIcon color="disabled" />
-      </IconButton>
-      <Menu
-        anchorEl={anchorEl}
-        open={open}
-        closeMenu={closeMenu}
-        handleClickMore={handleClickMore}
-      />
+      {filteredAction.length > 0 && (
+        <>
+          <IconButton size="small" sx={{ mr: 3 }} onClick={openMenu}>
+            <MoreHorizIcon sx={{ color: theme.palette.secondary.light }} />
+          </IconButton>
+          <Menu
+            anchorEl={anchorEl}
+            open={open}
+            actions={filteredAction}
+            closeMenu={closeMenu}
+            handleClickMore={handleClickMore}
+          />
+        </>
+      )}
     </>
   )
 }

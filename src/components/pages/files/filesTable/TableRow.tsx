@@ -1,3 +1,5 @@
+import { useState, type MouseEvent } from 'react'
+import { useTheme } from '@mui/material'
 import Stack from '@mui/material/Stack'
 import IconButton from '@mui/material/IconButton'
 import Checkbox from '@mui/material/Checkbox'
@@ -6,7 +8,6 @@ import TableRowMUI from '@mui/material/TableRow'
 import TableCell from '@mui/material/TableCell'
 import FileMenu from '../fileMenu/FileMenu'
 import GradeIcon from '@mui/icons-material/Grade'
-import type { MouseEvent } from 'react'
 
 type Props = {
   row: {
@@ -18,10 +19,12 @@ type Props = {
   isItemSelected: boolean
   labelId: string
   isFavorite?: boolean
+  isDelete?: boolean
   onCheckBoxClick: (id: number) => void
   onFavoriteClick: (id: number) => void
   handleDrawerOpen: () => void
   handleChangeDrawerTab: (tab: number) => void
+  toggleDrawer: () => void
 }
 
 function TableRow({
@@ -29,11 +32,16 @@ function TableRow({
   isItemSelected,
   labelId,
   isFavorite,
+  isDelete,
   onCheckBoxClick,
   onFavoriteClick,
   handleDrawerOpen,
   handleChangeDrawerTab,
+  toggleDrawer,
 }: Props) {
+  const [isHovered, setIsHovered] = useState(false)
+  const theme = useTheme()
+
   const handleCheckBoxClick = (e: MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation()
     onCheckBoxClick(row.id)
@@ -47,7 +55,9 @@ function TableRow({
   return (
     <TableRowMUI
       hover
-      // onClick={event => handleClickRow(event)}
+      onClick={toggleDrawer}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
       role="checkbox"
       aria-checked={isItemSelected}
       tabIndex={-1}
@@ -63,10 +73,15 @@ function TableRow({
         align="left"
         colSpan={2}
       >
-        <Stack direction="row" alignItems="center" gap={1}>
-          {isFavorite ? (
+        <Stack
+          direction="row"
+          alignItems="center"
+          gap={1}
+          ml={isDelete ? 2 : 0}
+        >
+          {isDelete ? null : isFavorite ? (
             <IconButton onClick={event => handleClickFavorite(event)}>
-              <GradeIcon />
+              <GradeIcon sx={{ color: theme.palette.secondary.light }} />
             </IconButton>
           ) : (
             <Checkbox
@@ -90,6 +105,8 @@ function TableRow({
             <FileMenu
               id={row.id}
               isFavorite={isFavorite}
+              isDelete={isDelete}
+              isHovered={isHovered}
               handleDrawerOpen={handleDrawerOpen}
               onFavoriteClick={onFavoriteClick}
               handleChangeDrawerTab={handleChangeDrawerTab}

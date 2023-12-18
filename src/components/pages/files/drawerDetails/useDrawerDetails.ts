@@ -6,6 +6,7 @@ type HookReturnValue = {
   handleChangeDrawerTab: (tab: number) => void
   handleDrawerOpen: () => void
   handleDrawerClose: () => void
+  toggleDrawer: () => void
 }
 
 function useDrawerDetails(): HookReturnValue {
@@ -20,6 +21,10 @@ function useDrawerDetails(): HookReturnValue {
     setOpen(false)
   }
 
+  const toggleDrawer = () => {
+    setOpen(!open)
+  }
+
   const handleChangeDrawerTab = (tab: number) => {
     setValue(tab)
   }
@@ -30,6 +35,7 @@ function useDrawerDetails(): HookReturnValue {
     handleChangeDrawerTab,
     handleDrawerOpen,
     handleDrawerClose,
+    toggleDrawer,
   }
 }
 

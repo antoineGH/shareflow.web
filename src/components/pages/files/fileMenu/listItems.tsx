@@ -2,13 +2,23 @@ import CommentIcon from '@mui/icons-material/Comment'
 import EditIcon from '@mui/icons-material/Edit'
 import DeleteIcon from '@mui/icons-material/Delete'
 import DownloadIcon from '@mui/icons-material/Download'
+import RestoreIcon from '@mui/icons-material/Restore'
 import StyleIcon from '@mui/icons-material/Style'
 
-type ListItem = {
-  id: string
+export type ListItemKey =
+  | 'download'
+  | 'comments'
+  | 'tags'
+  | 'rename'
+  | 'delete'
+  | 'restore'
+  | 'remove'
+
+export type ListItem = {
+  id: ListItemKey
   label: string
   icon: JSX.Element
-  active: boolean
+  active?: boolean
 }
 
 const listItems: ListItem[] = [
@@ -16,31 +26,36 @@ const listItems: ListItem[] = [
     id: 'download',
     label: 'Download',
     icon: <DownloadIcon />,
-    active: true,
   },
   {
     id: 'comments',
     label: 'Comments',
     icon: <CommentIcon />,
-    active: true,
   },
   {
     id: 'tags',
     label: 'Tags',
     icon: <StyleIcon />,
-    active: true,
   },
   {
     id: 'rename',
     label: 'Rename',
     icon: <EditIcon />,
-    active: true,
   },
   {
     id: 'delete',
     label: 'Delete',
     icon: <DeleteIcon />,
-    active: true,
+  },
+  {
+    id: 'restore',
+    label: 'Restore',
+    icon: <RestoreIcon />,
+  },
+  {
+    id: 'remove',
+    label: 'Remove',
+    icon: <DeleteIcon />,
   },
 ]
 

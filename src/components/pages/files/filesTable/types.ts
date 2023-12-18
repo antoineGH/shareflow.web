@@ -25,6 +25,7 @@ export type EnhancedTableProps = {
   orderBy: string
   rowCount: number
   isFavorite?: boolean
+  isDelete?: boolean
 }
 
 export type FileData = {
