@@ -10,13 +10,11 @@ type Props = {
 }
 
 function useBreadcrumbs({ openModalAddDocs }: Props) {
-  //   TODO: Testing breadcrumbs only, remove when routes and subroutes has been added
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const location = useLocation()
   const navigate = useNavigate()
   const theme = useTheme()
-  //   const pathnames = location.pathname.split('/').filter(pathname => pathname)
-  const pathnames = ['files', 'Antoine', 'Personal', 'Test']
+
+  const pathnames = location.pathname.split('/').filter(pathname => pathname)
 
   const handleClick = (
     event: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
@@ -28,42 +26,42 @@ function useBreadcrumbs({ openModalAddDocs }: Props) {
     navigate((event.currentTarget as HTMLAnchorElement).pathname)
   }
 
-  const breadcrumbs = pathnames.map((value, index) => {
-    const first = index === 0
-    const to = `/${pathnames.slice(0, index + 1).join('/')}`
+  const breadcrumbs = [
+    <Link
+      component={RouterLink}
+      to="/"
+      underline="none"
+      color="inherit"
+      key="home"
+      onClick={e => handleClick(e, 0)}
+    >
+      <BreadcrumbEntry pageName="Files" />
+    </Link>,
+    ...pathnames.map((value, index) => {
+      const to = `/${pathnames.slice(0, index + 1).join('/')}`
 
-    return first ? (
-      <Link
-        component={RouterLink}
-        to={to}
-        underline="none"
-        color="inherit"
-        key={index}
-        onClick={e => handleClick(e, index)}
-      >
-        <BreadcrumbEntry pageName="Files" />
-      </Link>
-    ) : (
-      <Link
-        component={RouterLink}
-        to={to}
-        underline="none"
-        color="inherit"
-        key={index}
-        onClick={e => handleClick(e, index)}
-      >
-        <Typography
-          variant="body2"
-          fontWeight={600}
-          sx={{
-            color: theme.palette.secondary.contrastText,
-          }}
+      return (
+        <Link
+          component={RouterLink}
+          to={to}
+          underline="none"
+          color="inherit"
+          key={index + 1}
+          onClick={e => handleClick(e, index + 1)}
         >
-          {value}
-        </Typography>
-      </Link>
-    )
-  })
+          <Typography
+            variant="body2"
+            fontWeight={600}
+            sx={{
+              color: theme.palette.secondary.contrastText,
+            }}
+          >
+            {value}
+          </Typography>
+        </Link>
+      )
+    }),
+  ]
 
   breadcrumbs.push(
     <BreadcrumbMenu key="0" openModalAddDocs={openModalAddDocs} />,

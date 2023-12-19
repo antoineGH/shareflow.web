@@ -17,8 +17,8 @@ type Props = {
   filesData: FileData[]
   isFavorite?: boolean
   isDelete?: boolean
-  handleDrawerOpen: () => void
   toggleDrawer: () => void
+  handleDrawerOpen: () => void
   handleChangeDrawerTab: (tab: number) => void
 }
 
@@ -26,8 +26,8 @@ function FilesTable({
   filesData,
   isFavorite,
   isDelete,
-  handleDrawerOpen,
   toggleDrawer,
+  handleDrawerOpen,
   handleChangeDrawerTab,
 }: Props) {
   const [selected, setSelected] = useState<readonly number[]>([])
@@ -128,8 +128,8 @@ function FilesTable({
                   isDelete={isDelete}
                   onCheckBoxClick={onCheckBoxClick}
                   onFavoriteClick={onFavoriteClick}
-                  handleDrawerOpen={handleDrawerOpen}
                   handleChangeDrawerTab={handleChangeDrawerTab}
+                  handleDrawerOpen={handleDrawerOpen}
                   toggleDrawer={toggleDrawer}
                 />
               )

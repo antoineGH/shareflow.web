@@ -8,6 +8,9 @@ import TableRowMUI from '@mui/material/TableRow'
 import TableCell from '@mui/material/TableCell'
 import FileMenu from '../fileMenu/FileMenu'
 import GradeIcon from '@mui/icons-material/Grade'
+import { getPath } from './helpers'
+import type { FileData } from './types'
+import { useNavigate } from 'react-router-dom'
 
 type Props = {
   row: {
@@ -22,8 +25,8 @@ type Props = {
   isDelete?: boolean
   onCheckBoxClick: (id: number) => void
   onFavoriteClick: (id: number) => void
-  handleDrawerOpen: () => void
   handleChangeDrawerTab: (tab: number) => void
+  handleDrawerOpen: () => void
   toggleDrawer: () => void
 }
 
@@ -35,12 +38,45 @@ function TableRow({
   isDelete,
   onCheckBoxClick,
   onFavoriteClick,
-  handleDrawerOpen,
   handleChangeDrawerTab,
+  handleDrawerOpen,
   toggleDrawer,
 }: Props) {
-  const [isHovered, setIsHovered] = useState(false)
   const theme = useTheme()
+  const navigate = useNavigate()
+  const [isHovered, setIsHovered] = useState(false)
+
+  // TODO: get filesData in redux store with id, to remove and replace
+  const files: FileData[] = [
+    {
+      id: 1,
+      name: 'Documents',
+      size: '305 KB',
+      date: '2012-12-14',
+      path: 'Documents',
+    },
+    {
+      id: 2,
+      name: 'Photos',
+      size: '452 KB',
+      date: '2012-12-14',
+      path: 'Photos',
+    },
+    {
+      id: 3,
+      name: 'Images',
+      size: '262 KB',
+      date: '2012-12-14',
+      path: 'Images',
+    },
+    {
+      id: 4,
+      name: 'Download',
+      size: '159 KB',
+      date: '2012-12-14',
+      path: 'Download',
+    },
+  ]
 
   const handleCheckBoxClick = (e: MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation()
@@ -52,10 +88,19 @@ function TableRow({
     onFavoriteClick(row.id)
   }
 
+  const handleClickRow = (e: MouseEvent<HTMLTableRowElement>) => {
+    e.stopPropagation()
+
+    if (isDelete) return handleDrawerOpen()
+
+    const path = getPath(row.id, files)
+    if (path) return navigate(`/${path}`)
+  }
+
   return (
     <TableRowMUI
       hover
-      onClick={toggleDrawer}
+      onClick={e => handleClickRow(e)}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       role="checkbox"
@@ -107,7 +152,7 @@ function TableRow({
               isFavorite={isFavorite}
               isDelete={isDelete}
               isHovered={isHovered}
-              handleDrawerOpen={handleDrawerOpen}
+              toggleDrawer={toggleDrawer}
               onFavoriteClick={onFavoriteClick}
               handleChangeDrawerTab={handleChangeDrawerTab}
             />

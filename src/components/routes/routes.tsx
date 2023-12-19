@@ -62,6 +62,15 @@ const routes: Route[] = [
     },
   },
   {
+    pathname: '/:path*',
+    name: 'File',
+    component: <Files />,
+    meta: {
+      title: 'File',
+      requiresAuth: true,
+    },
+  },
+  {
     pathname: '/404',
     name: 'Not Found',
     component: <NotFound />,

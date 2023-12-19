@@ -14,11 +14,11 @@ const handleClickFavorite = ({
 const handleClickDetails = ({
   e,
   handleChangeDrawerTab,
-  handleDrawerOpen,
+  toggleDrawer,
 }: ActionTypes.HandleClickDetails) => {
   e.stopPropagation()
   handleChangeDrawerTab(0)
-  handleDrawerOpen()
+  toggleDrawer()
 }
 
 const handleClickComment = ({
