@@ -12,6 +12,7 @@ function Deleted() {
     activeDrawerTab,
     handleChangeDrawerTab,
     handleDrawerClose,
+    handleDrawerOpen,
     toggleDrawer,
   } = useDrawerDetails()
 
@@ -57,8 +58,9 @@ function Deleted() {
       </Grid>
       <FilesTable
         filesData={filesData}
-        isDelete={true}
+        isDelete
         handleChangeDrawerTab={handleChangeDrawerTab}
+        handleDrawerOpen={handleDrawerOpen}
         toggleDrawer={toggleDrawer}
       />
       <DrawerDetails

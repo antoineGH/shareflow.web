@@ -9,10 +9,14 @@ import DrawerDetails from './drawerDetails/DrawerDetails'
 import type { FilesData } from './filesTable/types'
 import CountFiles from './countFiles/CountFiles'
 import { useParams } from 'react-router-dom'
+import { extractRoutingParams } from './helpers'
 
 function Files() {
-  const { path } = useParams<{ path: string }>()
-  console.log('path from File component', path)
+  const params = useParams<{ path: string }>()
+
+  const routingParams = extractRoutingParams(params)
+  // TODO: use routingParams to fetch files in context from the API
+  console.log('routingParams', routingParams)
 
   const {
     droppedFiles,
@@ -26,6 +30,7 @@ function Files() {
     activeDrawerTab,
     handleChangeDrawerTab,
     handleDrawerClose,
+    handleDrawerOpen,
     toggleDrawer,
   } = useDrawerDetails()
 
@@ -81,6 +86,7 @@ function Files() {
       <FilesTable
         filesData={files}
         handleChangeDrawerTab={handleChangeDrawerTab}
+        handleDrawerOpen={handleDrawerOpen}
         toggleDrawer={toggleDrawer}
       />
       <CountFiles

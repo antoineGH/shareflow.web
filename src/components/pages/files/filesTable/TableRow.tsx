@@ -26,6 +26,7 @@ type Props = {
   onCheckBoxClick: (id: number) => void
   onFavoriteClick: (id: number) => void
   handleChangeDrawerTab: (tab: number) => void
+  handleDrawerOpen: () => void
   toggleDrawer: () => void
 }
 
@@ -38,6 +39,7 @@ function TableRow({
   onCheckBoxClick,
   onFavoriteClick,
   handleChangeDrawerTab,
+  handleDrawerOpen,
   toggleDrawer,
 }: Props) {
   const theme = useTheme()
@@ -88,11 +90,11 @@ function TableRow({
 
   const handleClickRow = (e: MouseEvent<HTMLTableRowElement>) => {
     e.stopPropagation()
+
+    if (isDelete) return handleDrawerOpen()
+
     const path = getPath(row.id, files)
-    if (path) {
-      navigate(`/${path}`)
-    }
-    return
+    if (path) return navigate(`/${path}`)
   }
 
   return (
