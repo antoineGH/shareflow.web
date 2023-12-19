@@ -29,14 +29,15 @@ export type EnhancedTableProps = {
 }
 
 export type FileData = {
-  readonly id: number
-  readonly name: string
-  readonly size: string
-  readonly date: string
+  id: number
+  name: string
+  size: string
+  date: string
+  path?: string
 }
 
 export type FilesData = {
-  readonly files: FileData[]
+  files: FileData[]
   countFiles: number
   countFolders: number
   totalSize: string

@@ -1,11 +1,6 @@
-import type { Data, Order } from './types'
+import type { FileData, Order } from './types'
 
-function createData(
-  id: number,
-  name: string,
-  size: string,
-  modified: string,
-): Data {
+function createData(id: number, name: string, size: string, modified: string) {
   return {
     id,
     name,
@@ -52,4 +47,8 @@ function stableSort<T>(
   return stabilizedThis.map(el => el[0])
 }
 
-export { createData, descendingComparator, getComparator, stableSort }
+function getPath(id: number, files: FileData[]) {
+  return files.find(file => file.id === id)?.path
+}
+
+export { createData, descendingComparator, getComparator, stableSort, getPath }

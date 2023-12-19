@@ -8,8 +8,12 @@ import FilesTable from './filesTable/FilesTable'
 import DrawerDetails from './drawerDetails/DrawerDetails'
 import type { FilesData } from './filesTable/types'
 import CountFiles from './countFiles/CountFiles'
+import { useParams } from 'react-router-dom'
 
 function Files() {
+  const { path } = useParams<{ path: string }>()
+  console.log('path from File component', path)
+
   const {
     droppedFiles,
     isModalAddDocumentsOpen,
@@ -21,7 +25,6 @@ function Files() {
     isDrawerOpen,
     activeDrawerTab,
     handleChangeDrawerTab,
-    handleDrawerOpen,
     handleDrawerClose,
     toggleDrawer,
   } = useDrawerDetails()
@@ -33,24 +36,28 @@ function Files() {
         name: 'Documents',
         size: '305 KB',
         date: '2012-12-14',
+        path: 'Documents',
       },
       {
         id: 2,
         name: 'Photos',
         size: '452 KB',
         date: '2012-12-14',
+        path: 'Photos',
       },
       {
         id: 3,
         name: 'Images',
         size: '262 KB',
         date: '2012-12-14',
+        path: 'Images',
       },
       {
         id: 4,
         name: 'Download',
         size: '159 KB',
         date: '2012-12-14',
+        path: 'Download',
       },
     ],
     countFiles: 4,
@@ -73,7 +80,6 @@ function Files() {
       <TextContainer />
       <FilesTable
         filesData={files}
-        handleDrawerOpen={handleDrawerOpen}
         handleChangeDrawerTab={handleChangeDrawerTab}
         toggleDrawer={toggleDrawer}
       />

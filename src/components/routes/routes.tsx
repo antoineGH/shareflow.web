@@ -26,6 +26,15 @@ const routes: Route[] = [
     },
   },
   {
+    pathname: '/:path',
+    name: 'File',
+    component: <Files />,
+    meta: {
+      title: 'File',
+      requiresAuth: true,
+    },
+  },
+  {
     pathname: '/favorites',
     name: 'Favorites',
     component: <Favorites />,

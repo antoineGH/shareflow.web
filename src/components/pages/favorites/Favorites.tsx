@@ -11,7 +11,6 @@ function Favorites() {
     isDrawerOpen,
     activeDrawerTab,
     handleChangeDrawerTab,
-    handleDrawerOpen,
     handleDrawerClose,
     toggleDrawer,
   } = useDrawerDetails()
@@ -59,7 +58,6 @@ function Favorites() {
       <FilesTable
         filesData={filesData}
         isFavorite={true}
-        handleDrawerOpen={handleDrawerOpen}
         handleChangeDrawerTab={handleChangeDrawerTab}
         toggleDrawer={toggleDrawer}
       />

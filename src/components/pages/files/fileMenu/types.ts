@@ -11,7 +11,7 @@ namespace ActionTypes {
   export type HandleClickDetails = {
     e: MouseEvent<HTMLButtonElement>
     handleChangeDrawerTab: (value: number) => void
-    handleDrawerOpen: () => void
+    toggleDrawer: () => void
   }
 
   export type HandleClickComment = {

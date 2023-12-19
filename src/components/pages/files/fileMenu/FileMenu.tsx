@@ -24,8 +24,8 @@ type Props = {
   isFavorite?: boolean
   isDelete?: boolean
   isHovered?: boolean
+  toggleDrawer: () => void
   onFavoriteClick: (id: number) => void
-  handleDrawerOpen: () => void
   handleChangeDrawerTab: (tab: number) => void
 }
 
@@ -34,8 +34,8 @@ function FileMenu({
   isFavorite,
   isDelete,
   isHovered,
+  toggleDrawer,
   onFavoriteClick,
-  handleDrawerOpen,
   handleChangeDrawerTab,
 }: Props) {
   const theme = useTheme()
@@ -90,7 +90,7 @@ function FileMenu({
       <IconButton
         size="small"
         onClick={e =>
-          handleClickDetails({ e, handleChangeDrawerTab, handleDrawerOpen })
+          handleClickDetails({ e, handleChangeDrawerTab, toggleDrawer })
         }
       >
         <InfoIcon sx={{ color: theme.palette.secondary.light }} />
