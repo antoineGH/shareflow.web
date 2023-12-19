@@ -9,7 +9,12 @@ import TableRowMUI from '@mui/material/TableRow'
 
 import TableRow from './TableRow'
 import TableHead from './TableHead'
-import { createData, stableSort, getComparator } from './helpers'
+import {
+  createData,
+  stableSort,
+  getComparator,
+  getSelectedActions,
+} from './helpers'
 
 import type { Data, FileData, Order } from './types'
 
@@ -30,7 +35,7 @@ function FilesTable({
   handleDrawerOpen,
   handleChangeDrawerTab,
 }: Props) {
-  const [selected, setSelected] = useState<readonly number[]>([])
+  const [selected, setSelected] = useState<number[]>([])
   const [order, setOrder] = useState<Order>('asc')
   const [orderBy, setOrderBy] = useState<keyof Data>('name')
   const [page, setPage] = useState(0)
@@ -41,9 +46,13 @@ function FilesTable({
     createData(file.id, file.name, file.size, file.date),
   )
 
+  // TODO: get actions from redux for each selectedAction, then only keep similar actions at once
+
+  console.log(getSelectedActions(selected, filesData))
+
   const onCheckBoxClick = (id: number) => {
     const selectedIndex = selected.indexOf(id)
-    let newSelected: readonly number[] = []
+    let newSelected: number[] = []
 
     if (selectedIndex === -1) {
       newSelected = newSelected.concat(selected, id)

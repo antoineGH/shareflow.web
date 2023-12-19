@@ -54,6 +54,7 @@ function TableRow({
       size: '305 KB',
       date: '2012-12-14',
       path: 'Documents',
+      action: [],
     },
     {
       id: 2,
@@ -61,6 +62,7 @@ function TableRow({
       size: '452 KB',
       date: '2012-12-14',
       path: 'Photos',
+      action: [],
     },
     {
       id: 3,
@@ -68,6 +70,7 @@ function TableRow({
       size: '262 KB',
       date: '2012-12-14',
       path: 'Images',
+      action: [],
     },
     {
       id: 4,
@@ -75,6 +78,7 @@ function TableRow({
       size: '159 KB',
       date: '2012-12-14',
       path: 'Download',
+      action: [],
     },
   ]
 

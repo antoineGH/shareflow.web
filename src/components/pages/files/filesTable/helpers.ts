@@ -1,3 +1,4 @@
+import { ListItemKey } from '../fileMenu/listItems'
 import type { FileData, Order } from './types'
 
 function createData(id: number, name: string, size: string, modified: string) {
@@ -51,4 +52,25 @@ function getPath(id: number, files: FileData[]) {
   return files.find(file => file.id === id)?.path
 }
 
-export { createData, descendingComparator, getComparator, stableSort, getPath }
+function getSelectedActions(
+  selectedFilesId: number[],
+  files: FileData[],
+): ListItemKey[] {
+  const selectedFiles = files.filter(file => selectedFilesId.includes(file.id))
+  const actionsArrays = selectedFiles.map(file => file.action)
+  if (!actionsArrays.length) return []
+  const selectedAvailableActions = actionsArrays.reduce((common, actions) => {
+    return common.filter(action => actions.includes(action))
+  })
+
+  return selectedAvailableActions
+}
+
+export {
+  createData,
+  descendingComparator,
+  getComparator,
+  stableSort,
+  getPath,
+  getSelectedActions,
+}

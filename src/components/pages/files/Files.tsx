@@ -14,9 +14,8 @@ import { extractRoutingParams } from './helpers'
 function Files() {
   const params = useParams<{ path: string }>()
 
-  const routingParams = extractRoutingParams(params)
   // TODO: use routingParams to fetch files in context from the API
-  console.log('routingParams', routingParams)
+  const routingParams = extractRoutingParams(params)
 
   const {
     droppedFiles,
@@ -42,6 +41,7 @@ function Files() {
         size: '305 KB',
         date: '2012-12-14',
         path: 'Documents',
+        action: ['comments', 'restore', 'download', 'delete'],
       },
       {
         id: 2,
@@ -49,6 +49,7 @@ function Files() {
         size: '452 KB',
         date: '2012-12-14',
         path: 'Photos',
+        action: ['comments', 'restore', 'download', 'delete'],
       },
       {
         id: 3,
@@ -56,6 +57,7 @@ function Files() {
         size: '262 KB',
         date: '2012-12-14',
         path: 'Images',
+        action: ['comments', 'restore', 'download', 'delete'],
       },
       {
         id: 4,
@@ -63,6 +65,7 @@ function Files() {
         size: '159 KB',
         date: '2012-12-14',
         path: 'Download',
+        action: ['delete'],
       },
     ],
     countFiles: 4,

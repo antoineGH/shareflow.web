@@ -1,3 +1,5 @@
+import { ListItemKey } from '../fileMenu/listItems'
+
 export type Data = {
   id: number
   name: string
@@ -34,6 +36,7 @@ export type FileData = {
   size: string
   date: string
   path?: string
+  action: ListItemKey[]
 }
 
 export type FilesData = {

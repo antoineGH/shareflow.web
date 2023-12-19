@@ -3,8 +3,8 @@ import Grid from '@mui/material/Grid'
 import FilesTable from '../files/filesTable/FilesTable'
 import DrawerDetails from '../files/drawerDetails/DrawerDetails'
 import useDrawerDetails from '../files/drawerDetails/useDrawerDetails'
-import type { FileData } from './types'
 import BreadcrumbEntry from 'components/common/breadcrumbEntry/BreadcrumbEntry'
+import type { FileData } from '../files/filesTable/types'
 
 function Favorites() {
   const {
@@ -22,24 +22,28 @@ function Favorites() {
       name: 'Documents',
       size: '305 KB',
       date: '2012-12-14',
+      action: [],
     },
     {
       id: 2,
       name: 'Photos',
       size: '452 KB',
       date: '2012-12-14',
+      action: [],
     },
     {
       id: 3,
       name: 'Images',
       size: '262 KB',
       date: '2012-12-14',
+      action: [],
     },
     {
       id: 4,
       name: 'Download',
       size: '159 KB',
       date: '2012-12-14',
+      action: [],
     },
   ]
 
