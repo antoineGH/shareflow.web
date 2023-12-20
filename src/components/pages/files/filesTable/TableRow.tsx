@@ -88,15 +88,10 @@ function TableRow({
         align="left"
         colSpan={2}
       >
-        <Stack
-          direction="row"
-          alignItems="center"
-          gap={1}
-          ml={isDelete ? 2 : 0}
-        >
-          {isDelete ? null : isFavorite ? (
+        <Stack direction="row" alignItems="center" gap={1}>
+          {isFavorite ? (
             <IconButton onClick={event => handleClickFavorite(event)}>
-              <GradeIcon sx={{ color: theme.palette.secondary.light }} />
+              <GradeIcon sx={{ color: 'gold' }} />
             </IconButton>
           ) : (
             <Checkbox

@@ -126,10 +126,12 @@ function FilesTable({
     // <>
     <Box sx={{ width: '100%' }}>
       <Paper sx={{ width: '100%' }}>
-        <Toolbar
-          numSelected={selected.length}
-          selectedMultiActions={selectedMultiActions}
-        />
+        {isFavorite ? null : (
+          <Toolbar
+            selectedMultiActions={selectedMultiActions}
+            selected={selected}
+          />
+        )}
         <TableContainer>
           <Table aria-labelledby="tableTitle">
             <TableHead
@@ -140,7 +142,6 @@ function FilesTable({
               onRequestSort={handleRequestSort}
               rowCount={rows.length}
               isFavorite={isFavorite}
-              isDelete={isDelete}
             />
             <TableBody>
               {visibleRows.map((row, index) => {

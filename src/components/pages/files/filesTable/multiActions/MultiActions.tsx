@@ -1,15 +1,22 @@
+import { useMemo } from 'react'
 import DeleteIcon from '@mui/icons-material/Delete'
 import Grid from '@mui/material/Grid'
-import Button from '../multiActions/Button'
+import ButtonToolBar from './ButtonToolBar'
+import {
+  handleClickMultiDelete,
+  handleClickMultiDownload,
+  handleClickMultiRemove,
+  handleClickMultiRestore,
+} from './helpers'
 import type { ListItemKey } from '../../fileMenu/listItems'
 import listItems, { type ListItem } from '../../fileMenu/listItems'
-import { useMemo } from 'react'
 
 type Props = {
   selectedMultiActions: ListItemKey[]
+  selected: number[]
 }
 
-function MultiAction({ selectedMultiActions }: Props) {
+function MultiAction({ selectedMultiActions, selected }: Props) {
   const multipleActions = useMemo(() => {
     const result: ListItem[] = []
 
@@ -23,6 +30,17 @@ function MultiAction({ selectedMultiActions }: Props) {
     return result
   }, [selectedMultiActions])
 
+  const actionMap = {
+    download: handleClickMultiDownload,
+    delete: handleClickMultiDelete,
+    remove: handleClickMultiRemove,
+    restore: handleClickMultiRestore,
+  }
+
+  const handleClickMulti = (action: string) => {
+    actionMap[action]?.(selected)
+  }
+
   return multipleActions.length > 0 ? (
     <Grid
       container
@@ -35,11 +53,12 @@ function MultiAction({ selectedMultiActions }: Props) {
     >
       {selectedMultiActions.map(action => (
         <Grid item key={action}>
-          <Button
+          <ButtonToolBar
             label={listItems.find(item => item.id === action)?.label || ''}
             icon={
               listItems.find(item => item.id === action)?.icon || <DeleteIcon />
             }
+            handleClickMulti={() => handleClickMulti(action)}
           />
         </Grid>
       ))}
