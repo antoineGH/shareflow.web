@@ -41,7 +41,7 @@ function Files() {
         size: '305 KB',
         date: '2012-12-14',
         path: 'Documents',
-        action: ['comments', 'restore', 'download', 'delete'],
+        action: ['comments', 'tags', 'restore', 'download', 'delete'],
       },
       {
         id: 2,
@@ -49,7 +49,7 @@ function Files() {
         size: '452 KB',
         date: '2012-12-14',
         path: 'Photos',
-        action: ['comments', 'restore', 'download', 'delete'],
+        action: ['comments', 'tags', 'restore', 'download', 'delete'],
       },
       {
         id: 3,
@@ -57,7 +57,7 @@ function Files() {
         size: '262 KB',
         date: '2012-12-14',
         path: 'Images',
-        action: ['comments', 'restore', 'download', 'delete'],
+        action: ['comments', 'tags', 'restore', 'download', 'delete'],
       },
       {
         id: 4,
@@ -65,7 +65,7 @@ function Files() {
         size: '159 KB',
         date: '2012-12-14',
         path: 'Download',
-        action: ['delete'],
+        action: ['comments', 'tags', 'restore', 'download', 'delete'],
       },
     ],
     countFiles: 4,

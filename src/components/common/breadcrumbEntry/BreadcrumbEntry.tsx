@@ -23,7 +23,8 @@ function BreadcrumbEntry({ pageName }: Props) {
           variant="body2"
           fontWeight={600}
           sx={{
-            lineHeight: pageName === 'Files' ? '1.65rem' : '1.4rem',
+            marginTop: '.1rem',
+            lineHeight: pageName === 'Files' ? '1.7rem' : '1.4rem',
             color: theme.palette.secondary.contrastText,
           }}
         >

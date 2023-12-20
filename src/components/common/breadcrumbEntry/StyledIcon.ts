@@ -5,6 +5,8 @@ const StyledIcon = styled(SvgIcon)({
   fontSize: '1.3rem',
   color: '#000000c2',
   marginRight: '0.5rem',
+  lineHeight: '2rem',
+  marginTop: '.3rem',
 })
 
 export default StyledIcon

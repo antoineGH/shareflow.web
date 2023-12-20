@@ -52,7 +52,7 @@ function getPath(id: number, files: FileData[]) {
   return files.find(file => file.id === id)?.path
 }
 
-function getSelectedActions(
+function getSelectedMultiActions(
   selectedFilesId: number[],
   files: FileData[],
 ): ListItemKey[] {
@@ -72,5 +72,5 @@ export {
   getComparator,
   stableSort,
   getPath,
-  getSelectedActions,
+  getSelectedMultiActions,
 }
