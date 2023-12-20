@@ -1,17 +1,24 @@
 import { useState, useMemo } from 'react'
 
+import Box from '@mui/material/Box'
+import Paper from '@mui/material/Paper'
 import Table from '@mui/material/Table'
 import TableBody from '@mui/material/TableBody'
 import TableCell from '@mui/material/TableCell'
 import TableContainer from '@mui/material/TableContainer'
 import TablePagination from '@mui/material/TablePagination'
 import TableRowMUI from '@mui/material/TableRow'
-
 import TableRow from './TableRow'
 import TableHead from './TableHead'
-import { createData, stableSort, getComparator } from './helpers'
+import {
+  createData,
+  stableSort,
+  getComparator,
+  getSelectedMultiActions,
+} from './helpers'
 
 import type { Data, FileData, Order } from './types'
+import Toolbar from './Toolbar'
 
 type Props = {
   filesData: FileData[]
@@ -30,7 +37,7 @@ function FilesTable({
   handleDrawerOpen,
   handleChangeDrawerTab,
 }: Props) {
-  const [selected, setSelected] = useState<readonly number[]>([])
+  const [selected, setSelected] = useState<number[]>([])
   const [order, setOrder] = useState<Order>('asc')
   const [orderBy, setOrderBy] = useState<keyof Data>('name')
   const [page, setPage] = useState(0)
@@ -41,9 +48,24 @@ function FilesTable({
     createData(file.id, file.name, file.size, file.date),
   )
 
+  const filteredSelectedActions = useMemo(() => {
+    const filteredActions = ['comments', 'tags']
+    const result = filesData.map(file => ({
+      ...file,
+      action: file.action.filter(action => !filteredActions.includes(action)),
+    }))
+    return result
+  }, [filesData])
+
+  // TODO: get actions from redux for each selectedAction, then only keep similar actions at once
+  const selectedMultiActions = getSelectedMultiActions(
+    selected,
+    filteredSelectedActions,
+  )
+
   const onCheckBoxClick = (id: number) => {
     const selectedIndex = selected.indexOf(id)
-    let newSelected: readonly number[] = []
+    let newSelected: number[] = []
 
     if (selectedIndex === -1) {
       newSelected = newSelected.concat(selected, id)
@@ -101,63 +123,72 @@ function FilesTable({
   )
 
   return (
-    <>
-      <TableContainer>
-        <Table aria-labelledby="tableTitle">
-          <TableHead
-            numSelected={selected.length}
-            order={order}
-            orderBy={orderBy}
-            onSelectAllClick={handleSelectAllClick}
-            onRequestSort={handleRequestSort}
-            rowCount={rows.length}
-            isFavorite={isFavorite}
-            isDelete={isDelete}
+    // <>
+    <Box sx={{ width: '100%' }}>
+      <Paper sx={{ width: '100%' }}>
+        {isFavorite ? null : (
+          <Toolbar
+            selectedMultiActions={selectedMultiActions}
+            selected={selected}
           />
-          <TableBody>
-            {visibleRows.map((row, index) => {
-              const isItemSelected = isSelected(row.id)
-              const labelId = `enhanced-table-checkbox-${index}`
-              return (
-                <TableRow
-                  key={row.id}
-                  row={row}
-                  isItemSelected={isItemSelected}
-                  labelId={labelId}
-                  isFavorite={isFavorite}
-                  isDelete={isDelete}
-                  onCheckBoxClick={onCheckBoxClick}
-                  onFavoriteClick={onFavoriteClick}
-                  handleChangeDrawerTab={handleChangeDrawerTab}
-                  handleDrawerOpen={handleDrawerOpen}
-                  toggleDrawer={toggleDrawer}
-                />
-              )
-            })}
-            {emptyRows > 0 && (
-              <TableRowMUI
-                style={{
-                  height: 53 * emptyRows,
-                }}
-              >
-                <TableCell colSpan={6} />
-              </TableRowMUI>
-            )}
-          </TableBody>
-        </Table>
-      </TableContainer>
+        )}
+        <TableContainer>
+          <Table aria-labelledby="tableTitle">
+            <TableHead
+              numSelected={selected.length}
+              order={order}
+              orderBy={orderBy}
+              onSelectAllClick={handleSelectAllClick}
+              onRequestSort={handleRequestSort}
+              rowCount={rows.length}
+              isFavorite={isFavorite}
+            />
+            <TableBody>
+              {visibleRows.map((row, index) => {
+                const isItemSelected = isSelected(row.id)
+                const labelId = `enhanced-table-checkbox-${index}`
+                return (
+                  <TableRow
+                    key={row.id}
+                    row={row}
+                    filesData={filesData}
+                    isItemSelected={isItemSelected}
+                    labelId={labelId}
+                    isFavorite={isFavorite}
+                    isDelete={isDelete}
+                    onCheckBoxClick={onCheckBoxClick}
+                    onFavoriteClick={onFavoriteClick}
+                    handleChangeDrawerTab={handleChangeDrawerTab}
+                    handleDrawerOpen={handleDrawerOpen}
+                    toggleDrawer={toggleDrawer}
+                  />
+                )
+              })}
+              {emptyRows > 0 && (
+                <TableRowMUI
+                  style={{
+                    height: 53 * emptyRows,
+                  }}
+                >
+                  <TableCell colSpan={6} />
+                </TableRowMUI>
+              )}
+            </TableBody>
+          </Table>
+        </TableContainer>
 
-      {rows.length >= 19 && (
-        <TablePagination
-          rowsPerPageOptions={[]}
-          component="div"
-          count={rows.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onPageChange={handleChangePage}
-        />
-      )}
-    </>
+        {rows.length >= 19 && (
+          <TablePagination
+            rowsPerPageOptions={[]}
+            component="div"
+            count={rows.length}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            onPageChange={handleChangePage}
+          />
+        )}
+      </Paper>
+    </Box>
   )
 }
 

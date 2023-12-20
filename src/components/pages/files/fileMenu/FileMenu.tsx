@@ -1,4 +1,4 @@
-import { useState, type MouseEvent } from 'react'
+import { useState, type MouseEvent, useMemo } from 'react'
 import InfoIcon from '@mui/icons-material/Info'
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz'
 import IconButton from '@mui/material/IconButton'
@@ -18,9 +18,11 @@ import {
   handleClickTag,
 } from './helpers'
 import type { ListItem } from './listItems'
+import type { FileData } from '../filesTable/types'
 
 type Props = {
   id: number
+  filesData: FileData[]
   isFavorite?: boolean
   isDelete?: boolean
   isHovered?: boolean
@@ -31,6 +33,7 @@ type Props = {
 
 function FileMenu({
   id,
+  filesData,
   isFavorite,
   isDelete,
   isHovered,
@@ -43,13 +46,11 @@ function FileMenu({
   const open = Boolean(anchorEl)
   const shouldDisplayFavoriteButton = !isFavorite && !isDelete && isHovered
 
-  // TODO: GET actions active status from backend  (redux selector)
-  const actions: ListItem['id'][] = [
-    'comments',
-    'restore',
-    'download',
-    'delete',
-  ]
+  const actions: ListItem['id'][] = useMemo(() => {
+    const result = filesData.find(file => file.id === id)?.action || []
+    return result
+  }, [filesData, id])
+
   const filteredAction = getAvailableActions(actions)
 
   const openMenu = (e: MouseEvent<HTMLElement>) => {

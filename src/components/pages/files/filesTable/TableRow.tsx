@@ -19,6 +19,7 @@ type Props = {
     size: string
     modified: string
   }
+  filesData: FileData[]
   isItemSelected: boolean
   labelId: string
   isFavorite?: boolean
@@ -32,6 +33,7 @@ type Props = {
 
 function TableRow({
   row,
+  filesData,
   isItemSelected,
   labelId,
   isFavorite,
@@ -45,38 +47,6 @@ function TableRow({
   const theme = useTheme()
   const navigate = useNavigate()
   const [isHovered, setIsHovered] = useState(false)
-
-  // TODO: get filesData in redux store with id, to remove and replace
-  const files: FileData[] = [
-    {
-      id: 1,
-      name: 'Documents',
-      size: '305 KB',
-      date: '2012-12-14',
-      path: 'Documents',
-    },
-    {
-      id: 2,
-      name: 'Photos',
-      size: '452 KB',
-      date: '2012-12-14',
-      path: 'Photos',
-    },
-    {
-      id: 3,
-      name: 'Images',
-      size: '262 KB',
-      date: '2012-12-14',
-      path: 'Images',
-    },
-    {
-      id: 4,
-      name: 'Download',
-      size: '159 KB',
-      date: '2012-12-14',
-      path: 'Download',
-    },
-  ]
 
   const handleCheckBoxClick = (e: MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation()
@@ -93,7 +63,7 @@ function TableRow({
 
     if (isDelete) return handleDrawerOpen()
 
-    const path = getPath(row.id, files)
+    const path = getPath(row.id, filesData)
     if (path) return navigate(`/${path}`)
   }
 
@@ -118,15 +88,10 @@ function TableRow({
         align="left"
         colSpan={2}
       >
-        <Stack
-          direction="row"
-          alignItems="center"
-          gap={1}
-          ml={isDelete ? 2 : 0}
-        >
-          {isDelete ? null : isFavorite ? (
+        <Stack direction="row" alignItems="center" gap={1}>
+          {isFavorite ? (
             <IconButton onClick={event => handleClickFavorite(event)}>
-              <GradeIcon sx={{ color: theme.palette.secondary.light }} />
+              <GradeIcon sx={{ color: 'gold' }} />
             </IconButton>
           ) : (
             <Checkbox
@@ -149,6 +114,7 @@ function TableRow({
           <Stack direction="row" alignItems="center" gap={2}>
             <FileMenu
               id={row.id}
+              filesData={filesData}
               isFavorite={isFavorite}
               isDelete={isDelete}
               isHovered={isHovered}

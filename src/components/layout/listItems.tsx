@@ -4,7 +4,7 @@ import StyleIcon from '@mui/icons-material/Style'
 import DeleteIcon from '@mui/icons-material/Delete'
 import SettingsIcon from '@mui/icons-material/Settings'
 
-type ListItem = {
+export type ListItem = {
   id: string
   label: string
   icon: JSX.Element

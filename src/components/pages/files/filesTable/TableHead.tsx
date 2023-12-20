@@ -38,7 +38,6 @@ function TableHead({
   rowCount,
   onRequestSort,
   isFavorite,
-  isDelete,
 }: EnhancedTableProps) {
   const createSortHandler =
     (property: keyof Data) => (event: React.MouseEvent<unknown>) => {
@@ -48,11 +47,8 @@ function TableHead({
   return (
     <TableHeadMUI>
       <TableRow>
-        <TableCell
-          padding="checkbox"
-          sx={{ width: isDelete ? '1.2rem' : null }}
-        >
-          {isFavorite || isDelete ? null : (
+        <TableCell padding="checkbox">
+          {isFavorite ? null : (
             <Checkbox
               color="primary"
               indeterminate={numSelected > 0 && numSelected < rowCount}

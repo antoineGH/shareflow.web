@@ -3,8 +3,8 @@ import Breadcrumbs from '@mui/material/Breadcrumbs'
 import BreadcrumbEntry from 'components/common/breadcrumbEntry/BreadcrumbEntry'
 import DrawerDetails from '../files/drawerDetails/DrawerDetails'
 import FilesTable from '../files/filesTable/FilesTable'
-import type { FileData } from '../favorites/types'
 import useDrawerDetails from '../files/drawerDetails/useDrawerDetails'
+import type { FileData } from '../files/filesTable/types'
 
 function Deleted() {
   const {
@@ -22,24 +22,28 @@ function Deleted() {
       name: 'Documents',
       size: '305 KB',
       date: '2012-12-14',
+      action: [],
     },
     {
       id: 2,
       name: 'Photos',
       size: '452 KB',
       date: '2012-12-14',
+      action: [],
     },
     {
       id: 3,
       name: 'Images',
       size: '262 KB',
       date: '2012-12-14',
+      action: [],
     },
     {
       id: 4,
       name: 'Download',
       size: '159 KB',
       date: '2012-12-14',
+      action: [],
     },
   ]
 
