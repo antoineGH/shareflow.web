@@ -5,6 +5,8 @@ import listItems from './listItems'
 import StyledIcon from './StyledIcon'
 import { drawerNavigation } from './helpers'
 import StyledMenu from './StyledMenu'
+import { useContext } from 'react'
+import { AuthContext } from 'components/auth/AuthContext'
 
 type Props = {
   anchorEl: null | HTMLElement
@@ -14,10 +16,11 @@ type Props = {
 
 function Menu({ anchorEl, open, closeMenu }: Props) {
   const navigate = useNavigate()
+  const { logout } = useContext(AuthContext)
   const { pathname } = useLocation()
 
   function handleDrawerNavigation(path: string) {
-    drawerNavigation({ path, pathname, navigate, closeMenu })
+    drawerNavigation({ path, pathname, navigate, closeMenu, logout })
   }
 
   return (

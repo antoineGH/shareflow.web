@@ -6,7 +6,7 @@ function Avatar() {
     <Stack sx={{ width: '100%' }} direction="row" gap={1} alignItems="center">
       <AvatarMUI
         alt="AR avatar"
-        sx={{ width: 28, height: 28, fontSize: '1rem' }}
+        sx={{ width: 28, height: 28, fontSize: '.8rem', pt: '3px' }}
       >
         AR
       </AvatarMUI>

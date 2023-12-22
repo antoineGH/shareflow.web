@@ -1,6 +1,8 @@
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { useTheme } from '@mui/material/styles'
+import { useNavigate } from 'react-router-dom'
 import useMediaQuery from '@mui/material/useMediaQuery'
+import { AuthContext } from 'components/auth/AuthContext'
 import CssBaseline from '@mui/material/CssBaseline'
 import Box from '@mui/material/Box'
 import Content from './Content'
@@ -11,11 +13,20 @@ import useTitle from 'hooks/useTitle'
 const drawerWidth = 160
 const appBarHeight = 42
 
-function Layout() {
+function Layout({ Component }) {
   const [open, setOpen] = useState(true)
   const theme = useTheme()
   const matches = useMediaQuery(theme.breakpoints.down('sm'))
+  const { isAuthenticated } = useContext(AuthContext)
+  const navigate = useNavigate()
+
   useTitle()
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      navigate('/login')
+    }
+  }, [isAuthenticated, navigate])
 
   useEffect(() => {
     if (matches) {
@@ -43,7 +54,7 @@ function Layout() {
         appBarHeight={appBarHeight}
         toggleDrawer={toggleDrawer}
       />
-      <Content />
+      <Content Component={Component} />
     </Box>
   )
 }

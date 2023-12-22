@@ -13,13 +13,13 @@ const listItems: ListItem[] = [
     id: 'settings',
     label: 'Settings',
     icon: <Settings />,
-    pathname: '/settings',
+    pathname: '/auth/settings',
   },
   {
     id: 'logout',
     label: 'Logout',
     icon: <Logout />,
-    pathname: '/logout',
+    pathname: '/auth/logout',
   },
 ]
 

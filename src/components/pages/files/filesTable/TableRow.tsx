@@ -1,5 +1,4 @@
 import { useState, type MouseEvent } from 'react'
-import { useTheme } from '@mui/material'
 import Stack from '@mui/material/Stack'
 import IconButton from '@mui/material/IconButton'
 import Checkbox from '@mui/material/Checkbox'
@@ -44,7 +43,6 @@ function TableRow({
   handleDrawerOpen,
   toggleDrawer,
 }: Props) {
-  const theme = useTheme()
   const navigate = useNavigate()
   const [isHovered, setIsHovered] = useState(false)
 
@@ -64,7 +62,7 @@ function TableRow({
     if (isDelete) return handleDrawerOpen()
 
     const path = getPath(row.id, filesData)
-    if (path) return navigate(`/${path}`)
+    if (path) return navigate(`/auth/files/${path}`)
   }
 
   return (
@@ -119,6 +117,7 @@ function TableRow({
               isDelete={isDelete}
               isHovered={isHovered}
               toggleDrawer={toggleDrawer}
+              handleDrawerOpen={handleDrawerOpen}
               onFavoriteClick={onFavoriteClick}
               handleChangeDrawerTab={handleChangeDrawerTab}
             />

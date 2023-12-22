@@ -22,6 +22,7 @@ function Favorites() {
       name: 'Documents',
       size: '305 KB',
       date: '2012-12-14',
+      path: 'Documents',
       action: [],
     },
     {
@@ -29,6 +30,7 @@ function Favorites() {
       name: 'Photos',
       size: '452 KB',
       date: '2012-12-14',
+      path: 'Photos',
       action: [],
     },
     {
@@ -36,6 +38,7 @@ function Favorites() {
       name: 'Images',
       size: '262 KB',
       date: '2012-12-14',
+      path: 'Images',
       action: [],
     },
     {
@@ -43,6 +46,7 @@ function Favorites() {
       name: 'Download',
       size: '159 KB',
       date: '2012-12-14',
+      path: 'Download',
       action: [],
     },
   ]

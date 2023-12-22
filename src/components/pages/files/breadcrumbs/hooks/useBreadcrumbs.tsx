@@ -13,8 +13,11 @@ function useBreadcrumbs({ openModalAddDocs }: Props) {
   const location = useLocation()
   const navigate = useNavigate()
   const theme = useTheme()
+  const excludedPathName = ['auth', 'files', '']
 
-  const pathnames = location.pathname.split('/').filter(pathname => pathname)
+  const pathnames = location.pathname
+    .split('/')
+    .filter(pathname => !excludedPathName.includes(pathname))
 
   const handleClick = (
     event: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
@@ -22,7 +25,7 @@ function useBreadcrumbs({ openModalAddDocs }: Props) {
   ) => {
     event.preventDefault()
 
-    if (index === 0) return navigate('/')
+    if (index === 0) return navigate('/auth/files')
     navigate((event.currentTarget as HTMLAnchorElement).pathname)
   }
 
