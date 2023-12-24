@@ -17,11 +17,12 @@ import {
   getSelectedMultiActions,
 } from './helpers'
 
-import type { Data, FileData, Order } from './types'
+import type { Data, Order } from './types'
 import Toolbar from './Toolbar'
+import type { File } from 'types/files'
 
 type Props = {
-  filesData: FileData[]
+  files: File[]
   isFavorite?: boolean
   isDelete?: boolean
   toggleDrawer: () => void
@@ -30,7 +31,7 @@ type Props = {
 }
 
 function FilesTable({
-  filesData,
+  files,
   isFavorite,
   isDelete,
   toggleDrawer,
@@ -44,18 +45,18 @@ function FilesTable({
 
   const rowsPerPage = 20
 
-  const rows = filesData.map(file =>
-    createData(file.id, file.name, file.size, file.date),
+  const rows = files.map(file =>
+    createData(file.id, file.name, file.size, file.modified),
   )
 
   const filteredSelectedActions = useMemo(() => {
     const filteredActions = ['comments', 'tags']
-    const result = filesData.map(file => ({
+    const result = files.map(file => ({
       ...file,
       action: file.action.filter(action => !filteredActions.includes(action)),
     }))
     return result
-  }, [filesData])
+  }, [files])
 
   // TODO: get actions from redux for each selectedAction, then only keep similar actions at once
   const selectedMultiActions = getSelectedMultiActions(
@@ -151,7 +152,7 @@ function FilesTable({
                   <TableRow
                     key={row.id}
                     row={row}
-                    filesData={filesData}
+                    files={files}
                     isItemSelected={isItemSelected}
                     labelId={labelId}
                     isFavorite={isFavorite}

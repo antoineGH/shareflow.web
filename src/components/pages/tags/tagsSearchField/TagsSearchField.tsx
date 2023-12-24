@@ -9,12 +9,9 @@ import IconButton from '@mui/material/IconButton'
 import ClearIcon from '@mui/icons-material/Clear'
 import SearchIcon from '@mui/icons-material/Search'
 import Option from './Option'
-import type { TagData } from './types'
+import type { Tag } from 'types/tags'
 
-function generateInputProps(
-  selectedOptions: TagData[],
-  onCleanSearch: () => void,
-) {
+function generateInputProps(selectedOptions: Tag[], onCleanSearch: () => void) {
   return {
     startAdornment: (
       <InputAdornment position="start">
@@ -34,7 +31,7 @@ function generateInputProps(
 function TagsSeachField() {
   const [search, setSearch] = useState('')
 
-  const highlightedOption = useRef<TagData | null>(null)
+  const highlightedOption = useRef<Tag | null>(null)
   const debounceSearch = useDebounce(search, 500)
 
   const {
@@ -68,7 +65,7 @@ function TagsSeachField() {
     }
   }, [])
 
-  const onClickOption = (option: TagData) => {
+  const onClickOption = (option: Tag) => {
     onResetSuggestions()
     if (selectedOptions.some(selected => selected.id === option.id)) {
       return onRemoveSelectOption(option)
@@ -77,7 +74,7 @@ function TagsSeachField() {
     setSearch('')
   }
 
-  const handleRemoveSelectOption = (option: TagData) => {
+  const handleRemoveSelectOption = (option: Tag) => {
     onRemoveSelectOption(option)
   }
 
@@ -103,8 +100,8 @@ function TagsSeachField() {
     [onCleanSearch, selectedOptions],
   )
 
-  const getOptionLabel = (option: TagData) => {
-    return `${option.name}`
+  const getOptionLabel = (option: Tag) => {
+    return `${option.tag}`
   }
 
   return (
@@ -155,7 +152,7 @@ function TagsSeachField() {
                 {selectedOptions.map(option => (
                   <Chip
                     key={option.id}
-                    label={option.name}
+                    label={option.tag}
                     onDelete={() => handleRemoveSelectOption(option)}
                     sx={{ p: 0, mr: 0.5, borderRadius: '5px' }}
                   />

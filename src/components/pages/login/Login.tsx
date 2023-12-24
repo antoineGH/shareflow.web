@@ -32,18 +32,12 @@ const Login = () => {
         height: '100vh',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
-        '@media (max-width: 600px)': {
-          backgroundColor: 'red',
-        },
-        '@media (min-width: 600px) and (max-width: 900px)': {
-          backgroundColor: 'green',
-        },
-        '@media (min-width: 900px) and (max-width: 1200px)': {
-          backgroundColor: 'blue',
-        },
+        maxWidth: '1920px',
         '@media (min-width: 1200px)': {
           backgroundColor: 'orange',
+          maxWidth: '2560px',
         },
+        '& .MuiContainer-root': {},
       }}
     >
       <Box>
@@ -53,7 +47,7 @@ const Login = () => {
             flexDirection: 'column',
             alignItems: 'center',
             justifyContent: 'start',
-            height: '45vh',
+            height: '40vh',
             minHeight: '400px',
             px: '1rem',
             py: '2rem',
@@ -64,7 +58,7 @@ const Login = () => {
           <Typography variant="h4" component="h1" gutterBottom>
             shareFlow
           </Typography>
-          <Alert severity="info">
+          <Alert severity="info" sx={{ mb: 1 }}>
             <AlertTitle>Demo App</AlertTitle>
             <Grid container>
               <Grid item xs={12}>

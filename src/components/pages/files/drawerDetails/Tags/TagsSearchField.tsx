@@ -8,12 +8,12 @@ import InputAdornment from '@mui/material/InputAdornment'
 import SearchIcon from '@mui/icons-material/Search'
 import ClearIcon from '@mui/icons-material/Clear'
 import Option from './Option'
-import type { TagData } from './types'
+import type { Tag } from 'types/tags'
 
 function TagsSeachField() {
   const [search, setSearch] = useState('')
 
-  const highlightedOption = useRef<TagData | null>(null)
+  const highlightedOption = useRef<Tag | null>(null)
   const debounceSearch = useDebounce(search, 500)
 
   const {
@@ -68,7 +68,7 @@ function TagsSeachField() {
     }
   }, [])
 
-  const onClickOption = (option: TagData) => {
+  const onClickOption = (option: Tag) => {
     onResetSuggestions()
     onSelectOption(option)
     setSearch('')
@@ -90,8 +90,8 @@ function TagsSeachField() {
     [onCleanSearch, selectedOptions],
   )
 
-  const getOptionLabel = (option: TagData) => {
-    return `${option.name}`
+  const getOptionLabel = (option: Tag) => {
+    return `${option.tag}`
   }
 
   return (

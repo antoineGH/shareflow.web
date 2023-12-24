@@ -4,8 +4,8 @@ import Card from '@mui/material/Card'
 import CardContent from '@mui/material/CardContent'
 import Avatar from '@mui/material/Avatar'
 import Typography from '@mui/material/Typography'
-import type { Comment } from '../types'
 import { defineAvatarInitials } from '../helpers'
+import type { Comment } from 'types/comments'
 
 type Props = {
   comments: Comment[]

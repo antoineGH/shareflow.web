@@ -5,7 +5,8 @@ import Layout from 'components/layout/Layout'
 import { AuthProvider } from 'components/auth/AuthContext'
 import Login from 'components/pages/login/Login'
 import PrivateComponent from 'components/auth/PrivateRoute'
-import { routes } from 'components/routes/routes' // import routes
+import { routes } from 'components/routes/routes'
+import './App.css'
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
       <AuthProvider>
         <Router>
           <Routes>
+            <Route path="/" element={<Login />} />
             <Route path="/login" element={<Login />} />
             {routes.map(route => (
               <Route

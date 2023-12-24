@@ -7,11 +7,11 @@ import Menu from './Menu'
 import { useTheme } from '@mui/material'
 import { getAvailableActions } from './helpers'
 import type { ListItem } from './listItems'
-import type { FileData } from '../filesTable/types'
+import { File } from 'types/files'
 
 type Props = {
   id: number
-  filesData: FileData[]
+  files: File[]
   isFavorite?: boolean
   isDelete?: boolean
   isHovered?: boolean
@@ -23,7 +23,7 @@ type Props = {
 
 function FileMenu({
   id,
-  filesData,
+  files,
   isFavorite,
   isDelete,
   isHovered,
@@ -38,9 +38,9 @@ function FileMenu({
   const shouldDisplayFavoriteButton = !isFavorite && !isDelete && isHovered
 
   const actions: ListItem['id'][] = useMemo(() => {
-    const result = filesData.find(file => file.id === id)?.action || []
+    const result = files.find(file => file.id === id)?.action || []
     return result
-  }, [filesData, id])
+  }, [files, id])
 
   const filteredAction = getAvailableActions(actions)
 

@@ -8,8 +8,8 @@ import TableCell from '@mui/material/TableCell'
 import FileMenu from '../fileMenu/FileMenu'
 import GradeIcon from '@mui/icons-material/Grade'
 import { getPath } from './helpers'
-import type { FileData } from './types'
 import { useNavigate } from 'react-router-dom'
+import type { File } from 'types/files'
 
 type Props = {
   row: {
@@ -18,7 +18,7 @@ type Props = {
     size: string
     modified: string
   }
-  filesData: FileData[]
+  files: File[]
   isItemSelected: boolean
   labelId: string
   isFavorite?: boolean
@@ -32,7 +32,7 @@ type Props = {
 
 function TableRow({
   row,
-  filesData,
+  files,
   isItemSelected,
   labelId,
   isFavorite,
@@ -61,7 +61,7 @@ function TableRow({
 
     if (isDelete) return handleDrawerOpen()
 
-    const path = getPath(row.id, filesData)
+    const path = getPath(row.id, files)
     if (path) return navigate(`/auth/files/${path}`)
   }
 
@@ -112,7 +112,7 @@ function TableRow({
           <Stack direction="row" alignItems="center" gap={2}>
             <FileMenu
               id={row.id}
-              filesData={filesData}
+              files={files}
               isFavorite={isFavorite}
               isDelete={isDelete}
               isHovered={isHovered}

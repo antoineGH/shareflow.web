@@ -1,5 +1,6 @@
 import { ListItemKey } from '../fileMenu/listItems'
-import type { FileData, Order } from './types'
+import type { File } from 'types/files'
+import type { Order } from './types'
 
 function createData(id: number, name: string, size: string, modified: string) {
   return {
@@ -33,10 +34,7 @@ function getComparator<Key extends keyof any>(
     : (a, b) => -descendingComparator(a, b, orderBy)
 }
 
-function stableSort<T>(
-  array: readonly T[],
-  comparator: (a: T, b: T) => number,
-) {
+function stableSort<T>(array: T[], comparator: (a: T, b: T) => number) {
   const stabilizedThis = array.map((el, index) => [el, index] as [T, number])
   stabilizedThis.sort((a, b) => {
     const order = comparator(a[0], b[0])
@@ -48,13 +46,13 @@ function stableSort<T>(
   return stabilizedThis.map(el => el[0])
 }
 
-function getPath(id: number, files: FileData[]) {
+function getPath(id: number, files: File[]) {
   return files.find(file => file.id === id)?.path
 }
 
 function getSelectedMultiActions(
   selectedFilesId: number[],
-  files: FileData[],
+  files: File[],
 ): ListItemKey[] {
   const selectedFiles = files.filter(file => selectedFilesId.includes(file.id))
   const actionsArrays = selectedFiles.map(file => file.action)

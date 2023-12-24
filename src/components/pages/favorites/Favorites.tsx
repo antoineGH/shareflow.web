@@ -4,7 +4,7 @@ import FilesTable from '../files/filesTable/FilesTable'
 import DrawerDetails from '../files/drawerDetails/DrawerDetails'
 import useDrawerDetails from '../files/drawerDetails/useDrawerDetails'
 import BreadcrumbEntry from 'components/common/breadcrumbEntry/BreadcrumbEntry'
-import type { FileData } from '../files/filesTable/types'
+import type { FileData } from 'types/files'
 
 function Favorites() {
   const {
@@ -16,40 +16,47 @@ function Favorites() {
     toggleDrawer,
   } = useDrawerDetails()
 
-  const filesData: FileData[] = [
-    {
-      id: 1,
-      name: 'Documents',
-      size: '305 KB',
-      date: '2012-12-14',
-      path: 'Documents',
-      action: [],
-    },
-    {
-      id: 2,
-      name: 'Photos',
-      size: '452 KB',
-      date: '2012-12-14',
-      path: 'Photos',
-      action: [],
-    },
-    {
-      id: 3,
-      name: 'Images',
-      size: '262 KB',
-      date: '2012-12-14',
-      path: 'Images',
-      action: [],
-    },
-    {
-      id: 4,
-      name: 'Download',
-      size: '159 KB',
-      date: '2012-12-14',
-      path: 'Download',
-      action: [],
-    },
-  ]
+  const filesData: FileData = {
+    files: [
+      {
+        id: 1,
+        name: 'Documents',
+        size: '305 KB',
+        modified: '2012-12-14',
+        path: 'Documents',
+        action: ['comments', 'tags', 'restore', 'download', 'delete'],
+      },
+      {
+        id: 2,
+        name: 'Photos',
+        size: '452 KB',
+        modified: '2012-12-14',
+        path: 'Photos',
+        action: ['comments', 'tags', 'restore', 'download', 'delete'],
+      },
+      {
+        id: 3,
+        name: 'Images',
+        size: '262 KB',
+        modified: '2012-12-14',
+        path: 'Images',
+        action: ['comments', 'tags', 'restore', 'download', 'delete'],
+      },
+      {
+        id: 4,
+        name: 'Download',
+        size: '159 KB',
+        modified: '2012-12-14',
+        path: 'Download',
+        action: ['comments', 'tags', 'restore', 'download', 'delete'],
+      },
+    ],
+    countFiles: 4,
+    countFolders: 4,
+    totalSize: '1.17 MB',
+  }
+
+  const { files } = filesData
 
   return (
     <Grid
@@ -65,7 +72,7 @@ function Favorites() {
         </Breadcrumbs>
       </Grid>
       <FilesTable
-        filesData={filesData}
+        files={files}
         isFavorite={true}
         handleChangeDrawerTab={handleChangeDrawerTab}
         handleDrawerOpen={handleDrawerOpen}

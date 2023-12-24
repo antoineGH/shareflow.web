@@ -9,7 +9,7 @@ import Checkbox from '@mui/material/Checkbox'
 import { visuallyHidden } from '@mui/utils'
 import type { EnhancedTableProps, Data, HeadCell } from './types'
 
-const headCells: readonly HeadCell[] = [
+const headCells: HeadCell[] = [
   {
     id: 'name',
     numeric: false,

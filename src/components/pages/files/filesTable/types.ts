@@ -1,11 +1,7 @@
-import { ListItemKey } from '../fileMenu/listItems'
+import type { MouseEvent, ChangeEvent } from 'react'
+import type { FileApi } from 'types/files'
 
-export type Data = {
-  id: number
-  name: string
-  size: string
-  modified: string
-}
+export type Data = Omit<FileApi, 'path' | 'action'>
 
 export type Order = 'asc' | 'desc'
 
@@ -18,30 +14,11 @@ export type HeadCell = {
 
 export type EnhancedTableProps = {
   numSelected: number
-  onRequestSort: (
-    event: React.MouseEvent<unknown>,
-    property: keyof Data,
-  ) => void
-  onSelectAllClick: (event: React.ChangeEvent<HTMLInputElement>) => void
+  onRequestSort: (event: MouseEvent<unknown>, property: keyof Data) => void
+  onSelectAllClick: (event: ChangeEvent<HTMLInputElement>) => void
   order: Order
   orderBy: string
   rowCount: number
   isFavorite?: boolean
   isDelete?: boolean
-}
-
-export type FileData = {
-  id: number
-  name: string
-  size: string
-  date: string
-  path?: string
-  action: ListItemKey[]
-}
-
-export type FilesData = {
-  files: FileData[]
-  countFiles: number
-  countFolders: number
-  totalSize: string
 }
