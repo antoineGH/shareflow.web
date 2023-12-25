@@ -1,4 +1,6 @@
-const BASE_API = '/api/v1'
+// TODO: Update base api url
+// const BASE_API = 'http://localhost:5000/api/v1'
+const BASE_API = 'http://localhost:5000'
 
 // ### STORAGE ###
 const GET_STORAGE = `${BASE_API}/{userId}/storage.json`

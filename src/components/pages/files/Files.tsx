@@ -10,6 +10,9 @@ import CountFiles from './countFiles/CountFiles'
 import { useParams } from 'react-router-dom'
 import { extractRoutingParams } from './helpers'
 import { FileData } from 'types/files'
+import { useEffect } from 'react'
+import { deleteTag, getTags, postTag } from 'api/tags'
+import { getStorage } from 'api/settings'
 
 function Files() {
   const params = useParams<{ path: string }>()
@@ -32,6 +35,12 @@ function Files() {
     handleDrawerOpen,
     toggleDrawer,
   } = useDrawerDetails()
+
+  // TODO: TESTING PURPOSES - TO REMOVE
+
+  useEffect(() => {
+    console.log('useEffect triggered')
+  }, [])
 
   const filesData: FileData = {
     files: [

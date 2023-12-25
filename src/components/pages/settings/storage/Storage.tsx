@@ -2,7 +2,7 @@ import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import { calculateStoragePercentage } from './helpers'
 import StyledLinearProgress from './StyledLinearProgress'
-import type { Settings } from 'types/storage'
+import type { Settings } from 'types/settings'
 
 function Storage() {
   const settings: Settings = {
