@@ -23,11 +23,11 @@ function Files() {
   // TODO: TESTING ONLY - TO REMOVE
   const dispatch = useDispatch()
   useEffect(() => {
-    // dispatch(fetchStorage({ userId: 1 }))
+    // dispatch(fetchFiles({ userId: 1 }))
   }, [])
 
-  // const user = useSelector(selectStorageSelector)
-  // console.log('user', user)
+  // const myFiles = useSelector(selectFilesSelector)
+  // console.log('myFiles', myFiles)
 
   const {
     droppedFiles,

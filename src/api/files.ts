@@ -15,13 +15,13 @@ import type {
 
 const errGetFilesMsg = 'An error occurred while getting files. Please try again'
 
-async function getFiles(userId: number) {
+async function getFiles(userId: number, signal?: AbortSignal) {
   Promise<GetFilesReturnType>
   try {
     // TODO: replace with proper URL and update status code
     // const url = formatURL(`${GET_FILES}`, { userId })
     const url = 'http://localhost:5000/files'
-    const res = await rest.get({ url })
+    const res = await rest.get({ url, signal })
     if (res?.response?.status !== 200) {
       throw new HttpResponseError(res?.response?.status ?? null, errGetFilesMsg)
     }

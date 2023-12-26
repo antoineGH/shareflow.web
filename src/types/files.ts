@@ -30,7 +30,7 @@ export type FileData = SnakeCaseToCamelCase<FileDataApi>
 
 export type GetFilesReturnType =
   | {
-      filesData: FileData[]
+      filesData: FileData
       error?: never
     }
   | {
