@@ -12,20 +12,25 @@ import { HttpResponseError } from 'helpers/errors'
 
 const errGetTagsMsg = 'An error occurred while getting tags. Please try again'
 
-async function getTags(fileId: number) {
+async function getTags(fileId: number, signal?: AbortSignal) {
   Promise<GetTagsReturnType>
-  // TODO: replace with proper URL and update status code
-  //   const url = formatURL(`${GET_TAGS}`, { fileId })
-  const url = 'http://localhost:5000/tags'
-  const res = await rest.get({ url })
+  try {
+    // TODO: replace with proper URL and update status code
+    //   const url = formatURL(`${GET_TAGS}`, { fileId })
+    const url = 'http://localhost:5000/tags'
+    const res = await rest.get({ url, signal })
 
-  if (res?.response?.status !== 200) {
-    throw new HttpResponseError(res?.response?.status ?? null, errGetTagsMsg)
+    if (res?.response?.status !== 200) {
+      throw new HttpResponseError(res?.response?.status ?? null, errGetTagsMsg)
+    }
+
+    const { object } = res
+    const tags: Tag[] = object?.map(tag => convertObjectKeys<TagApi, Tag>(tag))
+    return { tags }
+  } catch (error) {
+    console.error(error)
+    return { error }
   }
-
-  const { object } = res
-  const tags = object?.map(tag => convertObjectKeys<TagApi, Tag>(tag))
-  return { tags }
 }
 
 const errPostTagMsg =

@@ -11,7 +11,7 @@ export type Tag = SnakeCaseToCamelCase<TagApi>
 
 export type GetTagsReturnType =
   | {
-      tags: TagApi[]
+      tags: Tag[]
       error?: never
     }
   | {
@@ -21,7 +21,7 @@ export type GetTagsReturnType =
 
 export type PostTagsReturnType =
   | {
-      tag: TagApi
+      tag: Tag
       error?: never
     }
   | {
@@ -31,7 +31,7 @@ export type PostTagsReturnType =
 
 export type DeleteTagReturnType =
   | {
-      tagId: TagApi['id']
+      tagId: Tag['id']
       error?: never
     }
   | {

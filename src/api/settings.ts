@@ -11,14 +11,14 @@ import { rest } from 'helpers/rest'
 const errGetStorageMsg =
   'An error occurred while getting storage. Please try again'
 
-async function getStorage(userId: number) {
+async function getStorage(userId: number, signal?: AbortSignal) {
   Promise<GetStorageReturnType>
   try {
     // TODO: replace with proper URL and update status code
     // const url = formatURL(`${GET_STORAGE}`, { userId })
     const url = 'http://localhost:5000/settings'
 
-    const res = await rest.get({ url })
+    const res = await rest.get({ url, signal })
 
     if (res?.response?.status !== 200) {
       throw new HttpResponseError(

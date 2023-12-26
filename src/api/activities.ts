@@ -12,13 +12,13 @@ import type {
 const errGetActivitiesMsg =
   'An error occurred while getting activities. Please try again'
 
-async function getActivities(userId: number) {
+async function getActivities(userId: number, signal?: AbortSignal) {
   Promise<GetActivitiesReturnType>
   try {
     // TODO: replace with proper URL and update status code
     const url = 'http://localhost:5000/activities'
     // const url = formatURL(`${GET_ACTIVITIES}`, { userId })
-    const res = await rest.get({ url })
+    const res = await rest.get({ url, signal })
 
     if (res?.response?.status !== 200) {
       throw new HttpResponseError(
@@ -29,7 +29,7 @@ async function getActivities(userId: number) {
 
     const { object } = res
 
-    const activities = object?.map(activity =>
+    const activities: Activity[] = object?.map(activity =>
       convertObjectKeys<ActivityApi, Activity>(activity),
     )
 

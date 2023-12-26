@@ -27,3 +27,43 @@ export type FileDataApi = {
 
 export type File = SnakeCaseToCamelCase<FileApi>
 export type FileData = SnakeCaseToCamelCase<FileDataApi>
+
+export type GetFilesReturnType =
+  | {
+      filesData: FileData[]
+      error?: never
+    }
+  | {
+      filesData?: never
+      error: Error
+    }
+
+export type PostFileReturnType =
+  | {
+      file: File
+      error?: never
+    }
+  | {
+      file?: never
+      error: Error
+    }
+
+export type PutFileReturnType =
+  | {
+      file: File
+      error?: never
+    }
+  | {
+      file?: never
+      error: Error
+    }
+
+export type DeleteFileReturnType =
+  | {
+      fileId: File['id']
+      error?: never
+    }
+  | {
+      fileId?: never
+      error: Error
+    }

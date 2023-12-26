@@ -13,7 +13,7 @@ export type Activity = SnakeCaseToCamelCase<ActivityApi>
 
 export type GetActivitiesReturnType =
   | {
-      activities: ActivityApi[]
+      activities: Activity[]
       error?: never
     }
   | {
@@ -23,7 +23,7 @@ export type GetActivitiesReturnType =
 
 export type PostActivitiesReturnType =
   | {
-      activity: ActivityApi
+      activity: Activity
       error?: never
     }
   | {

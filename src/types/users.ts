@@ -9,3 +9,23 @@ export type UserApi = {
 }
 
 export type User = SnakeCaseToCamelCase<UserApi>
+
+export type GetUserReturnType =
+  | {
+      user: User
+      error?: never
+    }
+  | {
+      user?: never
+      error: Error
+    }
+
+export type PutUserReturnType =
+  | {
+      user: User
+      error?: never
+    }
+  | {
+      user?: never
+      error: Error
+    }

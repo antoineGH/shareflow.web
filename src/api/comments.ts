@@ -13,13 +13,13 @@ import type {
 const errGetCommentsMsg =
   'An error occurred while getting comments. Please try again'
 
-async function getComments(fileId: number) {
+async function getComments(fileId: number, signal?: AbortSignal) {
   Promise<GetCommentReturnType>
   try {
     // TODO: replace with proper URL and update status code
     // const url = formatURL(`${GET_COMMENTS}`, { fileId })
     const url = 'http://localhost:5000/comments'
-    const res = await rest.get({ url })
+    const res = await rest.get({ url, signal })
 
     if (res?.response?.status !== 200) {
       throw new HttpResponseError(

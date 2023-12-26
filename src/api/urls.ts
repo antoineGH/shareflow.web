@@ -7,9 +7,7 @@ const GET_STORAGE = `${BASE_API}/{userId}/storage.json`
 
 // ### USER ###
 const GET_USER = `${BASE_API}/users/{userId}.json`
-const POST_USER = `${BASE_API}/users.json`
 const PUT_USER = `${BASE_API}/users/{userId}.json`
-const DELETE_USER = `${BASE_API}/users/{userId}.json`
 
 // ### ACTIVITIES ###
 const GET_ACTIVITIES = `${BASE_API}/users/{userId}/activities.json`
@@ -34,9 +32,7 @@ const DELETE_FILE = `${BASE_API}/users/{userId}/files/{fileId}.json`
 export {
   GET_STORAGE,
   GET_USER,
-  POST_USER,
   PUT_USER,
-  DELETE_USER,
   GET_ACTIVITIES,
   POST_ACTIVITY,
   GET_COMMENTS,

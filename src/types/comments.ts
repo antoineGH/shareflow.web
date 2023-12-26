@@ -16,7 +16,7 @@ export type Comment = SnakeCaseToCamelCase<CommentApi>
 
 export type GetCommentReturnType =
   | {
-      comments: CommentApi[]
+      comments: Comment[]
       error?: never
     }
   | {
@@ -26,7 +26,7 @@ export type GetCommentReturnType =
 
 export type PostCommentReturnType =
   | {
-      comment: CommentApi
+      comment: Comment
       error?: never
     }
   | {
@@ -36,7 +36,7 @@ export type PostCommentReturnType =
 
 export type DeleteCommentReturnType =
   | {
-      commentId: CommentApi['id']
+      commentId: Comment['id']
       error?: never
     }
   | {
