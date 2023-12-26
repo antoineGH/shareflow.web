@@ -13,7 +13,7 @@ function AccountInfo() {
           <Typography variant="subtitle1">Profile Picture</Typography>
           <Avatar
             alt="AR avatar"
-            sx={{ width: 100, height: 100, fontSize: '3.5rem' }}
+            sx={{ width: 100, height: 100, fontSize: '3.5rem', pt: 2 }}
           >
             AR
           </Avatar>

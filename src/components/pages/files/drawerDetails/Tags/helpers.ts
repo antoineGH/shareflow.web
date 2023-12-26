@@ -1,4 +1,4 @@
-import { TagData } from './types'
+import { Tag } from 'types/tags'
 
 type ClassNameObj = Record<string, boolean>
 type ClassNameToCompute = string | ClassNameObj
@@ -24,7 +24,7 @@ function generateClassNames(...args: ClassNameToCompute[]) {
   }, '')
 }
 
-function removeDuplicates(array: TagData[]): TagData[] {
+function removeDuplicates(array: Tag[]): Tag[] {
   return array.filter(
     (value, index, self) => self.findIndex(v => v.id === value.id) === index,
   )

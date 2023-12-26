@@ -4,8 +4,8 @@ import Card from '@mui/material/Card'
 import CardContent from '@mui/material/CardContent'
 import Avatar from '@mui/material/Avatar'
 import Typography from '@mui/material/Typography'
-import type { Comment } from '../types'
 import { defineAvatarInitials } from '../helpers'
+import type { Comment } from 'types/comments'
 
 type Props = {
   comments: Comment[]
@@ -25,7 +25,7 @@ function CommentsSection({ comments }: Props) {
           <Stack direction="row" alignItems="center" spacing={1}>
             <Avatar
               alt="avatar comment"
-              sx={{ width: 22, height: 22, fontSize: '.7rem' }}
+              sx={{ width: 24, height: 24, fontSize: '.7rem', pt: 0.4 }}
             >
               {defineAvatarInitials(user.name)}
             </Avatar>

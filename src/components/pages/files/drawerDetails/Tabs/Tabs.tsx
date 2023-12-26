@@ -58,7 +58,8 @@ function Tabs({ activeDrawerTab, handleChangeDrawerTab }: Props) {
             label={
               <StyledTypographyTab
                 variant="body2"
-                color={theme.palette.secondary.light}
+                color={theme.palette.secondary.contrastText}
+                sx={{ fontWeight: 600 }}
               >
                 {label}
               </StyledTypographyTab>

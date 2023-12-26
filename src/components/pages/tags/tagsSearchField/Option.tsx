@@ -2,17 +2,17 @@ import { ListItem, ListItemText } from '@mui/material'
 import type { HTMLAttributes } from 'react'
 import Title from './Title'
 import { generateClassNames } from './helpers'
-import type { TagData } from './types'
+import type { Tag } from 'types/tags'
 
 type Props = {
-  option: TagData
+  option: Tag
   isSelected: boolean
   optionAttr: HTMLAttributes<HTMLLIElement>
-  onClickOption: (option: TagData) => void
+  onClickOption: (option: Tag) => void
 }
 
 function Option({ option, isSelected, optionAttr, onClickOption }: Props) {
-  const { name } = option
+  const { tag } = option
 
   const className = generateClassNames(optionAttr.className || '', {
     'selected-option': isSelected,
@@ -21,7 +21,7 @@ function Option({ option, isSelected, optionAttr, onClickOption }: Props) {
   return (
     <ListItem
       color="secondary"
-      data-testid={`supplier-${name}`}
+      data-testid={`supplier-${tag}`}
       {...optionAttr}
       className={className}
       disablePadding
@@ -40,7 +40,7 @@ function Option({ option, isSelected, optionAttr, onClickOption }: Props) {
       }}
     >
       <ListItemText
-        primary={<Title name={name} />}
+        primary={<Title name={tag} />}
         primaryTypographyProps={{
           component: 'div',
           variant: 'body2',

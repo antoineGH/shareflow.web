@@ -1,17 +1,17 @@
 import { useEffect, useState } from 'react'
 import { removeDuplicates } from './helpers'
-import type { TagData } from './types'
+import type { Tag } from 'types/tags'
 
 type HookReturnValue = {
   areSuggestionsOpen: boolean
   isLoading: boolean
-  options: TagData[]
-  selectedOptions: TagData | Record<string, never>
+  options: Tag[]
+  selectedOptions: Tag | Record<string, never>
   onOpenSuggestions: () => void
   onCloseSuggestions: () => void
   onResetSuggestions: () => void
   onResetselectedOptions: () => void
-  onSelectOption: (option: TagData) => void
+  onSelectOption: (option: Tag) => void
 }
 
 type Props = {
@@ -20,9 +20,9 @@ type Props = {
 
 function useTags({ debounceSearch }: Props): HookReturnValue {
   const [selectedOptions, setselectedOptions] = useState<
-    TagData | Record<string, never>
+    Tag | Record<string, never>
   >({})
-  const [options, setOptions] = useState<TagData[]>([])
+  const [options, setOptions] = useState<Tag[]>([])
   const [isLoading, setIsLoading] = useState(false)
   const [areSuggestionsOpen, setAreSuggestionsOpen] = useState(false)
 
@@ -32,7 +32,7 @@ function useTags({ debounceSearch }: Props): HookReturnValue {
 
   const onCloseSuggestions = () => setAreSuggestionsOpen(false)
 
-  const onSelectOption = (option: TagData) => {
+  const onSelectOption = (option: Tag) => {
     setselectedOptions(option)
     onCloseSuggestions()
   }
@@ -48,16 +48,22 @@ function useTags({ debounceSearch }: Props): HookReturnValue {
     const response = {
       options: [
         {
-          id: '1',
-          name: 'tag1',
+          id: 1,
+          userId: 101,
+          fileId: 201,
+          tag: 'tag1',
         },
         {
-          id: '2',
-          name: 'tag2',
+          id: 2,
+          userId: 102,
+          fileId: 202,
+          tag: 'tag2',
         },
         {
-          id: '3',
-          name: 'tag3',
+          id: 3,
+          userId: 103,
+          fileId: 203,
+          tag: 'tag3',
         },
       ],
     }

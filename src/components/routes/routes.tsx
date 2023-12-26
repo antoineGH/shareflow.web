@@ -8,7 +8,7 @@ import Tags from 'components/pages/tags/Tags'
 type Route = {
   pathname: string
   name: string
-  component: JSX.Element
+  component: React.ComponentType
   meta: {
     title: string
     requiresAuth: boolean
@@ -17,54 +17,54 @@ type Route = {
 
 const routes: Route[] = [
   {
-    pathname: '/',
-    name: 'Files',
-    component: <Files />,
-    meta: {
-      title: 'Files',
-      requiresAuth: true,
-    },
-  },
-  {
-    pathname: '/favorites',
+    pathname: '/auth/favorites',
     name: 'Favorites',
-    component: <Favorites />,
+    component: Favorites,
     meta: {
       title: 'Favorites',
       requiresAuth: true,
     },
   },
   {
-    pathname: '/tags',
+    pathname: '/auth/tags',
     name: 'Tags',
-    component: <Tags />,
+    component: Tags,
     meta: {
       title: 'Tags',
       requiresAuth: true,
     },
   },
   {
-    pathname: '/settings',
+    pathname: '/auth/settings',
     name: 'Settings',
-    component: <Settings />,
+    component: Settings,
     meta: {
       title: 'Settings',
       requiresAuth: true,
     },
   },
   {
-    pathname: '/deleted',
+    pathname: '/auth/deleted',
     name: 'Deleted',
-    component: <Deleted />,
+    component: Deleted,
     meta: {
       title: 'Deleted',
       requiresAuth: true,
     },
   },
   {
-    pathname: '/:path*',
+    pathname: '/auth/files',
+    name: 'Files',
+    component: Files,
+    meta: {
+      title: 'Files',
+      requiresAuth: true,
+    },
+  },
+  {
+    pathname: '/auth/files/:path*',
     name: 'File',
-    component: <Files />,
+    component: Files,
     meta: {
       title: 'File',
       requiresAuth: true,
@@ -73,10 +73,10 @@ const routes: Route[] = [
   {
     pathname: '/404',
     name: 'Not Found',
-    component: <NotFound />,
+    component: NotFound,
     meta: {
       title: 'Not found',
-      requiresAuth: true,
+      requiresAuth: false,
     },
   },
 ]

@@ -1,5 +1,4 @@
 import { useState, type MouseEvent } from 'react'
-import { useTheme } from '@mui/material'
 import Stack from '@mui/material/Stack'
 import IconButton from '@mui/material/IconButton'
 import Checkbox from '@mui/material/Checkbox'
@@ -9,8 +8,8 @@ import TableCell from '@mui/material/TableCell'
 import FileMenu from '../fileMenu/FileMenu'
 import GradeIcon from '@mui/icons-material/Grade'
 import { getPath } from './helpers'
-import type { FileData } from './types'
 import { useNavigate } from 'react-router-dom'
+import type { File } from 'types/files'
 
 type Props = {
   row: {
@@ -19,7 +18,7 @@ type Props = {
     size: string
     modified: string
   }
-  filesData: FileData[]
+  files: File[]
   isItemSelected: boolean
   labelId: string
   isFavorite?: boolean
@@ -33,7 +32,7 @@ type Props = {
 
 function TableRow({
   row,
-  filesData,
+  files,
   isItemSelected,
   labelId,
   isFavorite,
@@ -44,7 +43,6 @@ function TableRow({
   handleDrawerOpen,
   toggleDrawer,
 }: Props) {
-  const theme = useTheme()
   const navigate = useNavigate()
   const [isHovered, setIsHovered] = useState(false)
 
@@ -63,8 +61,8 @@ function TableRow({
 
     if (isDelete) return handleDrawerOpen()
 
-    const path = getPath(row.id, filesData)
-    if (path) return navigate(`/${path}`)
+    const path = getPath(row.id, files)
+    if (path) return navigate(`/auth/files/${path}`)
   }
 
   return (
@@ -114,11 +112,12 @@ function TableRow({
           <Stack direction="row" alignItems="center" gap={2}>
             <FileMenu
               id={row.id}
-              filesData={filesData}
+              files={files}
               isFavorite={isFavorite}
               isDelete={isDelete}
               isHovered={isHovered}
               toggleDrawer={toggleDrawer}
+              handleDrawerOpen={handleDrawerOpen}
               onFavoriteClick={onFavoriteClick}
               handleChangeDrawerTab={handleChangeDrawerTab}
             />

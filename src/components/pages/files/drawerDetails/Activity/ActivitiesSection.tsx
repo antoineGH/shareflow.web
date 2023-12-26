@@ -1,6 +1,6 @@
 import Box from '@mui/material/Box'
 import Activity from './Activity'
-import type { Activity as ActivityT } from './types'
+import { Activity as ActivityT } from 'types/activities'
 
 type Props = {
   activities: ActivityT[]

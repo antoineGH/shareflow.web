@@ -2,10 +2,17 @@ import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import { calculateStoragePercentage } from './helpers'
 import StyledLinearProgress from './StyledLinearProgress'
+import type { Settings } from 'types/settings'
 
 function Storage() {
-  const storageUsed = 5
-  const totalStorage = 10
+  const settings: Settings = {
+    storage: {
+      storageUsed: 5,
+      totalStorage: 10,
+    },
+  }
+
+  const { storageUsed, totalStorage } = settings.storage
 
   return (
     <Box p={1}>

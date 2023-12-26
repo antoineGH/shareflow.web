@@ -16,19 +16,19 @@ const mainListItems: ListItem[] = [
     id: 'allFiles',
     label: 'All files',
     icon: <FolderIcon />,
-    path: '/',
+    path: '/auth/files',
   },
   {
     id: 'favorites',
     label: 'Favorites',
     icon: <GradeIcon />,
-    path: '/favorites',
+    path: '/auth/favorites',
   },
   {
     id: 'tags',
     label: 'Tags',
     icon: <StyleIcon />,
-    path: '/tags',
+    path: '/auth/tags',
   },
 ]
 
@@ -37,13 +37,13 @@ const secondaryListItems: ListItem[] = [
     id: 'deletedFiles',
     label: 'Deleted files',
     icon: <DeleteIcon />,
-    path: '/deleted',
+    path: '/auth/deleted',
   },
   {
     id: 'settings',
     label: 'Settings',
     icon: <SettingsIcon />,
-    path: '/settings',
+    path: '/auth/settings',
   },
 ]
 

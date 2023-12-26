@@ -1,14 +1,14 @@
 import Stack from '@mui/material/Stack'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
-import type { TagData } from './types'
+import type { Tag } from 'types/tags'
 
 type Props = {
-  option: TagData
+  option: Tag
 }
 
 function Title({ option }: Props) {
-  const { name } = option
+  const { tag } = option
 
   return (
     <Stack
@@ -22,7 +22,7 @@ function Title({ option }: Props) {
           fontWeight: tm.typography.fontWeightMedium,
         })}
       >
-        {name}
+        {tag}
       </Typography>
       <Box flexGrow={1} />
     </Stack>

@@ -2,13 +2,13 @@ import { ListItem, ListItemText } from '@mui/material'
 import type { HTMLAttributes } from 'react'
 import Title from './Title'
 import { generateClassNames } from './helpers'
-import type { TagData } from './types'
+import type { Tag } from 'types/tags'
 
 type Props = {
-  option: TagData
+  option: Tag
   isSelected: boolean
   optionAttr: HTMLAttributes<HTMLLIElement>
-  onClickOption: (option: TagData) => void
+  onClickOption: (option: Tag) => void
 }
 
 function Option({ option, isSelected, optionAttr, onClickOption }: Props) {

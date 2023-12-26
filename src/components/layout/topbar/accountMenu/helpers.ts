@@ -3,11 +3,20 @@ type Props = {
   pathname: string
   navigate: (path: string) => void
   closeMenu: () => void
+  logout: () => void
 }
 
-const drawerNavigation = ({ path, pathname, navigate, closeMenu }: Props) => {
-  if (path === '/logout') {
-    console.log('logout')
+const drawerNavigation = ({
+  path,
+  pathname,
+  navigate,
+  closeMenu,
+  logout,
+}: Props) => {
+  console.log(path, pathname)
+  if (path === '/auth/logout') {
+    logout()
+    navigate('/login')
     closeMenu()
   } else if (path === pathname) {
     closeMenu()
