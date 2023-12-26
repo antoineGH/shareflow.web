@@ -22,6 +22,7 @@ const storageSlice = createSlice({
   initialState: initialState,
   reducers: {},
   extraReducers: builder => {
+    // ### fetchStorage ###
     builder.addCase(fetchStorage.pending, state => {
       state.status = Status.PENDING
     })

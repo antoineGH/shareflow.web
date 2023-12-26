@@ -7,10 +7,13 @@ import type {
   PostFileReturnType,
   PutFileReturnType,
   DeleteFileReturnType,
-  FileApi,
   FileDataApi,
   FileData,
   File,
+  PutFileDataApi,
+  PutFileData,
+  PostFileDataApi,
+  PostFileData,
 } from 'types/files'
 
 const errGetFilesMsg = 'An error occurred while getting files. Please try again'
@@ -38,7 +41,11 @@ async function getFiles(userId: number, signal?: AbortSignal) {
 const errPostFileMsg =
   'An error occurred while creating the file. Please try again'
 
-async function postFile(userId: number, newFile: Omit<File, 'id'>) {
+async function postFile(
+  userId: number,
+  newFile: Omit<File, 'id'>,
+  signal?: AbortSignal,
+) {
   Promise<PostFileReturnType>
   try {
     // TODO: replace with proper URL and update status code
@@ -46,15 +53,15 @@ async function postFile(userId: number, newFile: Omit<File, 'id'>) {
     const url = 'http://localhost:5000/files'
     const body = JSON.stringify(newFile)
 
-    const res = await rest.post({ url, body })
+    const res = await rest.post({ url, body, signal })
 
     if (res?.response?.status !== 201) {
       throw new HttpResponseError(res?.response?.status ?? null, errPostFileMsg)
     }
 
     const { object } = res
-    const file = convertObjectKeys<FileApi, File>(object)
-    return { file }
+    const fileData = convertObjectKeys<PostFileDataApi, PostFileData>(object)
+    return { fileData }
   } catch (error) {
     console.error(error)
     return { error }
@@ -64,7 +71,12 @@ async function postFile(userId: number, newFile: Omit<File, 'id'>) {
 const errPutFileMsg =
   'An error occurred while updating the file. Please try again'
 
-async function putFile(userId: number, fileId: number, updatedFile: File) {
+async function putFile(
+  userId: number,
+  fileId: number,
+  updatedFile: File,
+  signal?: AbortSignal,
+) {
   Promise<PutFileReturnType>
   try {
     // TODO: replace with proper URL and update status code
@@ -72,15 +84,15 @@ async function putFile(userId: number, fileId: number, updatedFile: File) {
     const url = 'http://localhost:5000/files'
     const body = JSON.stringify(updatedFile)
 
-    const res = await rest.put({ url, body })
+    const res = await rest.put({ url, body, signal })
 
     if (res?.response?.status !== 204) {
       throw new HttpResponseError(res?.response?.status ?? null, errPutFileMsg)
     }
 
     const { object } = res
-    const file = convertObjectKeys<FileApi, File>(object)
-    return { file }
+    const fileData = convertObjectKeys<PutFileDataApi, PutFileData>(object)
+    return { fileData }
   } catch (error) {
     console.error(error)
     return { error }
@@ -90,13 +102,17 @@ async function putFile(userId: number, fileId: number, updatedFile: File) {
 const errDeleteFileMsg =
   'An error occurred while deleting the file. Please try again'
 
-async function deleteFile(userId: number, fileId: number) {
+async function deleteFile(
+  userId: number,
+  fileId: number,
+  signal?: AbortSignal,
+) {
   Promise<DeleteFileReturnType>
   try {
     // TODO: replace with proper URL and update status code
     // const url = formatURL(`${DELETE_FILE}`, { userId, fileId })
     const url = 'http://localhost:5000/files'
-    const res = await rest.delete({ url })
+    const res = await rest.delete({ url, signal })
 
     if (res?.response?.status !== 204) {
       throw new HttpResponseError(

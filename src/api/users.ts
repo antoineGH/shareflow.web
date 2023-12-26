@@ -35,7 +35,11 @@ async function getUser(userId: number, signal?: AbortSignal) {
 
 const errPutUserMsg = 'An error occurred while updating user. Please try again'
 
-async function putUser(userId: number, newUser: Omit<User, 'id'>) {
+async function putUser(
+  userId: number,
+  newUser: Omit<User, 'id'>,
+  signal?: AbortSignal,
+) {
   Promise<PutUserReturnType>
   try {
     // TODO: replace with proper URL and status code
@@ -43,7 +47,7 @@ async function putUser(userId: number, newUser: Omit<User, 'id'>) {
     const url = 'http://localhost:5000/users'
 
     const body = JSON.stringify(newUser)
-    const res = await rest.put({ url, body })
+    const res = await rest.put({ url, body, signal })
 
     if (res?.response?.status !== 204) {
       throw new HttpResponseError(res?.response?.status ?? null, errPutUserMsg)

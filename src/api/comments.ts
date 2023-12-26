@@ -74,14 +74,18 @@ async function postComment(fileId: number, newComment: Omit<Comment, 'id'>) {
 const errDeleteCommentMsg =
   'An error occurred while deleting the comment. Please try again'
 
-async function deleteComment(fileId: number, commentId: number) {
+async function deleteComment(
+  fileId: number,
+  commentId: number,
+  signal?: AbortSignal,
+) {
   Promise<DeleteCommentReturnType>
 
   try {
     // TODO: replace with proper URL and update status code
     // const url = formatURL(`${DELETE_COMMENT}`, { fileId, commentId })
     const url = 'http://localhost:5000/comments/2'
-    const res = await rest.delete({ url })
+    const res = await rest.delete({ url, signal })
 
     if (res?.response?.status !== 204) {
       throw new HttpResponseError(

@@ -28,6 +28,24 @@ export type FileDataApi = {
 export type File = SnakeCaseToCamelCase<FileApi>
 export type FileData = SnakeCaseToCamelCase<FileDataApi>
 
+export type PostFileDataApi = {
+  file: File
+  countFiles: FileData['countFiles']
+  countFolders: FileData['countFolders']
+  totalSize: FileData['totalSize']
+}
+
+export type PostFileData = SnakeCaseToCamelCase<PostFileDataApi>
+
+export type PutFileDataApi = {
+  file: File
+  countFiles: FileData['countFiles']
+  countFolders: FileData['countFolders']
+  totalSize: FileData['totalSize']
+}
+
+export type PutFileData = SnakeCaseToCamelCase<PutFileDataApi>
+
 export type GetFilesReturnType =
   | {
       filesData: FileData
@@ -40,21 +58,21 @@ export type GetFilesReturnType =
 
 export type PostFileReturnType =
   | {
-      file: File
+      fileData: PostFileData
       error?: never
     }
   | {
-      file?: never
+      fileData?: never
       error: Error
     }
 
 export type PutFileReturnType =
   | {
-      file: File
+      fileData: PutFileData
       error?: never
     }
   | {
-      file?: never
+      fileData?: never
       error: Error
     }
 

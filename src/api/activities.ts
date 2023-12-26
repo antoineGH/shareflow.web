@@ -46,6 +46,7 @@ const errPostActivitiesMsg =
 async function postActivities(
   userId: number,
   newActivity: Omit<Activity, 'id'>,
+  signal?: AbortSignal,
 ) {
   Promise<PostActivitiesReturnType>
   try {
@@ -55,7 +56,7 @@ async function postActivities(
 
     const body = JSON.stringify(newActivity)
 
-    const res = await rest.post({ url, body })
+    const res = await rest.post({ url, body, signal })
 
     if (res?.response?.status !== 201) {
       throw new HttpResponseError(

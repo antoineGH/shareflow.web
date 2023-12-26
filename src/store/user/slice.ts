@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit'
 import { getStateSliceFromError } from 'store/utils'
 import { Status } from 'types/store'
 import { User } from 'types/users'
-import { fetchUser } from './actions'
+import { fetchUser, updateUser } from './actions'
 
 type InitialState = {
   status: Status
@@ -19,15 +19,27 @@ export const userSlice = createSlice({
   initialState: initialState,
   reducers: {},
   extraReducers: builder => {
+    // ### fetchUser ###
     builder.addCase(fetchUser.pending, state => {
       state.status = Status.PENDING
     })
     builder.addCase(fetchUser.fulfilled, (state, action) => {
       state.status = Status.SUCCEEDED
-      console.log(action.payload)
       state.user = action.payload
     })
     builder.addCase(fetchUser.rejected, (state, action) => {
+      state.status = getStateSliceFromError(action)
+    })
+
+    // ### updateUser ###
+    builder.addCase(updateUser.pending, state => {
+      state.status = Status.PENDING
+    })
+    builder.addCase(updateUser.fulfilled, (state, action) => {
+      state.status = Status.SUCCEEDED
+      state.user = action.payload
+    })
+    builder.addCase(updateUser.rejected, (state, action) => {
       state.status = getStateSliceFromError(action)
     })
   },

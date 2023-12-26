@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
-import { getUser } from 'api/users'
+import { getUser, putUser } from 'api/users'
 import { HttpResponseError } from 'helpers/errors'
 import { RootState } from 'store/store'
 import { catchAsyncThunk } from 'store/utils'
@@ -23,4 +23,26 @@ const fetchUser = createAsyncThunk<
   }
 })
 
-export { fetchUser }
+const updateUser = createAsyncThunk<
+  User,
+  {
+    userId: number
+    newUser: Omit<User, 'id'>
+  },
+  { state: RootState; rejectValue: { errorMessage: string; code?: number } }
+>(
+  'user/updateUser',
+  async ({ userId, newUser }, { signal, rejectWithValue }) => {
+    try {
+      const { error, user } = await putUser(userId, newUser, signal)
+
+      if (error) throw new HttpResponseError(error.code || null, error.message)
+
+      return user
+    } catch (error) {
+      return catchAsyncThunk(error, rejectWithValue)
+    }
+  },
+)
+
+export { fetchUser, updateUser }
