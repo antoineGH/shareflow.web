@@ -1,7 +1,7 @@
 import type { MouseEvent, ChangeEvent } from 'react'
-import type { FileApi } from 'types/files'
+import type { File } from 'types/files'
 
-export type Data = Omit<FileApi, 'path' | 'action'>
+export type Data = Omit<File, 'path' | 'action' | 'isFavorite'>
 
 export type Order = 'asc' | 'desc'
 
@@ -19,6 +19,6 @@ export type EnhancedTableProps = {
   order: Order
   orderBy: string
   rowCount: number
-  isFavorite?: boolean
-  isDelete?: boolean
+  isPageFavorite?: boolean
+  isPageDelete?: boolean
 }

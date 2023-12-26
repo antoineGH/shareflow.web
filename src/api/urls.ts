@@ -27,6 +27,7 @@ const DELETE_TAG = `${BASE_API}/users/{fileId}/tags/{tagId}.json`
 const GET_FILES = `${BASE_API}/users/{userId}/files.json`
 const POST_FILE = `${BASE_API}/users/{userId}/files.json`
 const PUT_FILE = `${BASE_API}/users/{userId}/files/{fileId}.json`
+const PATCH_FILE = `${BASE_API}/users/{userId}/files/{fileId}.json`
 const DELETE_FILE = `${BASE_API}/users/{userId}/files/{fileId}.json`
 
 export {
@@ -44,5 +45,6 @@ export {
   GET_FILES,
   POST_FILE,
   PUT_FILE,
+  PATCH_FILE,
   DELETE_FILE,
 }

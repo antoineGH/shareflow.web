@@ -10,6 +10,7 @@ import GradeIcon from '@mui/icons-material/Grade'
 import { getPath } from './helpers'
 import { useNavigate } from 'react-router-dom'
 import type { File } from 'types/files'
+import { useTheme } from '@mui/material'
 
 type Props = {
   row: {
@@ -21,8 +22,8 @@ type Props = {
   files: File[]
   isItemSelected: boolean
   labelId: string
-  isFavorite?: boolean
-  isDelete?: boolean
+  isPageFavorite?: boolean
+  isPageDelete?: boolean
   onCheckBoxClick: (id: number) => void
   onFavoriteClick: (id: number) => void
   handleChangeDrawerTab: (tab: number) => void
@@ -35,8 +36,8 @@ function TableRow({
   files,
   isItemSelected,
   labelId,
-  isFavorite,
-  isDelete,
+  isPageFavorite,
+  isPageDelete,
   onCheckBoxClick,
   onFavoriteClick,
   handleChangeDrawerTab,
@@ -44,7 +45,11 @@ function TableRow({
   toggleDrawer,
 }: Props) {
   const navigate = useNavigate()
+  const theme = useTheme()
+
   const [isHovered, setIsHovered] = useState(false)
+
+  const isFavorite = files.find(file => file.id === row.id)?.isFavorite || false
 
   const handleCheckBoxClick = (e: MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation()
@@ -59,7 +64,7 @@ function TableRow({
   const handleClickRow = (e: MouseEvent<HTMLTableRowElement>) => {
     e.stopPropagation()
 
-    if (isDelete) return handleDrawerOpen()
+    if (isPageDelete) return handleDrawerOpen()
 
     const path = getPath(row.id, files)
     if (path) return navigate(`/auth/files/${path}`)
@@ -87,9 +92,15 @@ function TableRow({
         colSpan={2}
       >
         <Stack direction="row" alignItems="center" gap={1}>
-          {isFavorite ? (
+          {isPageFavorite ? (
             <IconButton onClick={event => handleClickFavorite(event)}>
-              <GradeIcon sx={{ color: 'gold' }} />
+              <GradeIcon
+                sx={{
+                  color: isFavorite
+                    ? 'gold'
+                    : theme.palette.primary.contrastText,
+                }}
+              />
             </IconButton>
           ) : (
             <Checkbox
@@ -113,8 +124,8 @@ function TableRow({
             <FileMenu
               id={row.id}
               files={files}
-              isFavorite={isFavorite}
-              isDelete={isDelete}
+              isPageFavorite={isPageFavorite}
+              isPageDelete={isPageDelete}
               isHovered={isHovered}
               toggleDrawer={toggleDrawer}
               handleDrawerOpen={handleDrawerOpen}

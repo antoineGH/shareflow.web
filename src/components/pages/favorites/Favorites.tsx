@@ -23,6 +23,7 @@ function Favorites() {
         name: 'Documents',
         size: '305 KB',
         modified: '2012-12-14',
+        isFavorite: true,
         path: 'Documents',
         action: ['comments', 'tags', 'restore', 'download', 'delete'],
       },
@@ -31,6 +32,7 @@ function Favorites() {
         name: 'Photos',
         size: '452 KB',
         modified: '2012-12-14',
+        isFavorite: true,
         path: 'Photos',
         action: ['comments', 'tags', 'restore', 'download', 'delete'],
       },
@@ -39,6 +41,7 @@ function Favorites() {
         name: 'Images',
         size: '262 KB',
         modified: '2012-12-14',
+        isFavorite: true,
         path: 'Images',
         action: ['comments', 'tags', 'restore', 'download', 'delete'],
       },
@@ -47,6 +50,7 @@ function Favorites() {
         name: 'Download',
         size: '159 KB',
         modified: '2012-12-14',
+        isFavorite: true,
         path: 'Download',
         action: ['comments', 'tags', 'restore', 'download', 'delete'],
       },
@@ -73,7 +77,7 @@ function Favorites() {
       </Grid>
       <FilesTable
         files={files}
-        isFavorite={true}
+        isPageFavorite={true}
         handleChangeDrawerTab={handleChangeDrawerTab}
         handleDrawerOpen={handleDrawerOpen}
         toggleDrawer={toggleDrawer}

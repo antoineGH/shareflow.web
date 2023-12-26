@@ -12,8 +12,8 @@ import { File } from 'types/files'
 type Props = {
   id: number
   files: File[]
-  isFavorite?: boolean
-  isDelete?: boolean
+  isPageFavorite?: boolean
+  isPageDelete?: boolean
   isHovered?: boolean
   toggleDrawer: () => void
   handleDrawerOpen: () => void
@@ -24,8 +24,8 @@ type Props = {
 function FileMenu({
   id,
   files,
-  isFavorite,
-  isDelete,
+  isPageFavorite,
+  isPageDelete,
   isHovered,
   toggleDrawer,
   handleDrawerOpen,
@@ -35,13 +35,15 @@ function FileMenu({
   const theme = useTheme()
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
-  const shouldDisplayFavoriteButton = !isFavorite && !isDelete && isHovered
+  const shouldDisplayFavoriteButton =
+    !isPageFavorite && !isPageDelete && isHovered
 
   const actions: ListItem['id'][] = useMemo(() => {
     const result = files.find(file => file.id === id)?.action || []
     return result
   }, [files, id])
 
+  const isFavorite = files.find(file => file.id === id)?.isFavorite || false
   const filteredAction = getAvailableActions(actions)
 
   const openMenu = (e: MouseEvent<HTMLElement>) => {
@@ -122,7 +124,11 @@ function FileMenu({
     <>
       {shouldDisplayFavoriteButton && (
         <IconButton size="small" onClick={e => handleClickFavorite(e)}>
-          <GradeIcon sx={{ color: theme.palette.secondary.light }} />
+          <GradeIcon
+            sx={{
+              color: isFavorite ? 'gold' : theme.palette.secondary.light,
+            }}
+          />
         </IconButton>
       )}
       <IconButton size="small" onClick={e => handleClickDetails(e)}>
