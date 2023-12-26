@@ -73,7 +73,7 @@ function Deleted() {
       </Grid>
       <FilesTable
         files={files}
-        isDelete
+        isPageDelete
         handleChangeDrawerTab={handleChangeDrawerTab}
         handleDrawerOpen={handleDrawerOpen}
         toggleDrawer={toggleDrawer}

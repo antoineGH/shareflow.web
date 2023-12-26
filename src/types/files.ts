@@ -15,11 +15,12 @@ export type FileApi = {
   size: string
   modified: string
   path?: string
+  is_favorite?: boolean
   action: ListItemKey[]
 }
 
 export type FileDataApi = {
-  files: FileApi[]
+  files: SnakeCaseToCamelCase<FileApi>[]
   count_files: number
   count_folders: number
   total_size: string
@@ -45,6 +46,8 @@ export type PutFileDataApi = {
 }
 
 export type PutFileData = SnakeCaseToCamelCase<PutFileDataApi>
+
+export type PatchFileData = Partial<SnakeCaseToCamelCase<FileApi>>
 
 export type GetFilesReturnType =
   | {

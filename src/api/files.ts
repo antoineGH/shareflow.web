@@ -1,4 +1,4 @@
-import { DELETE_FILE, GET_FILES, POST_FILE, PUT_FILE } from './urls'
+import { DELETE_FILE, GET_FILES, PATCH_FILE, POST_FILE, PUT_FILE } from './urls'
 import { rest } from 'helpers/rest'
 import { HttpResponseError } from 'helpers/errors'
 import { convertObjectKeys, formatURL } from './utils'
@@ -14,6 +14,7 @@ import type {
   PutFileData,
   PostFileDataApi,
   PostFileData,
+  FileApi,
 } from 'types/files'
 
 const errGetFilesMsg = 'An error occurred while getting files. Please try again'
@@ -99,6 +100,40 @@ async function putFile(
   }
 }
 
+const errPatchFileMsg =
+  'An error occurred while updating the file. Please try again'
+
+async function patchFile(
+  userId: number,
+  fileId: number,
+  updates: Partial<File>,
+  signal?: AbortSignal,
+) {
+  Promise<PutFileReturnType>
+  try {
+    // TODO: replace with proper URL and update status code
+    // const url = formatURL(`${PATCH_FILE}`, { userId, fileId })
+    const url = 'http://localhost:5000/files'
+    const body = JSON.stringify(updates)
+
+    const res = await rest.patch({ url, body, signal })
+
+    if (res?.response?.status !== 204) {
+      throw new HttpResponseError(
+        res?.response?.status ?? null,
+        errPatchFileMsg,
+      )
+    }
+
+    const { object } = res
+    const file = convertObjectKeys<FileApi, File>(object)
+    return { file }
+  } catch (error) {
+    console.error(error)
+    return { error }
+  }
+}
+
 const errDeleteFileMsg =
   'An error occurred while deleting the file. Please try again'
 
@@ -127,4 +162,4 @@ async function deleteFile(
   }
 }
 
-export { getFiles, postFile, putFile, deleteFile }
+export { getFiles, postFile, putFile, patchFile, deleteFile }

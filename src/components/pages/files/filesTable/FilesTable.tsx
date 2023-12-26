@@ -23,8 +23,8 @@ import type { File } from 'types/files'
 
 type Props = {
   files: File[]
-  isFavorite?: boolean
-  isDelete?: boolean
+  isPageFavorite?: boolean
+  isPageDelete?: boolean
   toggleDrawer: () => void
   handleDrawerOpen: () => void
   handleChangeDrawerTab: (tab: number) => void
@@ -32,8 +32,8 @@ type Props = {
 
 function FilesTable({
   files,
-  isFavorite,
-  isDelete,
+  isPageFavorite,
+  isPageDelete,
   toggleDrawer,
   handleDrawerOpen,
   handleChangeDrawerTab,
@@ -127,7 +127,7 @@ function FilesTable({
     // <>
     <Box sx={{ width: '100%' }}>
       <Paper sx={{ width: '100%' }}>
-        {isFavorite ? null : (
+        {isPageFavorite ? null : (
           <Toolbar
             selectedMultiActions={selectedMultiActions}
             selected={selected}
@@ -142,7 +142,7 @@ function FilesTable({
               onSelectAllClick={handleSelectAllClick}
               onRequestSort={handleRequestSort}
               rowCount={rows.length}
-              isFavorite={isFavorite}
+              isPageFavorite={isPageFavorite}
             />
             <TableBody>
               {visibleRows.map((row, index) => {
@@ -155,8 +155,8 @@ function FilesTable({
                     files={files}
                     isItemSelected={isItemSelected}
                     labelId={labelId}
-                    isFavorite={isFavorite}
-                    isDelete={isDelete}
+                    isPageFavorite={isPageFavorite}
+                    isPageDelete={isPageDelete}
                     onCheckBoxClick={onCheckBoxClick}
                     onFavoriteClick={onFavoriteClick}
                     handleChangeDrawerTab={handleChangeDrawerTab}

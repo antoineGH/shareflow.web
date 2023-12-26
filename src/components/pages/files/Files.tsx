@@ -53,6 +53,7 @@ function Files() {
         size: '305 KB',
         modified: '2012-12-14',
         path: 'Documents',
+        isFavorite: true,
         action: ['comments', 'tags', 'restore', 'download', 'delete'],
       },
       {

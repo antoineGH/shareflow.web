@@ -1,9 +1,15 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
-import { deleteFile, getFiles, postFile, putFile } from 'api/files'
+import { deleteFile, getFiles, patchFile, postFile, putFile } from 'api/files'
 import { HttpResponseError } from 'helpers/errors'
 import { RootState } from 'store/store'
 import { catchAsyncThunk } from 'store/utils'
-import type { File, FileData, PostFileData, PutFileData } from 'types/files'
+import type {
+  File,
+  FileData,
+  PatchFileData,
+  PostFileData,
+  PutFileData,
+} from 'types/files'
 
 const fetchFiles = createAsyncThunk<
   FileData,
@@ -73,6 +79,29 @@ const updateFile = createAsyncThunk<
   },
 )
 
+const partialUpdateFile = createAsyncThunk<
+  PatchFileData,
+  {
+    userId: number
+    fileId: File['id']
+    updates: Partial<File>
+  },
+  { state: RootState; rejectValue: { errorMessage: string; code?: number } }
+>(
+  'files/patchFile',
+  async ({ userId, fileId, updates }, { signal, rejectWithValue }) => {
+    try {
+      const { error, file } = await patchFile(userId, fileId, updates, signal)
+
+      if (error) throw new HttpResponseError(error.code || null, error.message)
+
+      return file
+    } catch (error) {
+      return catchAsyncThunk(error, rejectWithValue)
+    }
+  },
+)
+
 const removeFile = createAsyncThunk<
   File['id'],
   {
@@ -94,4 +123,4 @@ const removeFile = createAsyncThunk<
   },
 )
 
-export { fetchFiles, createFile, updateFile, removeFile }
+export { fetchFiles, createFile, updateFile, partialUpdateFile, removeFile }
