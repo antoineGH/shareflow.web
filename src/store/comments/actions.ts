@@ -25,7 +25,13 @@ const fetchComments = createAsyncThunk<
 
 const createComment = createAsyncThunk<
   Comment,
-  { fileId: number; newComment: Omit<Comment, 'id'> },
+  {
+    fileId: number
+    newComment: Omit<
+      Comment,
+      'id' | 'userId' | 'fileId' | 'createdAt' | 'updatedAt'
+    >
+  },
   { state: RootState; rejectValue: { errorMessage: string; code?: number } }
 >(
   'comments/createComment',

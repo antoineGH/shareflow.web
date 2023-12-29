@@ -38,7 +38,7 @@ const errPostTagMsg =
 
 async function postTag(
   fileId: number,
-  newTag: Omit<Tag, 'id'>,
+  newTag: Omit<Tag, 'id' | 'fileId' | 'userId'>,
   signal?: AbortSignal,
 ) {
   Promise<PostTagsReturnType>

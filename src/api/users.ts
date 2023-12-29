@@ -37,7 +37,7 @@ const errPutUserMsg = 'An error occurred while updating user. Please try again'
 
 async function putUser(
   userId: number,
-  newUser: Omit<User, 'id'>,
+  newUser: Omit<User, 'id' | 'createdAt'>,
   signal?: AbortSignal,
 ) {
   Promise<PutUserReturnType>

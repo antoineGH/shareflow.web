@@ -45,7 +45,10 @@ const errPostActivitiesMsg =
 
 async function postActivities(
   userId: number,
-  newActivity: Omit<Activity, 'id'>,
+  newActivity: Omit<
+    Activity,
+    'id' | 'createdAt' | 'updatedAt' | 'userId' | 'fileId'
+  >,
   signal?: AbortSignal,
 ) {
   Promise<PostActivitiesReturnType>
