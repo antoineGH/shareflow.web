@@ -8,10 +8,7 @@ function Comments() {
   const comments: Comment[] = [
     {
       id: 1,
-      user: {
-        id: 101,
-        name: 'Antoine Ratat',
-      },
+      userId: 1,
       fileId: 201,
       comment: 'This is a comment',
       createdAt: '2022-01-01T00:00:00Z',
@@ -19,10 +16,7 @@ function Comments() {
     },
     {
       id: 2,
-      user: {
-        id: 102,
-        name: 'Antoine Ratat',
-      },
+      userId: 1,
       fileId: 202,
       comment: 'This is a comment 2',
       createdAt: '2022-01-02T00:00:00Z',
@@ -30,10 +24,7 @@ function Comments() {
     },
     {
       id: 3,
-      user: {
-        id: 103,
-        name: 'Antoine Ratat',
-      },
+      userId: 1,
       fileId: 203,
       comment: 'This is a comment 3',
       createdAt: '2022-01-03T00:00:00Z',

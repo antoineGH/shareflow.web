@@ -27,7 +27,7 @@ const updateUser = createAsyncThunk<
   User,
   {
     userId: number
-    newUser: Omit<User, 'id'>
+    newUser: Omit<User, 'id' | 'createdAt'>
   },
   { state: RootState; rejectValue: { errorMessage: string; code?: number } }
 >(

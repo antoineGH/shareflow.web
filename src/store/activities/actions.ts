@@ -28,7 +28,13 @@ const fetchActivities = createAsyncThunk<
 
 const createActivity = createAsyncThunk<
   Activity,
-  { userId: number; newActivity: Omit<Activity, 'id'> },
+  {
+    userId: number
+    newActivity: Omit<
+      Activity,
+      'id' | 'createdAt' | 'updatedAt' | 'userId' | 'fileId'
+    >
+  },
   { state: RootState; rejectValue: { errorMessage: string; code?: number } }
 >(
   'activities/createActivity',

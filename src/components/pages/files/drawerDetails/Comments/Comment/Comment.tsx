@@ -12,6 +12,11 @@ type Props = {
 }
 
 function CommentsSection({ comments }: Props) {
+  // TODO: dispatch fetch user object with userId from comment
+  const user = {
+    id: 1,
+    name: 'John Doe',
+  }
   return (
     <Box
       sx={{
@@ -20,7 +25,7 @@ function CommentsSection({ comments }: Props) {
         maxHeight: 'calc(100vh - 440px)',
       }}
     >
-      {comments.map(({ id, comment, createdAt, user }) => (
+      {comments.map(({ id, comment, createdAt }) => (
         <Box key={id} sx={{ mt: 2, mb: 3, pr: '1rem' }}>
           <Stack direction="row" alignItems="center" spacing={1}>
             <Avatar

@@ -23,7 +23,7 @@ const fetchTags = createAsyncThunk<
 
 const createTag = createAsyncThunk<
   Tag,
-  { fileId: number; newTag: Omit<Tag, 'id'> },
+  { fileId: number; newTag: Omit<Tag, 'id' | 'userId' | 'fileId'> },
   { state: RootState; rejectValue: { errorMessage: string; code?: number } }
 >('tags/createTag', async ({ fileId, newTag }, { signal, rejectWithValue }) => {
   try {

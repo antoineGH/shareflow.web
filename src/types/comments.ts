@@ -2,10 +2,7 @@ import { SnakeCaseToCamelCase } from './utils'
 
 export type CommentApi = {
   id: number
-  user: {
-    id: number
-    name: string
-  }
+  user_id: number
   file_id: number
   comment: string
   created_at: string
