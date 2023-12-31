@@ -10,8 +10,8 @@ import CountFiles from './countFiles/CountFiles'
 import { useParams } from 'react-router-dom'
 import { extractRoutingParams } from './helpers'
 import { FileData } from 'types/files'
-import { useEffect } from 'react'
-import { useDispatch, useSelector } from 'store/hooks'
+import useFirstConnect from './firstLoginModal/useFirstConnect'
+import FirstLoginModal from './firstLoginModal/FirstLoginModal'
 
 function Files() {
   const params = useParams<{ path: string }>()
@@ -20,14 +20,10 @@ function Files() {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const routingParams = extractRoutingParams(params)
 
-  // TODO: TESTING ONLY - TO REMOVE
-  const dispatch = useDispatch()
-  useEffect(() => {
-    // dispatch(fetchFiles({ userId: 1 }))
-  }, [])
-
-  // const myFiles = useSelector(selectFilesSelector)
-  // console.log('myFiles', myFiles)
+  const {
+    open: openFirstConnectModal,
+    handleClose: handleCloseFirstConnectModal,
+  } = useFirstConnect()
 
   const {
     droppedFiles,
@@ -120,6 +116,10 @@ function Files() {
         open={isModalAddDocumentsOpen}
         close={closeModalAddDocs}
         droppedFiles={droppedFiles}
+      />
+      <FirstLoginModal
+        open={openFirstConnectModal}
+        handleClose={handleCloseFirstConnectModal}
       />
     </Grid>
   )
