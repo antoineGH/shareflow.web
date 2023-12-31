@@ -8,7 +8,7 @@ const StyledAlert = styled(Alert)({
   width: '100%',
   marginRight: '.5rem',
   marginLeft: 0,
-  backgroundColor: '#f7f7f7',
+  backgroundColor: '#fff',
 })
 
 export default StyledAlert

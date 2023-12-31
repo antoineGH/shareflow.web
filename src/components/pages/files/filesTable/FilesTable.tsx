@@ -131,6 +131,7 @@ function FilesTable({
           <Toolbar
             selectedMultiActions={selectedMultiActions}
             selected={selected}
+            isPageDelete={isPageDelete}
           />
         )}
         <TableContainer>

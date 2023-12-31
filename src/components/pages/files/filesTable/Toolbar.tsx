@@ -9,9 +9,10 @@ import StyledAlert from './StyledAlert'
 type Props = {
   selected: number[]
   selectedMultiActions: ListItemKey[]
+  isPageDelete?: boolean
 }
 
-function Toolbar({ selected, selectedMultiActions }: Props) {
+function Toolbar({ selected, selectedMultiActions, isPageDelete }: Props) {
   const theme = useTheme()
   const numSelected = selected.length
 
@@ -66,8 +67,10 @@ function Toolbar({ selected, selectedMultiActions }: Props) {
           </>
         ) : (
           <Grid item sx={{ width: '100%' }}>
-            <StyledAlert severity="info">
-              Save, organize, and tidy up your files effortlessly in shareFlow
+            <StyledAlert severity={isPageDelete ? 'warning' : 'info'}>
+              {isPageDelete
+                ? 'You will be able to recover deleted files from here for 30 days.'
+                : 'Save, organize, and tidy up your files effortlessly in shareFlow'}
             </StyledAlert>
           </Grid>
         )}
