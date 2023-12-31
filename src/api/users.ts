@@ -14,9 +14,7 @@ const errGetUserMsg = 'An error occurred while getting user. Please try again'
 async function getUser(userId: number, signal?: AbortSignal) {
   Promise<GetUserReturnType>
   try {
-    // TODO: replace with proper URL and status code
-    // const url = formatURL(`${GET_USER}`, { userId })
-    const url = 'http://localhost:5000/users/1'
+    const url = formatURL(`${GET_USER}`, { userId })
 
     const res = await rest.get({ url, signal })
 
