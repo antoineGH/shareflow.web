@@ -14,7 +14,6 @@ const fetchStorage = createAsyncThunk<
 >('storage/fetchStorage', async ({ userId }, { signal, rejectWithValue }) => {
   try {
     const { error, storage } = await getStorage(userId, signal)
-
     if (error) throw new HttpResponseError(error.code || null, error.message)
 
     return storage
@@ -23,4 +22,5 @@ const fetchStorage = createAsyncThunk<
   }
 })
 
+// eslint-disable-next-line
 export { fetchStorage }

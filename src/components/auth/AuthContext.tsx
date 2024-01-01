@@ -13,7 +13,8 @@ export const AuthContext = createContext<Props>({
 })
 
 export const AuthProvider = ({ children }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false)
+  // TODO: Switch back to false
+  const [isAuthenticated, setIsAuthenticated] = useState(true)
 
   const login = () => setIsAuthenticated(true)
   const logout = () => setIsAuthenticated(false)

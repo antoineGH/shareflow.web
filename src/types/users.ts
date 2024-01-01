@@ -22,10 +22,10 @@ export type GetUserReturnType =
 
 export type PutUserReturnType =
   | {
-      user: User
+      userId: number
       error?: never
     }
   | {
-      user?: never
+      userId?: never
       error: Error
     }

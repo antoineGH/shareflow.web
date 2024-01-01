@@ -4,8 +4,12 @@ import { RootState } from 'store/store'
 const userStoreState = (state: RootState) => state.user
 
 const userStateSelector = createSelector(userStoreState, state => ({
-  isLoading: state.status === 'pending',
-  hasError: state.status === 'failed',
+  isLoadingFetch: state.statusAction.fetch === 'pending',
+  hasErrorFetch: state.statusAction.fetch === 'failed',
+  isLoadingUpdate: state.statusAction.update === 'pending',
+  hasErrorUpdate: state.statusAction.update === 'failed',
+  isLoadingPatch: state.statusAction.patch === 'pending',
+  hasErrorPatch: state.statusAction.patch === 'failed',
 }))
 
 const selectUserSelector = createSelector(userStoreState, state => state.user)

@@ -2,17 +2,42 @@ import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import { calculateStoragePercentage } from './helpers'
 import StyledLinearProgress from './StyledLinearProgress'
-import type { Settings } from 'types/settings'
+import { useSelector } from 'store/hooks'
+import { selectStorageSelector } from 'store/settings/storage/selector'
+import { userStateSelector } from 'store/user/selector'
+import { Skeleton } from '@mui/material'
 
 function Storage() {
-  const settings: Settings = {
-    storage: {
-      storageUsed: 5,
-      totalStorage: 10,
-    },
+  const storage = useSelector(selectStorageSelector)
+  const { isLoadingFetch, hasErrorFetch } = useSelector(userStateSelector)
+
+  if (isLoadingFetch) {
+    return (
+      <Box p={1}>
+        <Box position="relative" display="inline-flex" width="100%">
+          <Box sx={{ width: '100%' }}>
+            <Skeleton variant="rectangular" height={36} />
+          </Box>
+        </Box>
+      </Box>
+    )
   }
 
-  const { storageUsed, totalStorage } = settings.storage
+  if (hasErrorFetch || !storage) {
+    return (
+      <Box p={1}>
+        <Box position="relative" display="inline-flex" width="100%">
+          <Box sx={{ width: '100%' }}>
+            <Typography variant="body1" sx={{ lineHeight: '1', pl: 1 }}>
+              Error loading settings
+            </Typography>
+          </Box>
+        </Box>
+      </Box>
+    )
+  }
+
+  const { storageUsed, totalStorage } = storage
 
   return (
     <Box p={1}>
@@ -33,7 +58,7 @@ function Storage() {
           alignItems="center"
         >
           <Typography variant="body2" component="div" color="text.secondary">
-            {`You are using ${storageUsed} MB`}
+            {`You are using ${storageUsed} MB (total: ${totalStorage} MB)`}
           </Typography>
         </Box>
       </Box>

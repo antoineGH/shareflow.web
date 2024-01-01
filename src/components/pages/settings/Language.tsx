@@ -4,7 +4,7 @@ import Typography from '@mui/material/Typography'
 
 function Language() {
   return (
-    <Box p={2} pt={0}>
+    <Box p={2} pt={0} sx={{ height: '100px' }}>
       <Box>
         <Typography variant="h6">Language</Typography>
       </Box>

@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
-import { getUser, putUser } from 'api/users'
+import { getUser, patchUser, putUser } from 'api/users'
 import { HttpResponseError } from 'helpers/errors'
 import { RootState } from 'store/store'
 import { catchAsyncThunk } from 'store/utils'
@@ -24,25 +24,50 @@ const fetchUser = createAsyncThunk<
 })
 
 const updateUser = createAsyncThunk<
-  User,
+  void,
   {
     userId: number
     newUser: Omit<User, 'id' | 'createdAt'>
+    cb: () => void
   },
   { state: RootState; rejectValue: { errorMessage: string; code?: number } }
 >(
   'user/updateUser',
-  async ({ userId, newUser }, { signal, rejectWithValue }) => {
+  async ({ userId, newUser, cb }, { signal, rejectWithValue }) => {
     try {
-      const { error, user } = await putUser(userId, newUser, signal)
+      const { error } = await putUser(userId, newUser, signal)
 
       if (error) throw new HttpResponseError(error.code || null, error.message)
 
-      return user
+      cb?.()
     } catch (error) {
       return catchAsyncThunk(error, rejectWithValue)
     }
   },
 )
 
-export { fetchUser, updateUser }
+const patchUserPassword = createAsyncThunk<
+  void,
+  {
+    userId: number
+    newPassword: string
+    cb: () => void
+  },
+  { state: RootState; rejectValue: { errorMessage: string; code?: number } }
+>(
+  'user/patchUserPassword',
+  async ({ userId, newPassword, cb }, { signal, rejectWithValue }) => {
+    try {
+      const { error } = await patchUser(userId, newPassword, signal)
+
+      if (error) throw new HttpResponseError(error.code || null, error.message)
+
+      cb?.()
+    } catch (error) {
+      return catchAsyncThunk(error, rejectWithValue)
+    }
+  },
+)
+
+// eslint-disable-next-line
+export { fetchUser, updateUser, patchUserPassword }

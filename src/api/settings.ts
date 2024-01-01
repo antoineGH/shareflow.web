@@ -14,9 +14,7 @@ const errGetStorageMsg =
 async function getStorage(userId: number, signal?: AbortSignal) {
   Promise<GetStorageReturnType>
   try {
-    // TODO: replace with proper URL and update status code
-    // const url = formatURL(`${GET_STORAGE}`, { userId })
-    const url = 'http://localhost:5000/settings'
+    const url = formatURL(`${GET_STORAGE}`, { userId })
 
     const res = await rest.get({ url, signal })
 
@@ -26,12 +24,12 @@ async function getStorage(userId: number, signal?: AbortSignal) {
         errGetStorageMsg,
       )
     }
-
     const { object } = res
 
-    const storage = object?.map(storage =>
-      convertObjectKeys<SettingsApi['storage'], Settings['storage']>(storage),
-    )
+    const storage = convertObjectKeys<
+      SettingsApi['storage'],
+      Settings['storage']
+    >(object.storage)
 
     return { storage }
   } catch (error) {
