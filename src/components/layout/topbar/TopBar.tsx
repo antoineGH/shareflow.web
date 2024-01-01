@@ -32,12 +32,12 @@ function TopBar({ drawerWidth, appBarHeight, toggleDrawer }: Props) {
           onClick={toggleDrawer}
           sx={{ marginRight: '1rem' }}
         >
-          <MenuIcon />
+          <MenuIcon sx={{ color: 'white' }} />
         </IconButton>
         <Typography
           component="h1"
           variant="h6"
-          color="inherit"
+          color="white"
           noWrap
           sx={{ flexGrow: 1, fontSize: '1rem' }}
         >

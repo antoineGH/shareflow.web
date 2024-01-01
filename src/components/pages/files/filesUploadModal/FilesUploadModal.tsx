@@ -103,7 +103,15 @@ function DocumentsUploadModal({ open, close, droppedFiles }: Props) {
     <Dialog
       open={open}
       onClose={submitting ? undefined : onClose}
-      PaperProps={{ sx: { maxWidth: '740px', padding: 3 } }}
+      PaperProps={{
+        sx: {
+          maxWidth: '940px',
+          padding: 3,
+          position: 'absolute',
+          top: '15%',
+          width: '100%',
+        },
+      }}
       disableEscapeKeyDown={submitting}
     >
       <Header close={onClose} disabledClose={submitting} />
@@ -131,6 +139,7 @@ function DocumentsUploadModal({ open, close, droppedFiles }: Props) {
                   '.MuiBadge-badge': {
                     position: 'initial',
                     transform: 'none',
+                    color: 'white',
                   },
                 }}
               />

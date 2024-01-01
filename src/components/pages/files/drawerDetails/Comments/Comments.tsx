@@ -3,34 +3,25 @@ import Box from '@mui/material/Box'
 import CommentsSection from './Comment/Comment'
 import Header from './Header/Header'
 import type { Comment } from 'types/comments'
+import { useDispatch, useSelector } from 'store/hooks'
+import { useEffect } from 'react'
+import { fetchComments } from 'store/comments/actions'
+import {
+  commentsStatesStateSelector,
+  selectCommentsSelector,
+} from 'store/comments/selector'
 
 function Comments() {
-  const comments: Comment[] = [
-    {
-      id: 1,
-      userId: 1,
-      fileId: 201,
-      comment: 'This is a comment',
-      createdAt: '2022-01-01T00:00:00Z',
-      updatedAt: '2022-01-01T00:00:00Z',
-    },
-    {
-      id: 2,
-      userId: 1,
-      fileId: 202,
-      comment: 'This is a comment 2',
-      createdAt: '2022-01-02T00:00:00Z',
-      updatedAt: '2022-01-02T00:00:00Z',
-    },
-    {
-      id: 3,
-      userId: 1,
-      fileId: 203,
-      comment: 'This is a comment 3',
-      createdAt: '2022-01-03T00:00:00Z',
-      updatedAt: '2022-01-03T00:00:00Z',
-    },
-  ]
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(fetchComments({ userId: 1, fileId: 18 }))
+  }, [dispatch])
+
+  const comments: Comment[] = useSelector(selectCommentsSelector)
+  const { isLoadingFetch, hasErrorFetch } = useSelector(
+    commentsStatesStateSelector,
+  )
 
   return (
     <Stack gap={1}>
@@ -43,7 +34,11 @@ function Comments() {
           pr: 0,
         }}
       >
-        <CommentsSection comments={comments} />
+        <CommentsSection
+          comments={comments}
+          isLoading={isLoadingFetch}
+          hasError={hasErrorFetch}
+        />
       </Box>
     </Stack>
   )

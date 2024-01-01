@@ -15,7 +15,11 @@ function AddCommentForm() {
         variant="filled"
       />
       <Box>
-        <Button size="small" variant="contained">
+        <Button
+          size="small"
+          variant="contained"
+          sx={{ color: 'white', textTransform: 'capitalize' }}
+        >
           Add Comment
         </Button>
       </Box>

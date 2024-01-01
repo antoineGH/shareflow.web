@@ -5,11 +5,15 @@ import { createComment, fetchComments, removeComment } from './actions'
 import { getStateSliceFromError } from 'store/utils'
 
 type InitialState = {
-  status: Status
+  statusActions: Record<string, Status>
 }
 
 const initialState: InitialState = {
-  status: Status.IDLE,
+  statusActions: {
+    fetch: Status.IDLE,
+    create: Status.IDLE,
+    delete: Status.IDLE,
+  },
 }
 
 export const CommentsAdapter = createEntityAdapter({
@@ -23,38 +27,38 @@ const commentsSlice = createSlice({
   extraReducers: builder => {
     // ### fetchComments ###
     builder.addCase(fetchComments.pending, state => {
-      state.status = Status.PENDING
+      state.statusActions.fetch = Status.PENDING
     })
     builder.addCase(fetchComments.fulfilled, (state, action) => {
-      state.status = Status.SUCCEEDED
+      state.statusActions.fetch = Status.SUCCEEDED
       CommentsAdapter.setAll(state, action.payload)
     })
     builder.addCase(fetchComments.rejected, (state, action) => {
-      state.status = getStateSliceFromError(action)
+      state.statusActions.fetch = getStateSliceFromError(action)
     })
 
     // ### createComment ###
     builder.addCase(createComment.pending, state => {
-      state.status = Status.PENDING
+      state.statusActions.create = Status.PENDING
     })
     builder.addCase(createComment.fulfilled, (state, action) => {
-      state.status = Status.SUCCEEDED
+      state.statusActions.create = Status.SUCCEEDED
       CommentsAdapter.addOne(state, action.payload)
     })
     builder.addCase(createComment.rejected, (state, action) => {
-      state.status = getStateSliceFromError(action)
+      state.statusActions.create = getStateSliceFromError(action)
     })
 
     // ### removeComment ###
     builder.addCase(removeComment.pending, state => {
-      state.status = Status.PENDING
+      state.statusActions.delete = Status.PENDING
     })
     builder.addCase(removeComment.fulfilled, (state, action) => {
-      state.status = Status.SUCCEEDED
+      state.statusActions.delete = Status.SUCCEEDED
       CommentsAdapter.removeOne(state, action.payload)
     })
     builder.addCase(removeComment.rejected, (state, action) => {
-      state.status = getStateSliceFromError(action)
+      state.statusActions.delete = getStateSliceFromError(action)
     })
   },
 })

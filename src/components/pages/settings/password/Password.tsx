@@ -233,7 +233,7 @@ function Password({
                 type="submit"
                 loading={isLoadingPatch}
                 disabled={Object.keys(errors).length > 0 || isLoadingPatch}
-                sx={{ mt: 0.25, textTransform: 'capitalize' }}
+                sx={{ mt: 0.25, textTransform: 'capitalize', color: 'white' }}
               >
                 Change password
               </LoadingButton>

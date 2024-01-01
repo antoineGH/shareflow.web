@@ -25,6 +25,7 @@ function Footer({ isUploadDone, submitting, close, onUpload }: Props) {
             data-testid="cancel-upload-button"
             disabled={submitting}
             onClick={close}
+            sx={{ textTransform: 'capitalize' }}
           >
             Cancel
           </Button>
@@ -33,6 +34,7 @@ function Footer({ isUploadDone, submitting, close, onUpload }: Props) {
             variant="contained"
             onClick={onUpload}
             loading={submitting}
+            sx={{ color: 'white', textTransform: 'capitalize' }}
           >
             Add
           </LoadingButton>

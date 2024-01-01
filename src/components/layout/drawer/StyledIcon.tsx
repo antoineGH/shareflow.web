@@ -13,7 +13,7 @@ const StyledIcon = styled(
   ),
 )(({ activeState, activeColor }) => ({
   fontSize: '1.1rem',
-  color: activeState === 'active' ? activeColor : 'inherit',
+  color: activeState === 'active' ? activeColor : '#6c63ff91',
 }))
 
 export default StyledIcon

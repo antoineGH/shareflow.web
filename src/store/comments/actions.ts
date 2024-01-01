@@ -8,24 +8,29 @@ import { Comment } from 'types/comments'
 const fetchComments = createAsyncThunk<
   Comment[],
   {
+    userId: number
     fileId: number
   },
   { state: RootState; rejectValue: { errorMessage: string; code?: number } }
->('comments/fetchComments', async ({ fileId }, { signal, rejectWithValue }) => {
-  try {
-    const { error, comments } = await getComments(fileId, signal)
+>(
+  'comments/fetchComments',
+  async ({ userId, fileId }, { signal, rejectWithValue }) => {
+    try {
+      const { error, comments } = await getComments(userId, fileId, signal)
 
-    if (error) throw new HttpResponseError(error.code || null, error.message)
+      if (error) throw new HttpResponseError(error.code || null, error.message)
 
-    return comments
-  } catch (error) {
-    return catchAsyncThunk(error, rejectWithValue)
-  }
-})
+      return comments
+    } catch (error) {
+      return catchAsyncThunk(error, rejectWithValue)
+    }
+  },
+)
 
 const createComment = createAsyncThunk<
   Comment,
   {
+    userId: number
     fileId: number
     newComment: Omit<
       Comment,
@@ -35,9 +40,14 @@ const createComment = createAsyncThunk<
   { state: RootState; rejectValue: { errorMessage: string; code?: number } }
 >(
   'comments/createComment',
-  async ({ fileId, newComment }, { signal, rejectWithValue }) => {
+  async ({ userId, fileId, newComment }, { signal, rejectWithValue }) => {
     try {
-      const { error, comment } = await createComment(fileId, newComment, signal)
+      const { error, comment } = await createComment(
+        userId,
+        fileId,
+        newComment,
+        signal,
+      )
 
       if (error) throw new HttpResponseError(error.code || null, error.message)
 
@@ -50,12 +60,16 @@ const createComment = createAsyncThunk<
 
 const removeComment = createAsyncThunk<
   Comment['id'],
-  { fileId: number; commentToDeleteId: number }
+  { userId: number; fileId: number; commentToDeleteId: number }
 >(
   'comments/deleteComment',
-  async ({ fileId, commentToDeleteId }, { signal, rejectWithValue }) => {
+  async (
+    { userId, fileId, commentToDeleteId },
+    { signal, rejectWithValue },
+  ) => {
     try {
       const { error, commentId } = await deleteComment(
+        userId,
         fileId,
         commentToDeleteId,
         signal,

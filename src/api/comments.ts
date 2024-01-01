@@ -1,7 +1,7 @@
 import { rest } from 'helpers/rest'
 import { DELETE_COMMENT, GET_COMMENTS, POST_COMMENT } from './urls'
 import { convertObjectKeys, formatURL } from './utils'
-import { DEFAULT_ERROR_MSG, HttpResponseError } from 'helpers/errors'
+import { HttpResponseError } from 'helpers/errors'
 import type {
   Comment,
   CommentApi,
@@ -13,12 +13,14 @@ import type {
 const errGetCommentsMsg =
   'An error occurred while getting comments. Please try again'
 
-async function getComments(fileId: number, signal?: AbortSignal) {
+async function getComments(
+  userId: number,
+  fileId: number,
+  signal?: AbortSignal,
+) {
   Promise<GetCommentReturnType>
   try {
-    // TODO: replace with proper URL and update status code
-    // const url = formatURL(`${GET_COMMENTS}`, { fileId })
-    const url = 'http://localhost:5000/comments'
+    const url = formatURL(`${GET_COMMENTS}`, { userId, fileId })
     const res = await rest.get({ url, signal })
 
     if (res?.response?.status !== 200) {
@@ -44,12 +46,14 @@ async function getComments(fileId: number, signal?: AbortSignal) {
 const errPostCommentMsg =
   'An error occurred while creating the comment. Please try again'
 
-async function postComment(fileId: number, newComment: Omit<Comment, 'id'>) {
+async function postComment(
+  userId: number,
+  fileId: number,
+  newComment: Omit<Comment, 'id'>,
+) {
   Promise<PostCommentReturnType>
   try {
-    // TODO: replace with proper URL and update status code
-    // const url = formatURL(`${POST_COMMENT}`, { fileId })
-    const url = 'http://localhost:5000/comments'
+    const url = formatURL(`${POST_COMMENT}`, { userId, fileId })
 
     const body = JSON.stringify(newComment)
 
@@ -75,6 +79,7 @@ const errDeleteCommentMsg =
   'An error occurred while deleting the comment. Please try again'
 
 async function deleteComment(
+  userId: number,
   fileId: number,
   commentId: number,
   signal?: AbortSignal,
@@ -82,9 +87,7 @@ async function deleteComment(
   Promise<DeleteCommentReturnType>
 
   try {
-    // TODO: replace with proper URL and update status code
-    // const url = formatURL(`${DELETE_COMMENT}`, { fileId, commentId })
-    const url = 'http://localhost:5000/comments/2'
+    const url = formatURL(`${DELETE_COMMENT}`, { userId, fileId, commentId })
     const res = await rest.delete({ url, signal })
 
     if (res?.response?.status !== 204) {

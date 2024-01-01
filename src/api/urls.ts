@@ -15,9 +15,9 @@ const GET_ACTIVITIES = `${BASE_API}/users/{userId}/activities.json`
 const POST_ACTIVITY = `${BASE_API}/users/{userId}/activities.json`
 
 // ### COMMENTS ###
-const GET_COMMENTS = `${BASE_API}/users/{fileId}/comments.json`
-const POST_COMMENT = `${BASE_API}/users/{fileId}/comments.json`
-const DELETE_COMMENT = `${BASE_API}/users/{fileId}/comments/{commentId}.json`
+const GET_COMMENTS = `${BASE_API}/users/{userId}/files/{fileId}/comments`
+const POST_COMMENT = `${BASE_API}/users/{userId}/files/{fileId}/comments`
+const DELETE_COMMENT = `${BASE_API}/users/{userId}/files/{fileId}/comments/{commentId}`
 
 // ### TAGS ###
 const GET_TAGS = `${BASE_API}/users/{fileId}/tags.json`

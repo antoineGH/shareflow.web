@@ -24,7 +24,7 @@ function DrawerButton({ label, path, icon, handleDrawerNavigation }: Props) {
       <StyledDrawerIcon>
         <StyledIcon
           activeState={activeState}
-          activeColor={theme.palette.secondary.contrastText}
+          activeColor={theme.palette.secondary.main}
         >
           {icon}
         </StyledIcon>

@@ -262,7 +262,7 @@ function AccountInfo({
                   type="submit"
                   loading={isLoadingUpdate}
                   disabled={Object.keys(errors).length > 0 || isLoadingUpdate}
-                  sx={{ mt: 0.25, textTransform: 'capitalize' }}
+                  sx={{ mt: 0.25, textTransform: 'capitalize', color: 'white' }}
                 >
                   Update
                 </LoadingButton>
