@@ -10,12 +10,12 @@ import Language from './Language'
 import Version from './version/Version'
 import BreadcrumbEntry from 'components/common/breadcrumbEntry/BreadcrumbEntry'
 import { fetchUser } from 'store/user/actions'
+import { fetchStorage } from 'store/settings/storage/actions'
 
 function Settings() {
   const [editMode, setEditMode] = useState<'userInfo' | 'password' | null>(null)
   const user = useSelector(selectUserSelector)
-  const { isLoading: isLoadingUser, hasError: hasErrorUser } =
-    useSelector(userStateSelector)
+  const { isLoadingFetch, hasErrorFetch } = useSelector(userStateSelector)
   const dispatch = useDispatch()
 
   const handleEditMode = (mode: 'userInfo' | 'password' | null) => {
@@ -30,6 +30,7 @@ function Settings() {
     if (!user) {
       // TODO: update userId here from JWT
       dispatch(fetchUser({ userId: 1 }))
+      dispatch(fetchStorage({ userId: 1 }))
     }
   }, [dispatch, user])
 
@@ -50,12 +51,18 @@ function Settings() {
         <Storage />
         <AccountInfo
           user={user}
-          isLoading={isLoadingUser}
-          hasError={hasErrorUser}
+          isLoading={isLoadingFetch}
+          hasError={hasErrorFetch}
           editMode={editMode}
           handleEditMode={handleEditMode}
         />
-        <Password editMode={editMode} handleEditMode={handleEditMode} />
+        <Password
+          user={user}
+          isLoading={isLoadingFetch}
+          hasError={hasErrorFetch}
+          editMode={editMode}
+          handleEditMode={handleEditMode}
+        />
         <Language />
         <Version />
       </Grid>

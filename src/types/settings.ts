@@ -13,7 +13,7 @@ export type Settings = SnakeCaseToCamelCase<SettingsApi>
 
 export type GetStorageReturnType =
   | {
-      storage: Settings['storage'][]
+      storage: Settings['storage']
       error?: never
     }
   | {

@@ -5,12 +5,14 @@ import { fetchStorage } from './actions'
 import { getStateSliceFromError } from 'store/utils'
 
 type InitialState = {
-  status: Status
+  statusAction: Record<string, Status>
   storage: Settings['storage']
 }
 
 const initialState: InitialState = {
-  status: Status.IDLE,
+  statusAction: {
+    fetch: Status.IDLE,
+  },
   storage: {
     storageUsed: 0,
     totalStorage: 0,
@@ -24,14 +26,14 @@ const storageSlice = createSlice({
   extraReducers: builder => {
     // ### fetchStorage ###
     builder.addCase(fetchStorage.pending, state => {
-      state.status = Status.PENDING
+      state.statusAction.fetch = Status.PENDING
     })
     builder.addCase(fetchStorage.fulfilled, (state, action) => {
-      state.status = Status.SUCCEEDED
+      state.statusAction.fetch = Status.SUCCEEDED
       state.storage = action.payload
     })
     builder.addCase(fetchStorage.rejected, (state, action) => {
-      state.status = getStateSliceFromError(action)
+      state.statusAction.fetch = getStateSliceFromError(action)
     })
   },
 })

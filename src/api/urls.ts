@@ -3,11 +3,12 @@
 const BASE_API = 'http://localhost:8080'
 
 // ### STORAGE ###
-const GET_STORAGE = `${BASE_API}/{userId}/storage.json`
+const GET_STORAGE = `${BASE_API}/users/{userId}/settings`
 
 // ### USER ###
 const GET_USER = `${BASE_API}/users/{userId}`
 const PUT_USER = `${BASE_API}/users/{userId}`
+const PATCH_USER = `${BASE_API}/users/{userId}/password`
 
 // ### ACTIVITIES ###
 const GET_ACTIVITIES = `${BASE_API}/users/{userId}/activities.json`
@@ -34,6 +35,7 @@ export {
   GET_STORAGE,
   GET_USER,
   PUT_USER,
+  PATCH_USER,
   GET_ACTIVITIES,
   POST_ACTIVITY,
   GET_COMMENTS,

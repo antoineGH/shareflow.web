@@ -5,7 +5,7 @@ import type {
   UserApi,
 } from 'types/users'
 import { convertObjectKeys, formatURL } from './utils'
-import { GET_USER, PUT_USER } from './urls'
+import { GET_USER, PATCH_USER, PUT_USER } from './urls'
 import { rest } from 'helpers/rest'
 import { HttpResponseError } from 'helpers/errors'
 
@@ -40,24 +40,53 @@ async function putUser(
 ) {
   Promise<PutUserReturnType>
   try {
-    // TODO: replace with proper URL and status code
-    // const url = formatURL(`${PUT_USER}`, { userId })
-    const url = 'http://localhost:5000/users'
+    const url = formatURL(`${PUT_USER}`, { userId })
+    const newUserApi: Omit<UserApi, 'id' | 'created_at'> = {
+      full_name: newUser.fullName,
+      email: newUser.email,
+    }
 
-    const body = JSON.stringify(newUser)
+    const body = JSON.stringify(newUserApi)
     const res = await rest.put({ url, body, signal })
 
     if (res?.response?.status !== 204) {
       throw new HttpResponseError(res?.response?.status ?? null, errPutUserMsg)
     }
 
-    const { object } = res
-    const user = convertObjectKeys<UserApi, User>(object)
-    return { user }
+    return { userId }
   } catch (error) {
     console.error(error)
     return { error }
   }
 }
 
-export { getUser, putUser }
+const errPatchUserMsg =
+  'An error occurred while updating user. Please try again'
+
+async function patchUser(
+  userId: number,
+  password: string,
+  signal?: AbortSignal,
+) {
+  Promise<PutUserReturnType>
+  try {
+    const url = formatURL(`${PATCH_USER}`, { userId })
+
+    const body = JSON.stringify({ password: password })
+    const res = await rest.patch({ url, body, signal })
+
+    if (res?.response?.status !== 204) {
+      throw new HttpResponseError(
+        res?.response?.status ?? null,
+        errPatchUserMsg,
+      )
+    }
+
+    return { userId }
+  } catch (error) {
+    console.error(error)
+    return { error }
+  }
+}
+
+export { getUser, putUser, patchUser }
