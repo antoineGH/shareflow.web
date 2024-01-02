@@ -13,6 +13,7 @@ import Tabs from './Tabs/Tabs'
 
 type Props = {
   open: boolean
+  drawerFileId: number
   activeDrawerTab: number
   handleChangeDrawerTab: (tab: number) => void
   handleDrawerClose: () => void
@@ -20,6 +21,7 @@ type Props = {
 
 function DrawerDetails({
   open,
+  drawerFileId,
   activeDrawerTab,
   handleChangeDrawerTab,
   handleDrawerClose,
@@ -91,6 +93,7 @@ function DrawerDetails({
       <Divider />
       <Tabs
         activeDrawerTab={activeDrawerTab}
+        drawerFileId={drawerFileId}
         handleChangeDrawerTab={handleChangeDrawerTab}
       />
     </Drawer>

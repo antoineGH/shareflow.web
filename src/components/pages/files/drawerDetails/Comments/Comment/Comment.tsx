@@ -9,14 +9,22 @@ import { defineAvatarInitials } from '../helpers'
 import EmptyCommentSVG from 'assets/empty_comment.svg?react'
 import type { Comment } from 'types/comments'
 import { formatDate } from './utils'
+import { IconButton } from '@mui/material'
+import ClearIcon from '@mui/icons-material/Clear'
 
 type Props = {
   comments: Comment[]
   isLoading: boolean
   hasError: boolean
+  handleDeleteComment: (commentId: number) => void
 }
 
-function CommentsSection({ comments, isLoading, hasError }: Props) {
+function CommentsSection({
+  comments,
+  isLoading,
+  hasError,
+  handleDeleteComment,
+}: Props) {
   if (isLoading)
     return [...Array(3)].map((_, index) => (
       <Box key={index} sx={{ mt: 2, mb: 3, pr: '1rem' }}>
@@ -107,6 +115,12 @@ function CommentsSection({ comments, isLoading, hasError }: Props) {
             <Typography variant="body2" color="text.secondary">
               {formatDate(comment.createdAt)}
             </Typography>
+            <IconButton
+              onClick={() => handleDeleteComment(comment.id)}
+              sx={{ m: 0, p: 0 }}
+            >
+              <ClearIcon fontSize="small" />
+            </IconButton>
           </Stack>
           <Card
             sx={{

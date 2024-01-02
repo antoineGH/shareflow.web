@@ -5,27 +5,42 @@ import Header from './Header/Header'
 import type { Comment } from 'types/comments'
 import { useDispatch, useSelector } from 'store/hooks'
 import { useEffect } from 'react'
-import { fetchComments } from 'store/comments/actions'
+import { fetchComments, removeComment } from 'store/comments/actions'
 import {
   commentsStatesStateSelector,
   selectCommentsSelector,
 } from 'store/comments/selector'
+import { selectUserSelector } from 'store/user/selector'
 
-function Comments() {
+type Props = {
+  fileId: number
+}
+
+function Comments({ fileId }: Props) {
   const dispatch = useDispatch()
-
-  useEffect(() => {
-    dispatch(fetchComments({ userId: 1, fileId: 18 }))
-  }, [dispatch])
-
+  const user = useSelector(selectUserSelector)
   const comments: Comment[] = useSelector(selectCommentsSelector)
   const { isLoadingFetch, hasErrorFetch } = useSelector(
     commentsStatesStateSelector,
   )
 
+  useEffect(() => {
+    if (!user) return
+    dispatch(fetchComments({ userId: user.id, fileId }))
+  }, [dispatch, fileId, user])
+
+  const handleDeleteComment = (commentId: number) => {
+    if (!user) return
+    dispatch(
+      removeComment({ userId: user.id, fileId, commentToDeleteId: commentId }),
+    )
+  }
+
+  if (!user) return null
+
   return (
     <Stack gap={1}>
-      <Header />
+      <Header fileId={fileId} />
       <Box
         sx={{
           width: '100%',
@@ -38,6 +53,7 @@ function Comments() {
           comments={comments}
           isLoading={isLoadingFetch}
           hasError={hasErrorFetch}
+          handleDeleteComment={handleDeleteComment}
         />
       </Box>
     </Stack>

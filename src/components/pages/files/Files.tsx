@@ -34,6 +34,7 @@ function Files() {
 
   const {
     isDrawerOpen,
+    drawerFileId,
     activeDrawerTab,
     handleChangeDrawerTab,
     handleDrawerClose,
@@ -44,7 +45,7 @@ function Files() {
   const filesData: FileData = {
     files: [
       {
-        id: 1,
+        id: 18,
         name: 'Documents',
         size: '305 KB',
         modified: '2012-12-14',
@@ -108,6 +109,7 @@ function Files() {
       />
       <DrawerDetails
         open={isDrawerOpen}
+        drawerFileId={drawerFileId}
         activeDrawerTab={activeDrawerTab}
         handleChangeDrawerTab={handleChangeDrawerTab}
         handleDrawerClose={handleDrawerClose}

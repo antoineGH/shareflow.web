@@ -18,14 +18,17 @@ const commentsStatesStateSelector = createSelector(
   }),
 )
 
-const selectCommentsSelector = createSelector(commentsStoreState, slice =>
-  selectAll(slice),
-)
-
 const selectCommentByIdSelector = (commentId: Comment['id']) =>
   createSelector(commentsStoreState, comments =>
     selectById(comments, commentId),
   )
+
+const selectCommentsSelector = createSelector(commentsStoreState, slice => {
+  const comments = selectAll(slice)
+  return comments.sort(
+    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+  )
+})
 
 export {
   commentsStatesStateSelector,

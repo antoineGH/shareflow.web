@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
-import { deleteComment, getComments } from 'api/comments'
+import { deleteComment, getComments, postComment } from 'api/comments'
 import { HttpResponseError } from 'helpers/errors'
 import { RootState } from 'store/store'
 import { catchAsyncThunk } from 'store/utils'
@@ -32,17 +32,16 @@ const createComment = createAsyncThunk<
   {
     userId: number
     fileId: number
-    newComment: Omit<
-      Comment,
-      'id' | 'userId' | 'fileId' | 'createdAt' | 'updatedAt'
-    >
+    newComment: Comment['comment']
+    cb?: () => void
   },
   { state: RootState; rejectValue: { errorMessage: string; code?: number } }
 >(
   'comments/createComment',
-  async ({ userId, fileId, newComment }, { signal, rejectWithValue }) => {
+  async ({ userId, fileId, newComment, cb }, { signal, rejectWithValue }) => {
     try {
-      const { error, comment } = await createComment(
+      console.log('action createComment', userId, fileId, newComment)
+      const { error, comment } = await postComment(
         userId,
         fileId,
         newComment,
@@ -51,6 +50,7 @@ const createComment = createAsyncThunk<
 
       if (error) throw new HttpResponseError(error.code || null, error.message)
 
+      cb?.()
       return comment
     } catch (error) {
       return catchAsyncThunk(error, rejectWithValue)

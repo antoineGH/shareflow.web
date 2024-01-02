@@ -49,15 +49,17 @@ const errPostCommentMsg =
 async function postComment(
   userId: number,
   fileId: number,
-  newComment: Omit<Comment, 'id'>,
+  newComment: Comment['comment'],
+  signal?: AbortSignal,
 ) {
   Promise<PostCommentReturnType>
   try {
     const url = formatURL(`${POST_COMMENT}`, { userId, fileId })
 
-    const body = JSON.stringify(newComment)
+    const body = JSON.stringify({ comment: newComment })
+    console.log('body', body)
 
-    const res = await rest.post({ url, body })
+    const res = await rest.post({ url, body, signal })
 
     if (res?.response?.status !== 201) {
       throw new HttpResponseError(

@@ -25,8 +25,8 @@ type Props = {
   files: File[]
   isPageFavorite?: boolean
   isPageDelete?: boolean
-  toggleDrawer: () => void
-  handleDrawerOpen: () => void
+  toggleDrawer: (fileId: number) => void
+  handleDrawerOpen: (fileId: number) => void
   handleChangeDrawerTab: (tab: number) => void
 }
 

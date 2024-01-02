@@ -15,8 +15,8 @@ type Props = {
   isPageFavorite?: boolean
   isPageDelete?: boolean
   isHovered?: boolean
-  toggleDrawer: () => void
-  handleDrawerOpen: () => void
+  toggleDrawer: (fileId: number) => void
+  handleDrawerOpen: (fileId: number) => void
   onFavoriteClick: (id: number) => void
   handleChangeDrawerTab: (tab: number) => void
 }
@@ -64,17 +64,17 @@ function FileMenu({
   const handleClickDetails = (e: MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation()
     handleChangeDrawerTab(0)
-    toggleDrawer()
+    toggleDrawer(id)
   }
 
   const handleClickComment = (e: MouseEvent<HTMLButtonElement>) => {
-    handleDrawerOpen()
+    handleDrawerOpen(id)
     handleChangeDrawerTab(1)
     closeMenu(e)
   }
 
   const handleClickTag = (e: MouseEvent<HTMLButtonElement>) => {
-    handleDrawerOpen()
+    handleDrawerOpen(id)
     handleChangeDrawerTab(2)
     closeMenu(e)
   }

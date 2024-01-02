@@ -10,10 +10,11 @@ import Tags from '../Tags/Tags'
 
 type Props = {
   activeDrawerTab: number
+  drawerFileId: number
   handleChangeDrawerTab: (tab: number) => void
 }
 
-function Tabs({ activeDrawerTab, handleChangeDrawerTab }: Props) {
+function Tabs({ activeDrawerTab, drawerFileId, handleChangeDrawerTab }: Props) {
   const theme = useTheme()
 
   const handleChange = (event: SyntheticEvent, newValue: number) => {
@@ -68,7 +69,7 @@ function Tabs({ activeDrawerTab, handleChangeDrawerTab }: Props) {
         ))}
       </TabsMUI>
       {activeDrawerTab === 0 && <Activities />}
-      {activeDrawerTab === 1 && <Comments />}
+      {activeDrawerTab === 1 && <Comments fileId={drawerFileId} />}
       {activeDrawerTab === 2 && <Tags />}
     </Box>
   )
