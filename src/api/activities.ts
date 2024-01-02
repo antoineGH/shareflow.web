@@ -12,12 +12,14 @@ import type {
 const errGetActivitiesMsg =
   'An error occurred while getting activities. Please try again'
 
-async function getActivities(userId: number, signal?: AbortSignal) {
+async function getActivities(
+  userId: number,
+  fileId: number,
+  signal?: AbortSignal,
+) {
   Promise<GetActivitiesReturnType>
   try {
-    // TODO: replace with proper URL and update status code
-    const url = 'http://localhost:5000/activities'
-    // const url = formatURL(`${GET_ACTIVITIES}`, { userId })
+    const url = formatURL(`${GET_ACTIVITIES}`, { userId, fileId })
     const res = await rest.get({ url, signal })
 
     if (res?.response?.status !== 200) {
@@ -45,6 +47,7 @@ const errPostActivitiesMsg =
 
 async function postActivities(
   userId: number,
+  fileId: number,
   newActivity: Omit<
     Activity,
     'id' | 'createdAt' | 'updatedAt' | 'userId' | 'fileId'
@@ -53,9 +56,7 @@ async function postActivities(
 ) {
   Promise<PostActivitiesReturnType>
   try {
-    // TODO: replace with proper URL and update status code
-    // const url = formatURL(`${POST_ACTIVITY}`, { userId })
-    const url = 'http://localhost:5000/activities'
+    const url = formatURL(`${POST_ACTIVITY}`, { userId, fileId })
 
     const body = JSON.stringify(newActivity)
 

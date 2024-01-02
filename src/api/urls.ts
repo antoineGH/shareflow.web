@@ -11,8 +11,8 @@ const PUT_USER = `${BASE_API}/users/{userId}`
 const PATCH_USER = `${BASE_API}/users/{userId}/password`
 
 // ### ACTIVITIES ###
-const GET_ACTIVITIES = `${BASE_API}/users/{userId}/activities.json`
-const POST_ACTIVITY = `${BASE_API}/users/{userId}/activities.json`
+const GET_ACTIVITIES = `${BASE_API}/users/{userId}/files/{fileId}/activities`
+const POST_ACTIVITY = `${BASE_API}/users/{userId}/files/{fileId}/activities`
 
 // ### COMMENTS ###
 const GET_COMMENTS = `${BASE_API}/users/{userId}/files/{fileId}/comments`
