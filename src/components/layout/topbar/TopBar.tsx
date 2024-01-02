@@ -6,6 +6,7 @@ import MenuIcon from '@mui/icons-material/Menu'
 import StyledTopBar from './StyledTopBar'
 import AccountMenu from './accountMenu/AccountMenu'
 import Search from './Search'
+import { Button, Link } from '@mui/material'
 
 type Props = {
   drawerWidth: number
@@ -30,19 +31,32 @@ function TopBar({ drawerWidth, appBarHeight, toggleDrawer }: Props) {
           color="inherit"
           aria-label="open drawer"
           onClick={toggleDrawer}
-          sx={{ marginRight: '1rem' }}
         >
-          <MenuIcon />
+          <MenuIcon sx={{ color: 'white' }} />
         </IconButton>
-        <Typography
-          component="h1"
-          variant="h6"
+        <Button
+          component={Link}
+          href="/auth/files"
           color="inherit"
-          noWrap
-          sx={{ flexGrow: 1, fontSize: '1rem' }}
+          sx={{
+            flexGrow: 1,
+            '&:hover': {
+              backgroundColor: 'transparent',
+              color: 'white',
+            },
+            textTransform: 'none',
+          }}
         >
-          shareFlow
-        </Typography>
+          <Typography
+            component="h1"
+            variant="h6"
+            color="white"
+            noWrap
+            sx={{ fontSize: '1rem', flexGrow: 1 }}
+          >
+            shareFlow
+          </Typography>
+        </Button>
         <Search />
         <AccountMenu />
       </Toolbar>

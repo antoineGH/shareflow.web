@@ -2,11 +2,15 @@ import Stack from '@mui/material/Stack'
 import Avatar from './Avatar'
 import AddCommentForm from './AddCommentForm'
 
-function Header() {
+type Props = {
+  fileId: number
+}
+
+function Header({ fileId }: Props) {
   return (
-    <Stack direction="column" alignItems="center" gap={1} px={2} pt={1} mb={0}>
+    <Stack direction="column" alignItems="center" px={2} pt={1} mb={0}>
       <Avatar />
-      <AddCommentForm />
+      <AddCommentForm fileId={fileId} />
     </Stack>
   )
 }

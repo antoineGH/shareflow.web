@@ -11,7 +11,7 @@ function Version() {
       </Box>
       <Stack direction="column" mt={1}>
         <Typography variant="body1">shareFlow demo project </Typography>
-        <Typography variant="body2">
+        <Typography variant="body1">
           Contact on{' '}
           <Link
             href="https://www.linkedin.com/in/antoinert/"

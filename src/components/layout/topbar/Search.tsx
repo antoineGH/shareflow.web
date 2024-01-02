@@ -30,12 +30,16 @@ const SearchIconWrapper = styled('div')(({ theme }) => ({
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
   color: 'inherit',
   width: '100%',
+
   '& .MuiInputBase-input': {
     padding: theme.spacing(1, 1, 1, 0),
     paddingLeft: `calc(1em + ${theme.spacing(4)})`,
     transition: theme.transitions.create('width'),
+    '&::placeholder': {
+      color: 'white',
+    },
     [theme.breakpoints.up('sm')]: {
-      width: '12ch',
+      width: '15ch',
       '&:focus': {
         width: '20ch',
       },
@@ -45,9 +49,9 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 function Search() {
   return (
-    <SearchDiv sx={{ height: '65%' }}>
+    <SearchDiv sx={{ height: '70%' }}>
       <SearchIconWrapper>
-        <SearchIcon />
+        <SearchIcon sx={{ color: 'white' }} />
       </SearchIconWrapper>
       <StyledInputBase
         sx={{ height: '100%' }}

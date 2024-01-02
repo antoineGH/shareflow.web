@@ -4,8 +4,8 @@ import { RootState } from 'store/store'
 const storageStoreState = (state: RootState) => state.settings.storage
 
 const storageStateSelector = createSelector(storageStoreState, state => ({
-  isLoading: state.statusAction.fetch === 'pending',
-  hasError: state.statusAction.fetch === 'failed',
+  isLoadingFetch: state.statusAction.fetch === 'pending',
+  hasErrorFetch: state.statusAction.fetch === 'failed',
 }))
 
 const selectStorageSelector = createSelector(

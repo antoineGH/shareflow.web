@@ -2,11 +2,15 @@ import { SnakeCaseToCamelCase } from './utils'
 
 export type CommentApi = {
   id: number
-  user_id: number
   file_id: number
   comment: string
   created_at: string
   updated_at: string
+  user: {
+    userId: number
+    fullName: string
+    avatarUrl: string
+  }
 }
 
 export type Comment = SnakeCaseToCamelCase<CommentApi>

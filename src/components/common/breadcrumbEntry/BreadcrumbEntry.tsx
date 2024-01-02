@@ -16,15 +16,21 @@ function BreadcrumbEntry({ pageName }: Props) {
   return (
     <Grid container sx={{ display: 'flex', flexDirection: 'row' }}>
       <Grid item>
-        <StyledIcon>{icon}</StyledIcon>
+        <StyledIcon
+          sx={{
+            marginTop: '.25rem',
+          }}
+        >
+          {icon}
+        </StyledIcon>
       </Grid>
       <Grid item>
         <Typography
           variant="body2"
           fontWeight={600}
           sx={{
-            marginTop: '.1rem',
-            lineHeight: pageName === 'Files' ? '1.7rem' : '1.4rem',
+            marginTop: '.25rem',
+            lineHeight: pageName === 'Files' ? '1.5rem' : '1.4rem',
             color: theme.palette.secondary.contrastText,
           }}
         >

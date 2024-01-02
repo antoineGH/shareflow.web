@@ -69,10 +69,15 @@ function Menu({ anchorEl, open, openModalAddDocs, closeMenu }: Props) {
                 variant="outlined"
                 size="small"
                 onClick={e => cancelFolder(e)}
+                sx={{ textTransform: 'capitalize' }}
               >
                 Cancel
               </Button>
-              <Button variant="contained" size="small">
+              <Button
+                variant="contained"
+                size="small"
+                sx={{ color: 'white', textTransform: 'capitalize' }}
+              >
                 Create
               </Button>
             </Stack>
