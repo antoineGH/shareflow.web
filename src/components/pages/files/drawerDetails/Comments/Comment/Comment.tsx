@@ -16,6 +16,7 @@ type Props = {
   comments: Comment[]
   isLoading: boolean
   hasError: boolean
+  isLoadingDelete: boolean
   handleDeleteComment: (commentId: number) => void
 }
 
@@ -23,6 +24,7 @@ function CommentsSection({
   comments,
   isLoading,
   hasError,
+  isLoadingDelete,
   handleDeleteComment,
 }: Props) {
   if (isLoading)
@@ -116,6 +118,7 @@ function CommentsSection({
               {formatDate(comment.createdAt)}
             </Typography>
             <IconButton
+              disabled={isLoadingDelete}
               onClick={() => handleDeleteComment(comment.id)}
               sx={{ m: 0, p: 0 }}
             >

@@ -20,7 +20,7 @@ function Comments({ fileId }: Props) {
   const dispatch = useDispatch()
   const user = useSelector(selectUserSelector)
   const comments: Comment[] = useSelector(selectCommentsSelector)
-  const { isLoadingFetch, hasErrorFetch } = useSelector(
+  const { isLoadingFetch, hasErrorFetch, isLoadingDelete } = useSelector(
     commentsStatesStateSelector,
   )
 
@@ -53,6 +53,7 @@ function Comments({ fileId }: Props) {
           comments={comments}
           isLoading={isLoadingFetch}
           hasError={hasErrorFetch}
+          isLoadingDelete={isLoadingDelete}
           handleDeleteComment={handleDeleteComment}
         />
       </Box>
