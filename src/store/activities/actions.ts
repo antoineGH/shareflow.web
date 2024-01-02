@@ -9,13 +9,14 @@ const fetchActivities = createAsyncThunk<
   Activity[],
   {
     userId: number
+    fileId: number
   },
   { state: RootState; rejectValue: { errorMessage: string; code?: number } }
 >(
   'activties/fetchActivities',
-  async ({ userId }, { signal, rejectWithValue }) => {
+  async ({ userId, fileId }, { signal, rejectWithValue }) => {
     try {
-      const { error, activities } = await getActivities(userId, signal)
+      const { error, activities } = await getActivities(userId, fileId, signal)
 
       if (error) throw new HttpResponseError(error.code || null, error.message)
 
@@ -30,6 +31,7 @@ const createActivity = createAsyncThunk<
   Activity,
   {
     userId: number
+    fileId: number
     newActivity: Omit<
       Activity,
       'id' | 'createdAt' | 'updatedAt' | 'userId' | 'fileId'
@@ -38,10 +40,11 @@ const createActivity = createAsyncThunk<
   { state: RootState; rejectValue: { errorMessage: string; code?: number } }
 >(
   'activities/createActivity',
-  async ({ userId, newActivity }, { signal, rejectWithValue }) => {
+  async ({ userId, fileId, newActivity }, { signal, rejectWithValue }) => {
     try {
       const { error, activity } = await postActivities(
         userId,
+        fileId,
         newActivity,
         signal,
       )

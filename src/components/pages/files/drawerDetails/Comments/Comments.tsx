@@ -30,6 +30,7 @@ function Comments({ fileId }: Props) {
   }, [dispatch, fileId, user])
 
   const handleDeleteComment = (commentId: number) => {
+    // TODO: CHECK IF USER IS THE OWNER OF THE COMMENT
     if (!user) return
     dispatch(
       removeComment({ userId: user.id, fileId, commentToDeleteId: commentId }),

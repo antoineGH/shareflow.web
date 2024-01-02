@@ -5,11 +5,14 @@ import { createActivity, fetchActivities } from './actions'
 import { getStateSliceFromError } from 'store/utils'
 
 type InitialState = {
-  status: Status
+  actionStatus: Record<string, Status>
 }
 
 const initialState: InitialState = {
-  status: Status.IDLE,
+  actionStatus: {
+    fetch: Status.IDLE,
+    create: Status.IDLE,
+  },
 }
 
 export const ActivitiesAdapter = createEntityAdapter({
@@ -23,26 +26,26 @@ const activitiesSlice = createSlice({
   extraReducers: builder => {
     // ### fetchActivities ###
     builder.addCase(fetchActivities.pending, state => {
-      state.status = Status.PENDING
+      state.actionStatus.fetch = Status.PENDING
     })
     builder.addCase(fetchActivities.fulfilled, (state, action) => {
-      state.status = Status.SUCCEEDED
+      state.actionStatus.fetch = Status.SUCCEEDED
       ActivitiesAdapter.setAll(state, action.payload)
     })
     builder.addCase(fetchActivities.rejected, (state, action) => {
-      state.status = getStateSliceFromError(action)
+      state.actionStatus.fetch = getStateSliceFromError(action)
     })
 
     // ### createActivity ###
     builder.addCase(createActivity.pending, state => {
-      state.status = Status.PENDING
+      state.actionStatus.create = Status.PENDING
     })
     builder.addCase(createActivity.fulfilled, (state, action) => {
-      state.status = Status.SUCCEEDED
+      state.actionStatus.create = Status.SUCCEEDED
       ActivitiesAdapter.addOne(state, action.payload)
     })
     builder.addCase(createActivity.rejected, (state, action) => {
-      state.status = getStateSliceFromError(action)
+      state.actionStatus.create = getStateSliceFromError(action)
     })
   },
 })

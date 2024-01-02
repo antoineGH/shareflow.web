@@ -7,8 +7,10 @@ import { Activity } from 'types/activities'
 const activitiesStoreState = (state: RootState) => state.activities
 
 const activitiesStateSelector = createSelector(activitiesStoreState, state => ({
-  isLoading: state.status === Status.PENDING,
-  hasError: state.status === Status.FAILED,
+  isLoadingFetch: state.actionStatus.fetch === Status.PENDING,
+  hasErrorFetch: state.actionStatus.fetch === Status.FAILED,
+  isLoadingCreate: state.actionStatus.create === Status.PENDING,
+  hasErrorCreate: state.actionStatus.create === Status.FAILED,
 }))
 
 const selectActivitiesSelector = createSelector(activitiesStoreState, slice =>

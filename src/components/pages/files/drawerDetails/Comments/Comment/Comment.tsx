@@ -29,7 +29,14 @@ function CommentsSection({
 }: Props) {
   if (isLoading)
     return [...Array(3)].map((_, index) => (
-      <Box key={index} sx={{ mt: 2, mb: 3, pr: '1rem' }}>
+      <Box
+        key={index}
+        sx={{
+          mt: 2,
+          mb: 3,
+          mr: 2,
+        }}
+      >
         <Stack direction="row" alignItems="center" spacing={1}>
           <Skeleton variant="circular" width={24} height={24} />
           <Skeleton variant="text" width={100} height={24} />
@@ -39,10 +46,10 @@ function CommentsSection({
         <Card
           sx={{
             mt: 1,
-            borderRadius: '5px',
-            backgroundColor: '#f5f5f5',
-            boxShadow:
-              'rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px',
+            pr: '1rem',
+            backgroundColor: '#6c63ff29',
+            borderRadius: '10px',
+            padding: '0.7rem',
           }}
         >
           <CardContent
@@ -53,6 +60,7 @@ function CommentsSection({
               },
             }}
           >
+            <Skeleton variant="text" />
             <Skeleton variant="text" />
           </CardContent>
         </Card>
@@ -114,9 +122,6 @@ function CommentsSection({
               {comment.user?.fullName || ''}
             </Typography>
             <Box flexGrow={1} />
-            <Typography variant="body2" color="text.secondary">
-              {formatDate(comment.createdAt)}
-            </Typography>
             <IconButton
               disabled={isLoadingDelete}
               onClick={() => handleDeleteComment(comment.id)}
@@ -128,21 +133,27 @@ function CommentsSection({
           <Card
             sx={{
               mt: 1,
-              borderRadius: '5px',
-              backgroundColor: '#f5f5f5',
-              boxShadow:
-                'rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px',
+              borderRadius: '10px',
+              backgroundColor: '#6c63ff29',
             }}
           >
             <CardContent
               sx={{
                 p: 1.5,
                 '&:last-child': {
-                  paddingBottom: '1rem',
+                  paddingBottom: '.3rem',
                 },
               }}
             >
               <Typography variant="body2">{comment.comment}</Typography>
+              <Typography
+                variant="body2"
+                color="text.secondary"
+                fontSize="0.7rem"
+                align="right"
+              >
+                {formatDate(comment.createdAt)}
+              </Typography>
             </CardContent>
           </Card>
         </Box>

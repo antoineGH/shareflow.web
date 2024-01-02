@@ -68,7 +68,7 @@ function Tabs({ activeDrawerTab, drawerFileId, handleChangeDrawerTab }: Props) {
           />
         ))}
       </TabsMUI>
-      {activeDrawerTab === 0 && <Activities />}
+      {activeDrawerTab === 0 && <Activities fileId={drawerFileId} />}
       {activeDrawerTab === 1 && <Comments fileId={drawerFileId} />}
       {activeDrawerTab === 2 && <Tags />}
     </Box>
