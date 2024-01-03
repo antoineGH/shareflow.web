@@ -11,6 +11,7 @@ import { getPath } from './helpers'
 import { useNavigate } from 'react-router-dom'
 import type { File } from 'types/files'
 import { useTheme } from '@mui/material'
+import TagsTableCell from 'components/pages/tags/tagsTableCell/TagsTableCell'
 
 type Props = {
   row: {
@@ -23,6 +24,7 @@ type Props = {
   isItemSelected: boolean
   labelId: string
   isPageFavorite?: boolean
+  isPageTag?: boolean
   isPageDelete?: boolean
   onCheckBoxClick: (id: number) => void
   onFavoriteClick: (id: number) => void
@@ -37,6 +39,7 @@ function TableRow({
   isItemSelected,
   labelId,
   isPageFavorite,
+  isPageTag,
   isPageDelete,
   onCheckBoxClick,
   onFavoriteClick,
@@ -50,6 +53,7 @@ function TableRow({
   const [isHovered, setIsHovered] = useState(false)
 
   const isFavorite = files.find(file => file.id === row.id)?.isFavorite || false
+  const isPageFile = !isPageFavorite && !isPageTag && !isPageDelete
 
   const handleCheckBoxClick = (e: MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation()
@@ -74,14 +78,14 @@ function TableRow({
     <TableRowMUI
       hover
       onClick={e => handleClickRow(e)}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
+      onMouseEnter={isPageFile ? () => setIsHovered(true) : () => {}}
+      onMouseLeave={isPageFile ? () => setIsHovered(false) : () => {}}
       role="checkbox"
       aria-checked={isItemSelected}
       tabIndex={-1}
       key={row.id}
       selected={isItemSelected}
-      sx={{ cursor: 'pointer' }}
+      sx={{ cursor: 'pointer', height: '67px' }}
     >
       <TableCell
         component="th"
@@ -92,7 +96,7 @@ function TableRow({
         colSpan={2}
       >
         <Stack direction="row" alignItems="center" gap={1}>
-          {isPageFavorite ? (
+          {isPageFavorite || isPageTag ? (
             <IconButton onClick={event => handleClickFavorite(event)}>
               <GradeIcon
                 sx={{
@@ -117,14 +121,19 @@ function TableRow({
           {row.name}
         </Stack>
       </TableCell>
-
       <TableCell align="right" colSpan={2}>
         <Stack direction="row" justifyContent="flex-end" gap={4} mr={3}>
+          {isPageTag && (
+            <Stack direction="row" alignItems="center" gap={2}>
+              <TagsTableCell />
+            </Stack>
+          )}
           <Stack direction="row" alignItems="center" gap={2}>
             <FileMenu
               id={row.id}
               files={files}
               isPageFavorite={isPageFavorite}
+              isPageTag={isPageTag}
               isPageDelete={isPageDelete}
               isHovered={isHovered}
               toggleDrawer={toggleDrawer}

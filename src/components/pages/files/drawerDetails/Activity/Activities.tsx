@@ -21,12 +21,8 @@ function Activities({ fileId }: Props) {
   const activities: Activity[] = useSelector(selectActivitiesSelector)
   const { isLoadingFetch, hasErrorFetch } = useSelector(activitiesStateSelector)
 
-  console.log('isLoadingFetch', isLoadingFetch)
-  console.log('hasErrorFetch', hasErrorFetch)
-  console.log('activities', activities)
-
   useEffect(() => {
-    if (!user) return
+    if (!user || !fileId) return
     dispatch(fetchActivities({ userId: user.id, fileId: fileId }))
   }, [dispatch, fileId, user])
 

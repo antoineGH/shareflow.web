@@ -38,6 +38,7 @@ function TableHead({
   rowCount,
   onRequestSort,
   isPageFavorite,
+  isPageTag,
 }: EnhancedTableProps) {
   const createSortHandler =
     (property: keyof Data) => (event: React.MouseEvent<unknown>) => {
@@ -48,7 +49,7 @@ function TableHead({
     <TableHeadMUI>
       <TableRow>
         <TableCell padding="checkbox">
-          {isPageFavorite ? null : (
+          {isPageFavorite || isPageTag ? null : (
             <Checkbox
               color="primary"
               indeterminate={numSelected > 0 && numSelected < rowCount}

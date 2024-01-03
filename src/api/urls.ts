@@ -20,16 +20,16 @@ const POST_COMMENT = `${BASE_API}/users/{userId}/files/{fileId}/comments`
 const DELETE_COMMENT = `${BASE_API}/users/{userId}/files/{fileId}/comments/{commentId}`
 
 // ### TAGS ###
-const GET_TAGS = `${BASE_API}/users/{fileId}/tags.json`
-const POST_TAG = `${BASE_API}/users/{fileId}/tags.json`
-const DELETE_TAG = `${BASE_API}/users/{fileId}/tags/{tagId}.json`
+const GET_TAGS = `${BASE_API}/users/{userId}/files/{fileId}/tags`
+const POST_TAG = `${BASE_API}/users/{userId}/files/{fileId}/tags`
+const DELETE_TAG = `${BASE_API}/users/{userId}/files/{fileId}/tags/{tagId}`
 
 // ### FILES ###
-const GET_FILES = `${BASE_API}/users/{userId}/files.json`
-const POST_FILE = `${BASE_API}/users/{userId}/files.json`
-const PUT_FILE = `${BASE_API}/users/{userId}/files/{fileId}.json`
-const PATCH_FILE = `${BASE_API}/users/{userId}/files/{fileId}.json`
-const DELETE_FILE = `${BASE_API}/users/{userId}/files/{fileId}.json`
+const GET_FILES = `${BASE_API}/users/{userId}/files`
+const POST_FILE = `${BASE_API}/users/{userId}/files`
+const PUT_FILE = `${BASE_API}/users/{userId}/files/{fileId}`
+const PATCH_FILE = `${BASE_API}/users/{userId}/files/{fileId}`
+const DELETE_FILE = `${BASE_API}/users/{userId}/files/{fileId}`
 
 export {
   GET_STORAGE,

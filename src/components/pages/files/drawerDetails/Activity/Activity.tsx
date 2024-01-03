@@ -19,13 +19,16 @@ function Activity({ activity, createdAt }: Props) {
         borderRadius: '10px',
         padding: '0.7rem',
         marginRight: '1rem',
+        '&:last-child': {
+          paddingBottom: '.3rem',
+        },
       }}
     >
       <Typography variant="body2">{activity}</Typography>
       <Typography
         variant="body2"
         color="text.secondary"
-        fontSize="0.75rem"
+        fontSize="0.7rem"
         align="right"
       >
         {formatDate(createdAt)}
