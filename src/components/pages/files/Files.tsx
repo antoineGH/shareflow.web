@@ -1,3 +1,9 @@
+import { useEffect } from 'react'
+import { useDispatch, useSelector } from 'store/hooks'
+import { selectUserSelector, userStateSelector } from 'store/user/selector'
+import { fetchUser } from 'store/user/actions'
+import { useParams } from 'react-router-dom'
+import { FileData } from 'types/files'
 import Grid from '@mui/material/Grid'
 import Breadcrumbs from './breadcrumbs/Breadcrumbs'
 import TextContainer from './filesUploadModal/filesUploadDragNDrop/TextContainer'
@@ -7,18 +13,27 @@ import useDrawerDetails from './drawerDetails/useDrawerDetails'
 import FilesTable from './filesTable/FilesTable'
 import DrawerDetails from './drawerDetails/DrawerDetails'
 import CountFiles from './countFiles/CountFiles'
-import { useParams } from 'react-router-dom'
-import { extractRoutingParams } from './helpers'
-import { FileData } from 'types/files'
 import useFirstConnect from './firstLoginModal/useFirstConnect'
 import FirstLoginModal from './firstLoginModal/FirstLoginModal'
+import { extractRoutingParams } from './helpers'
 
 function Files() {
+  const dispatch = useDispatch()
+  const user = useSelector(selectUserSelector)
+  const { isLoadingFetch, hasErrorFetch } = useSelector(userStateSelector)
+
   const params = useParams<{ path: string }>()
 
   // TODO: use routingParams to fetch files in context from the API
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const routingParams = extractRoutingParams(params)
+
+  useEffect(() => {
+    if (!user) {
+      // TODO: update userId here from JWT
+      dispatch(fetchUser({ userId: 1 }))
+    }
+  }, [dispatch, user])
 
   const {
     open: openFirstConnectModal,
@@ -85,6 +100,9 @@ function Files() {
 
   const { files, countFiles, countFolders, totalSize } = filesData
 
+  if (isLoadingFetch) return <>isLoading</>
+  if (hasErrorFetch || !user) return <>hasError</>
+
   return (
     <Grid
       container
@@ -109,7 +127,8 @@ function Files() {
       />
       <DrawerDetails
         open={isDrawerOpen}
-        drawerFileId={drawerFileId}
+        userId={user.id}
+        fileId={drawerFileId}
         activeDrawerTab={activeDrawerTab}
         handleChangeDrawerTab={handleChangeDrawerTab}
         handleDrawerClose={handleDrawerClose}

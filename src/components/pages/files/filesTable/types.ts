@@ -20,5 +20,6 @@ export type EnhancedTableProps = {
   orderBy: string
   rowCount: number
   isPageFavorite?: boolean
+  isPageTag?: boolean
   isPageDelete?: boolean
 }

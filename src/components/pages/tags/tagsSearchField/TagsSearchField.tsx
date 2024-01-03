@@ -10,6 +10,8 @@ import ClearIcon from '@mui/icons-material/Clear'
 import SearchIcon from '@mui/icons-material/Search'
 import Option from './Option'
 import type { Tag } from 'types/tags'
+import { useTheme } from '@mui/material'
+import CancelIcon from '@mui/icons-material/Cancel'
 
 function generateInputProps(selectedOptions: Tag[], onCleanSearch: () => void) {
   return {
@@ -28,7 +30,11 @@ function generateInputProps(selectedOptions: Tag[], onCleanSearch: () => void) {
   }
 }
 
-function TagsSeachField() {
+type Props = {
+  userId: number
+}
+
+function TagsSeachField({ userId }: Props) {
   const [search, setSearch] = useState('')
 
   const highlightedOption = useRef<Tag | null>(null)
@@ -45,7 +51,8 @@ function TagsSeachField() {
     onResetSuggestions,
     onSelectOption,
     onRemoveSelectOption,
-  } = useTags({ debounceSearch })
+  } = useTags({ userId, debounceSearch })
+  const theme = useTheme()
 
   const onCleanSearch = useCallback(() => {
     setSearch('')
@@ -154,7 +161,21 @@ function TagsSeachField() {
                     key={option.id}
                     label={option.tag}
                     onDelete={() => handleRemoveSelectOption(option)}
-                    sx={{ p: 0, mr: 0.5, borderRadius: '5px' }}
+                    deleteIcon={
+                      <CancelIcon
+                        style={{
+                          color: theme.palette.primary.main,
+                        }}
+                      />
+                    }
+                    sx={{
+                      height: '26px',
+                      p: 0,
+                      mr: 0.5,
+                      borderRadius: '5px',
+                      backgroundColor: theme.palette.primary.contrastText,
+                      color: 'white',
+                    }}
                   />
                 ))}
               </>

@@ -1,64 +1,114 @@
-import { createEntityAdapter, createSlice } from '@reduxjs/toolkit'
+import {
+  PayloadAction,
+  createEntityAdapter,
+  createSlice,
+} from '@reduxjs/toolkit'
 import { Status } from 'types/store'
 import { Tag } from 'types/tags'
-import { createTag, fetchTags, removeTag } from './actions'
+import { createTag, fetchTags, removeTag, searchTags } from './actions'
 import { getStateSliceFromError } from 'store/utils'
 
 type InitialState = {
-  status: Status
-}
-
-const initialState: InitialState = {
-  status: Status.IDLE,
+  statusAction: Record<string, Status>
+  allTags: ReturnType<typeof TagsAdapter.getInitialState>
+  selectedTags: ReturnType<typeof TagsAdapter.getInitialState>
+  searchedTags: ReturnType<typeof TagsAdapter.getInitialState>
 }
 
 export const TagsAdapter = createEntityAdapter({
   selectId: (tag: Tag) => tag.id,
 })
 
+const initialState: InitialState = {
+  statusAction: {
+    fetch: Status.IDLE,
+    search: Status.IDLE,
+    create: Status.IDLE,
+    delete: Status.IDLE,
+  },
+  allTags: TagsAdapter.getInitialState(),
+  selectedTags: TagsAdapter.getInitialState(),
+  searchedTags: TagsAdapter.getInitialState(),
+}
+
 const tagsSlice = createSlice({
   name: 'tags',
-  initialState: TagsAdapter.getInitialState(initialState),
-  reducers: {},
+  initialState,
+  reducers: {
+    resetTags: () => TagsAdapter.getInitialState(initialState),
+    selectTag: (state, action: PayloadAction<Tag>) => {
+      TagsAdapter.addOne(state.selectedTags, action.payload)
+    },
+    unselectTag: (state, action: PayloadAction<Tag>) => {
+      TagsAdapter.removeOne(state.selectedTags, action.payload.id)
+    },
+    resetSelectedTags: state => {
+      state.selectedTags = TagsAdapter.getInitialState()
+    },
+    resetSearchTags: state => {
+      state.searchedTags = TagsAdapter.getInitialState()
+    },
+  },
   extraReducers: builder => {
     // ### fetchTags ###
     builder.addCase(fetchTags.pending, state => {
-      state.status = Status.PENDING
+      state.statusAction.fetch = Status.PENDING
     })
     builder.addCase(fetchTags.fulfilled, (state, action) => {
-      state.status = Status.SUCCEEDED
-      TagsAdapter.setAll(state, action.payload)
+      state.statusAction.fetch = Status.SUCCEEDED
+      state.allTags = TagsAdapter.setAll(state.allTags, action.payload)
     })
     builder.addCase(fetchTags.rejected, (state, action) => {
-      state.status = getStateSliceFromError(action)
+      state.statusAction.fetch = getStateSliceFromError(action)
+    })
+
+    // ### searchTags ###
+    builder.addCase(searchTags.pending, state => {
+      state.statusAction.search = Status.PENDING
+    })
+    builder.addCase(searchTags.fulfilled, (state, action) => {
+      state.statusAction.search = Status.SUCCEEDED
+      state.searchedTags = TagsAdapter.setAll(
+        state.searchedTags,
+        action.payload,
+      )
+    })
+    builder.addCase(searchTags.rejected, (state, action) => {
+      state.statusAction.search = getStateSliceFromError(action)
     })
 
     // ### createTag ###
     builder.addCase(createTag.pending, state => {
-      state.status = Status.PENDING
+      state.statusAction.create = Status.PENDING
     })
     builder.addCase(createTag.fulfilled, (state, action) => {
-      state.status = Status.SUCCEEDED
-      TagsAdapter.addOne(state, action.payload)
+      state.statusAction.create = Status.SUCCEEDED
+      state.allTags = TagsAdapter.addOne(state.allTags, action.payload)
     })
     builder.addCase(createTag.rejected, (state, action) => {
-      state.status = getStateSliceFromError(action)
+      state.statusAction.create = getStateSliceFromError(action)
     })
 
     // ### removeTag ###
     builder.addCase(removeTag.pending, state => {
-      state.status = Status.PENDING
+      state.statusAction.delete = Status.PENDING
     })
     builder.addCase(removeTag.fulfilled, (state, action) => {
-      state.status = Status.SUCCEEDED
-      TagsAdapter.removeOne(state, action.payload)
+      state.statusAction.delete = Status.SUCCEEDED
+      state.allTags = TagsAdapter.removeOne(state.allTags, action.payload)
     })
     builder.addCase(removeTag.rejected, (state, action) => {
-      state.status = getStateSliceFromError(action)
+      state.statusAction.delete = getStateSliceFromError(action)
     })
   },
 })
 
 export default tagsSlice.reducer
-
+export const {
+  resetTags,
+  selectTag,
+  unselectTag,
+  resetSelectedTags,
+  resetSearchTags,
+} = tagsSlice.actions
 export const { selectById, selectAll } = TagsAdapter.getSelectors()

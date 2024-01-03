@@ -13,6 +13,7 @@ type Props = {
   id: number
   files: File[]
   isPageFavorite?: boolean
+  isPageTag?: boolean
   isPageDelete?: boolean
   isHovered?: boolean
   toggleDrawer: (fileId: number) => void
@@ -25,6 +26,7 @@ function FileMenu({
   id,
   files,
   isPageFavorite,
+  isPageTag,
   isPageDelete,
   isHovered,
   toggleDrawer,
@@ -36,7 +38,7 @@ function FileMenu({
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
   const shouldDisplayFavoriteButton =
-    !isPageFavorite && !isPageDelete && isHovered
+    !isPageFavorite && !isPageTag && !isPageDelete && isHovered
 
   const actions: ListItem['id'][] = useMemo(() => {
     const result = files.find(file => file.id === id)?.action || []
@@ -131,21 +133,27 @@ function FileMenu({
           />
         </IconButton>
       )}
-      <IconButton size="small" onClick={e => handleClickDetails(e)}>
-        <InfoIcon sx={{ color: theme.palette.primary.contrastText }} />
-      </IconButton>
-      {filteredAction.length > 0 && (
+      {isPageTag ? null : (
         <>
-          <IconButton size="small" sx={{ mr: 3 }} onClick={openMenu}>
-            <MoreHorizIcon sx={{ color: theme.palette.primary.contrastText }} />
+          <IconButton size="small" onClick={e => handleClickDetails(e)}>
+            <InfoIcon sx={{ color: theme.palette.primary.contrastText }} />
           </IconButton>
-          <Menu
-            anchorEl={anchorEl}
-            open={open}
-            actions={filteredAction}
-            closeMenu={closeMenu}
-            handleClickMore={handleClickMore}
-          />
+          {filteredAction.length > 0 && (
+            <>
+              <IconButton size="small" sx={{ mr: 3 }} onClick={openMenu}>
+                <MoreHorizIcon
+                  sx={{ color: theme.palette.primary.contrastText }}
+                />
+              </IconButton>
+              <Menu
+                anchorEl={anchorEl}
+                open={open}
+                actions={filteredAction}
+                closeMenu={closeMenu}
+                handleClickMore={handleClickMore}
+              />
+            </>
+          )}
         </>
       )}
     </>

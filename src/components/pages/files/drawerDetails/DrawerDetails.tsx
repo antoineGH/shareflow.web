@@ -1,3 +1,7 @@
+import { useEffect } from 'react'
+import { useDispatch, useSelector } from 'store/hooks'
+import { fetchTags, removeTag } from 'store/tags/actions'
+import { selectAllTagsSelector } from 'store/tags/selector'
 import Drawer from '@mui/material/Drawer'
 import IconButton from '@mui/material/IconButton'
 import Divider from '@mui/material/Divider'
@@ -10,10 +14,13 @@ import FolderIcon from '@mui/icons-material/Folder'
 import Typography from '@mui/material/Typography'
 import StyledChip from './StyledChip'
 import Tabs from './Tabs/Tabs'
+import CancelIcon from '@mui/icons-material/Cancel'
+import { useTheme } from '@mui/material'
 
 type Props = {
   open: boolean
-  drawerFileId: number
+  userId: number
+  fileId: number
   activeDrawerTab: number
   handleChangeDrawerTab: (tab: number) => void
   handleDrawerClose: () => void
@@ -21,11 +28,27 @@ type Props = {
 
 function DrawerDetails({
   open,
-  drawerFileId,
+  userId,
+  fileId,
   activeDrawerTab,
   handleChangeDrawerTab,
   handleDrawerClose,
 }: Props) {
+  const dispatch = useDispatch()
+  const theme = useTheme()
+
+  useEffect(() => {
+    dispatch(fetchTags({ userId, fileId }))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dispatch, fileId])
+
+  const tagsFile = useSelector(selectAllTagsSelector)
+
+  const handleClickDeleteTag = (tagId: number) => {
+    if (!tagId) return
+    dispatch(removeTag({ userId, fileId, tagToDeleteId: tagId }))
+  }
+
   return (
     <Drawer
       sx={{
@@ -83,17 +106,31 @@ function DrawerDetails({
               </Stack>
             </Stack>
           </Stack>
+          {/* TODO: REMOVE TAG FROM HERE WITH TAG ID */}
           <Stack direction="row" spacing={0.5} sx={{ width: '100%' }} mb={1}>
-            <StyledChip size="small" label="test" />
-            <StyledChip size="small" label="test2" />
-            <StyledChip size="small" label="test3" />
+            {tagsFile.slice(0, 3).map(tag => (
+              <StyledChip
+                size="small"
+                label={tag.tag.toLowerCase()}
+                key={tag.id}
+                onDelete={() => handleClickDeleteTag(tag.id)}
+                deleteIcon={
+                  <CancelIcon
+                    style={{
+                      color: theme.palette.primary.main,
+                    }}
+                  />
+                }
+              />
+            ))}
           </Stack>
         </Stack>
       </DrawerHeader>
       <Divider />
       <Tabs
+        userId={userId}
+        fileId={fileId}
         activeDrawerTab={activeDrawerTab}
-        drawerFileId={drawerFileId}
         handleChangeDrawerTab={handleChangeDrawerTab}
       />
     </Drawer>

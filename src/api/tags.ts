@@ -6,18 +6,26 @@ import type {
   Tag,
 } from 'types/tags'
 import { DELETE_TAG, GET_TAGS, POST_TAG } from './urls'
-import { convertObjectKeys, formatURL } from './utils'
+import { convertObjectKeys, formatURL, generateUrlParams } from './utils'
 import { rest } from 'helpers/rest'
 import { HttpResponseError } from 'helpers/errors'
 
 const errGetTagsMsg = 'An error occurred while getting tags. Please try again'
 
-async function getTags(fileId: number, signal?: AbortSignal) {
+type GetTags = {
+  userId: number
+  fileId?: number
+  search?: string
+  signal?: AbortSignal
+}
+
+async function getTags({ userId, fileId, search, signal }: GetTags) {
   Promise<GetTagsReturnType>
   try {
-    // TODO: replace with proper URL and update status code
-    //   const url = formatURL(`${GET_TAGS}`, { fileId })
-    const url = 'http://localhost:5000/tags'
+    const queries = generateUrlParams({ search })
+    fileId = fileId ?? -1
+    const baseUrl = formatURL(`${GET_TAGS}`, { userId, fileId })
+    const url = `${baseUrl}?${queries}`
     const res = await rest.get({ url, signal })
 
     if (res?.response?.status !== 200) {
@@ -26,6 +34,7 @@ async function getTags(fileId: number, signal?: AbortSignal) {
 
     const { object } = res
     const tags: Tag[] = object?.map(tag => convertObjectKeys<TagApi, Tag>(tag))
+
     return { tags }
   } catch (error) {
     console.error(error)
@@ -37,17 +46,18 @@ const errPostTagMsg =
   'An error occurred while creating the tag. Please try again'
 
 async function postTag(
+  userId: number,
   fileId: number,
-  newTag: Omit<Tag, 'id' | 'fileId' | 'userId'>,
+  newTag: string,
   signal?: AbortSignal,
 ) {
   Promise<PostTagsReturnType>
   try {
-    // TODO: replace with proper URL and update status code
-    // const url = formatURL(`${POST_TAG}`, { fileId })
-    const url = 'http://localhost:5000/tags'
+    const url = formatURL(`${POST_TAG}`, { userId, fileId })
 
-    const body = JSON.stringify(newTag)
+    const body = JSON.stringify({
+      tag: newTag,
+    })
 
     const res = await rest.post({ url, body, signal })
 
@@ -67,12 +77,15 @@ async function postTag(
 const errDeleteTagMsg =
   'An error occurred while deleting the tag. Please try again'
 
-async function deleteTag(fileId: number, tagId: number, signal?: AbortSignal) {
+async function deleteTag(
+  userId: number,
+  fileId: number,
+  tagId: number,
+  signal?: AbortSignal,
+) {
   Promise<DeleteTagReturnType>
   try {
-    // TODO: replace with proper URL and update status code
-    //   const url = formatURL(`${DELETE_TAG}`, { fileId, tagId })
-    const url = 'http://localhost:5000/tags'
+    const url = formatURL(`${DELETE_TAG}`, { userId, fileId, tagId })
     const res = await rest.delete({ url, signal })
 
     if (res?.response?.status !== 204) {
