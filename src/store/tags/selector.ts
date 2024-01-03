@@ -9,6 +9,8 @@ const tagsStoreState = (state: RootState) => state.tags
 const tagsStateSelector = createSelector(tagsStoreState, state => ({
   isLoadingFetch: state.statusAction.fetch === Status.PENDING,
   hasErrorFetch: state.statusAction.fetch === Status.FAILED,
+  isLoadingSearch: state.statusAction.search === Status.PENDING,
+  hasErrorSearch: state.statusAction.search === Status.FAILED,
   isLoadingCreate: state.statusAction.create === Status.PENDING,
   hasErrorCreate: state.statusAction.create === Status.FAILED,
   isLoadingDelete: state.statusAction.delete === Status.PENDING,

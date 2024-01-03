@@ -45,6 +45,9 @@ const tagsSlice = createSlice({
     resetSelectedTags: state => {
       state.selectedTags = TagsAdapter.getInitialState()
     },
+    resetSearchTags: state => {
+      state.searchedTags = TagsAdapter.getInitialState()
+    },
   },
   extraReducers: builder => {
     // ### fetchTags ###
@@ -101,6 +104,11 @@ const tagsSlice = createSlice({
 })
 
 export default tagsSlice.reducer
-export const { resetTags, selectTag, unselectTag, resetSelectedTags } =
-  tagsSlice.actions
+export const {
+  resetTags,
+  selectTag,
+  unselectTag,
+  resetSelectedTags,
+  resetSearchTags,
+} = tagsSlice.actions
 export const { selectById, selectAll } = TagsAdapter.getSelectors()

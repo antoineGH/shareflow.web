@@ -1,7 +1,12 @@
 import Box from '@mui/material/Box'
 import TagsSeachField from './TagsSearchField'
 
-function Tags() {
+type Props = {
+  userId: number
+  fileId: number
+}
+
+function Tags({ userId, fileId }: Props) {
   return (
     <Box
       sx={{
@@ -11,7 +16,7 @@ function Tags() {
         mt: 1,
       }}
     >
-      <TagsSeachField />
+      <TagsSeachField userId={userId} fileId={fileId} />
     </Box>
   )
 }

@@ -1,3 +1,7 @@
+import { useEffect } from 'react'
+import { useDispatch, useSelector } from 'store/hooks'
+import { selectUserSelector, userStateSelector } from 'store/user/selector'
+import { fetchUser } from 'store/user/actions'
 import Breadcrumbs from '@mui/material/Breadcrumbs'
 import Grid from '@mui/material/Grid'
 import FilesTable from '../files/filesTable/FilesTable'
@@ -7,6 +11,17 @@ import BreadcrumbEntry from 'components/common/breadcrumbEntry/BreadcrumbEntry'
 import type { FileData } from 'types/files'
 
 function Favorites() {
+  const dispatch = useDispatch()
+  const user = useSelector(selectUserSelector)
+  const { isLoadingFetch, hasErrorFetch } = useSelector(userStateSelector)
+
+  useEffect(() => {
+    if (!user) {
+      // TODO: update userId here from JWT
+      dispatch(fetchUser({ userId: 1 }))
+    }
+  }, [dispatch, user])
+
   const {
     isDrawerOpen,
     drawerFileId,
@@ -63,6 +78,9 @@ function Favorites() {
 
   const { files } = filesData
 
+  if (isLoadingFetch) return <>isLoading</>
+  if (hasErrorFetch || !user) return <>hasError</>
+
   return (
     <Grid
       container
@@ -84,8 +102,9 @@ function Favorites() {
         toggleDrawer={toggleDrawer}
       />
       <DrawerDetails
+        userId={user.id}
+        fileId={drawerFileId}
         open={isDrawerOpen}
-        drawerFileId={drawerFileId}
         activeDrawerTab={activeDrawerTab}
         handleChangeDrawerTab={handleChangeDrawerTab}
         handleDrawerClose={handleDrawerClose}

@@ -5,14 +5,19 @@ import Autocomplete from '@mui/material/Autocomplete'
 import IconButton from '@mui/material/IconButton'
 import TextField from '@mui/material/TextField'
 import InputAdornment from '@mui/material/InputAdornment'
-import SearchIcon from '@mui/icons-material/Search'
 import ClearIcon from '@mui/icons-material/Clear'
 import Option from './Option'
 import type { Tag } from 'types/tags'
+import { dispatch } from 'store/store'
+import { createTag } from 'store/tags/actions'
 
-function TagsSeachField() {
+type Props = {
+  userId: number
+  fileId: number
+}
+
+function TagsSeachField({ userId, fileId }: Props) {
   const [search, setSearch] = useState('')
-
   const highlightedOption = useRef<Tag | null>(null)
   const debounceSearch = useDebounce(search, 500)
 
@@ -26,15 +31,11 @@ function TagsSeachField() {
     onResetselectedOptions,
     onResetSuggestions,
     onSelectOption,
-  } = useTags({ debounceSearch })
+    onRemoveSelectOption,
+  } = useTags({ debounceSearch, userId, fileId })
 
   function generateInputProps(search: string, onCleanSearch: () => void) {
     return {
-      startAdornment: (
-        <InputAdornment position="start">
-          <SearchIcon />
-        </InputAdornment>
-      ),
       endAdornment: search ? (
         <InputAdornment position="end">
           <IconButton onClick={onCleanSearch}>
@@ -72,14 +73,26 @@ function TagsSeachField() {
     onResetSuggestions()
     onSelectOption(option)
     setSearch('')
+    onRemoveSelectOption(option)
   }
 
   const onKeydownEnter = useCallback(
     event => {
       if (event.key === 'Enter' && areSuggestionsOpen) {
-        if (highlightedOption.current) {
-          onClickOption(highlightedOption.current)
+        let tag = event.target.value
+        if (typeof tag === 'object') {
+          tag = tag.tag
         }
+        dispatch(
+          createTag({
+            userId,
+            fileId,
+            newTag: tag,
+            cb: () => {
+              setSearch('')
+            },
+          }),
+        )
       }
       if (event.key === 'Backspace' && selectedOptions) {
         onCleanSearch()
@@ -101,11 +114,6 @@ function TagsSeachField() {
       open={areSuggestionsOpen}
       loading={isLoading}
       loadingText="Loading"
-      noOptionsText={
-        search.length >= 3 || !selectedOptions
-          ? null
-          : 'Please fill in at least 3 characters.'
-      }
       options={options}
       onOpen={onOpenSuggestions}
       onClose={onCloseSuggestions}
@@ -138,9 +146,9 @@ function TagsSeachField() {
       )}
       renderOption={(optionAttr, option) => (
         <Option
-          key={option.name}
+          key={option.tag}
           option={option}
-          isSelected={selectedOptions.id === option.id}
+          isSelected={false}
           optionAttr={optionAttr}
           onClickOption={onClickOption}
         />

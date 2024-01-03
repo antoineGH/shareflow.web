@@ -14,7 +14,7 @@ const errGetTagsMsg = 'An error occurred while getting tags. Please try again'
 
 type GetTags = {
   userId: number
-  fileId: number
+  fileId?: number
   search?: string
   signal?: AbortSignal
 }
@@ -23,6 +23,7 @@ async function getTags({ userId, fileId, search, signal }: GetTags) {
   Promise<GetTagsReturnType>
   try {
     const queries = generateUrlParams({ search })
+    fileId = fileId ?? -1
     const baseUrl = formatURL(`${GET_TAGS}`, { userId, fileId })
     const url = `${baseUrl}?${queries}`
     const res = await rest.get({ url, signal })
@@ -47,14 +48,16 @@ const errPostTagMsg =
 async function postTag(
   userId: number,
   fileId: number,
-  newTag: Omit<Tag, 'id' | 'fileId' | 'userId'>,
+  newTag: string,
   signal?: AbortSignal,
 ) {
   Promise<PostTagsReturnType>
   try {
     const url = formatURL(`${POST_TAG}`, { userId, fileId })
 
-    const body = JSON.stringify(newTag)
+    const body = JSON.stringify({
+      tag: newTag,
+    })
 
     const res = await rest.post({ url, body, signal })
 

@@ -1,91 +1,90 @@
 import { useEffect, useState } from 'react'
 import { removeDuplicates } from './helpers'
 import type { Tag } from 'types/tags'
+import { useDispatch, useSelector } from 'store/hooks'
+import {
+  selectSearchedTagsSelector,
+  selectedTagsSelector,
+  tagsStateSelector,
+} from 'store/tags/selector'
+import { createTag, searchTags } from 'store/tags/actions'
+import {
+  resetSearchTags,
+  resetSelectedTags,
+  unselectTag,
+} from 'store/tags/slice'
 
 type HookReturnValue = {
   areSuggestionsOpen: boolean
   isLoading: boolean
   options: Tag[]
-  selectedOptions: Tag | Record<string, never>
+  selectedOptions: Tag
   onOpenSuggestions: () => void
   onCloseSuggestions: () => void
   onResetSuggestions: () => void
   onResetselectedOptions: () => void
   onSelectOption: (option: Tag) => void
+  onRemoveSelectOption: (option: Tag) => void
 }
 
 type Props = {
+  userId: number
+  fileId: number
   debounceSearch?: string
 }
 
-function useTags({ debounceSearch }: Props): HookReturnValue {
-  const [selectedOptions, setselectedOptions] = useState<
-    Tag | Record<string, never>
-  >({})
-  const [options, setOptions] = useState<Tag[]>([])
-  const [isLoading, setIsLoading] = useState(false)
+function useTags({ userId, fileId, debounceSearch }: Props): HookReturnValue {
   const [areSuggestionsOpen, setAreSuggestionsOpen] = useState(false)
-
-  const onResetSuggestions = () => setOptions([])
+  const dispatch = useDispatch()
+  const tags = useSelector(selectSearchedTagsSelector)
+  const { isLoadingSearch } = useSelector(tagsStateSelector)
+  const selectedTags = useSelector(selectedTagsSelector)
 
   const onOpenSuggestions = () => setAreSuggestionsOpen(true)
 
   const onCloseSuggestions = () => setAreSuggestionsOpen(false)
 
   const onSelectOption = (option: Tag) => {
-    setselectedOptions(option)
+    dispatch(
+      createTag({
+        userId,
+        fileId,
+        newTag: option.tag,
+        cb: () => {
+          onResetSuggestions()
+          onResetselectedOptions()
+        },
+      }),
+    )
     onCloseSuggestions()
   }
 
-  const onResetselectedOptions = () => setselectedOptions({})
-
-  const fetchData = async () => {
-    if (!debounceSearch || (options && debounceSearch.length < 3)) return
-
-    setIsLoading(true)
-    // TODO: Replace with API call
-    // const response = await getTags(debounceSearch)
-    const response = {
-      options: [
-        {
-          id: 1,
-          userId: 101,
-          fileId: 201,
-          tag: 'tag1',
-        },
-        {
-          id: 2,
-          userId: 102,
-          fileId: 202,
-          tag: 'tag2',
-        },
-        {
-          id: 3,
-          userId: 103,
-          fileId: 203,
-          tag: 'tag3',
-        },
-      ],
-    }
-    setOptions(prev => [...prev, ...(response.options ?? [])])
-    setIsLoading(false)
+  const onRemoveSelectOption = (option: Tag) => {
+    dispatch(unselectTag(option))
   }
 
+  const onResetSuggestions = () => dispatch(resetSearchTags())
+
+  const onResetselectedOptions = () => dispatch(resetSelectedTags())
+
   useEffect(() => {
-    fetchData()
+    if (!debounceSearch || !userId || (tags && debounceSearch.length < 3))
+      return
+    dispatch(searchTags({ userId, search: debounceSearch }))
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [debounceSearch])
+  }, [debounceSearch, dispatch])
 
   return {
     areSuggestionsOpen,
-    isLoading,
-    options: removeDuplicates(options),
-    selectedOptions,
+    isLoading: isLoadingSearch,
+    options: removeDuplicates(tags),
+    selectedOptions: selectedTags[0],
     onCloseSuggestions,
     onOpenSuggestions,
     onResetselectedOptions,
     onResetSuggestions,
     onSelectOption,
+    onRemoveSelectOption,
   }
 }
 

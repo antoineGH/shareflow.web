@@ -7,13 +7,13 @@ import type { Tag } from 'types/tags'
 
 const fetchTags = createAsyncThunk<
   Tag[],
-  { userId: number },
+  { userId: number; fileId?: number },
   { state: RootState; rejectValue: { errorMessage: string; code?: number } }
->('tags/fetchTags', async ({ userId }, { signal, rejectWithValue }) => {
+>('tags/fetchTags', async ({ userId, fileId }, { signal, rejectWithValue }) => {
   try {
     const { error, tags } = await getTags({
       userId,
-      fileId: 1,
+      fileId,
       signal,
     })
 
@@ -35,7 +35,6 @@ const searchTags = createAsyncThunk<
     try {
       const { error, tags } = await getTags({
         userId,
-        fileId: 1,
         search,
         signal,
       })
@@ -54,17 +53,19 @@ const createTag = createAsyncThunk<
   {
     userId: number
     fileId: number
-    newTag: Omit<Tag, 'id' | 'userId' | 'fileId'>
+    newTag: string
+    cb?: () => void
   },
   { state: RootState; rejectValue: { errorMessage: string; code?: number } }
 >(
   'tags/createTag',
-  async ({ userId, fileId, newTag }, { signal, rejectWithValue }) => {
+  async ({ userId, fileId, newTag, cb }, { signal, rejectWithValue }) => {
     try {
       const { error, tag } = await postTag(userId, fileId, newTag, signal)
 
       if (error) throw new HttpResponseError(error.code || null, error.message)
 
+      cb?.()
       return tag
     } catch (error) {
       return catchAsyncThunk(error, rejectWithValue)

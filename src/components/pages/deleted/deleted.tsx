@@ -1,3 +1,7 @@
+import { useEffect } from 'react'
+import { useDispatch, useSelector } from 'store/hooks'
+import { fetchUser } from 'store/user/actions'
+import { selectUserSelector, userStateSelector } from 'store/user/selector'
 import Grid from '@mui/material/Grid'
 import Breadcrumbs from '@mui/material/Breadcrumbs'
 import BreadcrumbEntry from 'components/common/breadcrumbEntry/BreadcrumbEntry'
@@ -7,6 +11,17 @@ import useDrawerDetails from '../files/drawerDetails/useDrawerDetails'
 import type { FileData } from 'types/files'
 
 function Deleted() {
+  const dispatch = useDispatch()
+  const user = useSelector(selectUserSelector)
+  const { isLoadingFetch, hasErrorFetch } = useSelector(userStateSelector)
+
+  useEffect(() => {
+    if (!user) {
+      // TODO: update userId here from JWT
+      dispatch(fetchUser({ userId: 1 }))
+    }
+  }, [dispatch, user])
+
   const {
     isDrawerOpen,
     drawerFileId,
@@ -59,6 +74,9 @@ function Deleted() {
 
   const { files } = filesData
 
+  if (isLoadingFetch) return <>isLoading</>
+  if (hasErrorFetch || !user) return <>hasError</>
+
   return (
     <Grid
       container
@@ -81,7 +99,8 @@ function Deleted() {
       />
       <DrawerDetails
         open={isDrawerOpen}
-        drawerFileId={drawerFileId}
+        userId={user.id}
+        fileId={drawerFileId}
         activeDrawerTab={activeDrawerTab}
         handleChangeDrawerTab={handleChangeDrawerTab}
         handleDrawerClose={handleDrawerClose}

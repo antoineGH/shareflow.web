@@ -37,7 +37,7 @@ function useTags({ userId, debounceSearch }: Props): HookReturnValue {
   const [areSuggestionsOpen, setAreSuggestionsOpen] = useState(false)
   const dispatch = useDispatch()
   const tags = useSelector(selectSearchedTagsSelector)
-  const { isLoadingFetch } = useSelector(tagsStateSelector)
+  const { isLoadingSearch } = useSelector(tagsStateSelector)
   const selectedTags = useSelector(selectedTagsSelector)
 
   const onResetSuggestions = () => dispatch(resetTags)
@@ -68,7 +68,7 @@ function useTags({ userId, debounceSearch }: Props): HookReturnValue {
 
   return {
     areSuggestionsOpen,
-    isLoading: isLoadingFetch,
+    isLoading: isLoadingSearch,
     options: removeDuplicates(tags),
     selectedOptions: selectedTags,
     onCloseSuggestions,
