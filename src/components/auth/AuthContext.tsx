@@ -1,8 +1,9 @@
+import { postLogin } from 'api/users'
 import { createContext, useState } from 'react'
 
 type Props = {
   isAuthenticated: boolean
-  login: () => void
+  login: (email: string, password: string, cb?: () => void) => void
   logout: () => void
 }
 
@@ -13,11 +14,27 @@ export const AuthContext = createContext<Props>({
 })
 
 export const AuthProvider = ({ children }) => {
-  // TODO: Switch back to false
-  const [isAuthenticated, setIsAuthenticated] = useState(true)
+  const [isAuthenticated, setIsAuthenticated] = useState(
+    !!localStorage.getItem('token'),
+  )
 
-  const login = () => setIsAuthenticated(true)
-  const logout = () => setIsAuthenticated(false)
+  const login = async (email: string, password: string, cb?: () => void) => {
+    try {
+      const isAuthenticated = await postLogin(email, password)
+      if (!isAuthenticated) throw new Error('Invalid credentials')
+
+      setIsAuthenticated(true)
+      cb?.()
+    } catch (error) {
+      console.error(error)
+      // TODO: Snackbar error
+    }
+  }
+
+  const logout = () => {
+    setIsAuthenticated(false)
+    localStorage.removeItem('token')
+  }
 
   return (
     <AuthContext.Provider value={{ isAuthenticated, login, logout }}>

@@ -9,18 +9,14 @@ import DrawerDetails from '../files/drawerDetails/DrawerDetails'
 import useDrawerDetails from '../files/drawerDetails/useDrawerDetails'
 import BreadcrumbEntry from 'components/common/breadcrumbEntry/BreadcrumbEntry'
 import type { FileData } from 'types/files'
+import useFetchUserFromToken from 'hooks/useFetchUserFromToken'
 
 function Favorites() {
   const dispatch = useDispatch()
   const user = useSelector(selectUserSelector)
   const { isLoadingFetch, hasErrorFetch } = useSelector(userStateSelector)
-
-  useEffect(() => {
-    if (!user) {
-      // TODO: update userId here from JWT
-      dispatch(fetchUser({ userId: 1 }))
-    }
-  }, [dispatch, user])
+  const { userId, error } = useFetchUserFromToken(user)
+  // TODO: SNACKBAR ERROR IF ERROR
 
   const {
     isDrawerOpen,
@@ -31,6 +27,12 @@ function Favorites() {
     handleDrawerOpen,
     toggleDrawer,
   } = useDrawerDetails()
+
+  useEffect(() => {
+    if (error || !userId || user) return
+    dispatch(fetchUser({ userId }))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userId])
 
   const filesData: FileData = {
     files: [
@@ -79,7 +81,7 @@ function Favorites() {
   const { files } = filesData
 
   if (isLoadingFetch) return <>isLoading</>
-  if (hasErrorFetch || !user) return <>hasError</>
+  if (hasErrorFetch || !userId) return <>hasError</>
 
   return (
     <Grid
@@ -102,7 +104,7 @@ function Favorites() {
         toggleDrawer={toggleDrawer}
       />
       <DrawerDetails
-        userId={user.id}
+        userId={userId}
         fileId={drawerFileId}
         open={isDrawerOpen}
         activeDrawerTab={activeDrawerTab}

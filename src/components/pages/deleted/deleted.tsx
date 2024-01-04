@@ -9,18 +9,20 @@ import DrawerDetails from '../files/drawerDetails/DrawerDetails'
 import FilesTable from '../files/filesTable/FilesTable'
 import useDrawerDetails from '../files/drawerDetails/useDrawerDetails'
 import type { FileData } from 'types/files'
+import useFetchUserFromToken from 'hooks/useFetchUserFromToken'
 
 function Deleted() {
   const dispatch = useDispatch()
   const user = useSelector(selectUserSelector)
   const { isLoadingFetch, hasErrorFetch } = useSelector(userStateSelector)
+  const { userId, error } = useFetchUserFromToken(user)
+  // TODO: SNACKBAR ERROR IF ERROR
 
   useEffect(() => {
-    if (!user) {
-      // TODO: update userId here from JWT
-      dispatch(fetchUser({ userId: 1 }))
-    }
-  }, [dispatch, user])
+    if (error || !userId || user) return
+    dispatch(fetchUser({ userId }))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userId])
 
   const {
     isDrawerOpen,
@@ -75,7 +77,7 @@ function Deleted() {
   const { files } = filesData
 
   if (isLoadingFetch) return <>isLoading</>
-  if (hasErrorFetch || !user) return <>hasError</>
+  if (hasErrorFetch || !userId) return <>hasError</>
 
   return (
     <Grid
@@ -99,7 +101,7 @@ function Deleted() {
       />
       <DrawerDetails
         open={isDrawerOpen}
-        userId={user.id}
+        userId={userId}
         fileId={drawerFileId}
         activeDrawerTab={activeDrawerTab}
         handleChangeDrawerTab={handleChangeDrawerTab}

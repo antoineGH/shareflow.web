@@ -13,7 +13,6 @@ const drawerNavigation = ({
   closeMenu,
   logout,
 }: Props) => {
-  console.log(path, pathname)
   if (path === '/auth/logout') {
     logout()
     navigate('/login')

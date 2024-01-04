@@ -40,7 +40,6 @@ const createComment = createAsyncThunk<
   'comments/createComment',
   async ({ userId, fileId, newComment, cb }, { signal, rejectWithValue }) => {
     try {
-      console.log('action createComment', userId, fileId, newComment)
       const { error, comment } = await postComment(
         userId,
         fileId,

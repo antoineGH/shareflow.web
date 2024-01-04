@@ -38,9 +38,10 @@ function DrawerDetails({
   const theme = useTheme()
 
   useEffect(() => {
+    if (!open) return
     dispatch(fetchTags({ userId, fileId }))
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dispatch, fileId])
+  }, [dispatch, fileId, open])
 
   const tagsFile = useSelector(selectAllTagsSelector)
 
@@ -106,7 +107,6 @@ function DrawerDetails({
               </Stack>
             </Stack>
           </Stack>
-          {/* TODO: REMOVE TAG FROM HERE WITH TAG ID */}
           <Stack direction="row" spacing={0.5} sx={{ width: '100%' }} mb={1}>
             {tagsFile.slice(0, 3).map(tag => (
               <StyledChip

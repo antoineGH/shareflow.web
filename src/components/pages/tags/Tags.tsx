@@ -8,33 +8,23 @@ import BreadcrumbEntry from 'components/common/breadcrumbEntry/BreadcrumbEntry'
 import TagsSeachField from './tagsSearchField/TagsSearchField'
 import { FileData } from 'types/files'
 import FilesTable from '../files/filesTable/FilesTable'
-import { selectAllTagsSelector } from 'store/tags/selector'
-import { fetchTags } from 'store/tags/actions'
+import useFetchUserFromToken from 'hooks/useFetchUserFromToken'
 
 function Tags() {
   const dispatch = useDispatch()
   const user = useSelector(selectUserSelector)
   const { isLoadingFetch, hasErrorFetch } = useSelector(userStateSelector)
-  const tags = useSelector(selectAllTagsSelector)
+  const { userId, error } = useFetchUserFromToken(user)
+  // TODO: SNACKBAR ERROR IF ERROR
 
   useEffect(() => {
-    if (!user) {
-      // TODO: update userId here from JWT
-      dispatch(fetchUser({ userId: 1 }))
-    }
+    if (error || !userId || user) return
+    dispatch(fetchUser({ userId }))
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-
-  useEffect(() => {
-    if (tags.length === 0) {
-      // TODO: update userId here from JWT
-      dispatch(fetchTags({ userId: 1 }))
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [userId])
 
   if (isLoadingFetch) return <>Loading</>
-  if (hasErrorFetch || !user) return <>Error</>
+  if (hasErrorFetch || !userId) return <>Error</>
 
   const filesData: FileData = {
     files: [
@@ -97,7 +87,7 @@ function Tags() {
         </Breadcrumbs>
       </Grid>
       <Grid item sx={{ width: '100%' }} py={0} px={2}>
-        <TagsSeachField userId={user.id} />
+        <TagsSeachField userId={userId} />
       </Grid>
       <Grid item sx={{ width: '100%' }} py={0}>
         <FilesTable
