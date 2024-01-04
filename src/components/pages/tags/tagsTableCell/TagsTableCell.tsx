@@ -11,7 +11,7 @@ function TagsTableCell() {
   return (
     <Stack direction="row" spacing={0.5} sx={{ width: '100%' }}>
       {selectedTags.map(tag => (
-        <StyledChip key={tag.id} size="small" label={tag.tag} />
+        <StyledChip key={tag.id} size="small" label={tag.tag.toLowerCase()} />
       ))}
     </Stack>
   )

@@ -50,10 +50,7 @@ function TableRow({
   const navigate = useNavigate()
   const theme = useTheme()
 
-  const [isHovered, setIsHovered] = useState(false)
-
   const isFavorite = files.find(file => file.id === row.id)?.isFavorite || false
-  const isPageFile = !isPageFavorite && !isPageTag && !isPageDelete
 
   const handleCheckBoxClick = (e: MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation()
@@ -78,8 +75,6 @@ function TableRow({
     <TableRowMUI
       hover
       onClick={e => handleClickRow(e)}
-      onMouseEnter={isPageFile ? () => setIsHovered(true) : () => {}}
-      onMouseLeave={isPageFile ? () => setIsHovered(false) : () => {}}
       role="checkbox"
       aria-checked={isItemSelected}
       tabIndex={-1}
@@ -135,7 +130,6 @@ function TableRow({
               isPageFavorite={isPageFavorite}
               isPageTag={isPageTag}
               isPageDelete={isPageDelete}
-              isHovered={isHovered}
               toggleDrawer={toggleDrawer}
               handleDrawerOpen={handleDrawerOpen}
               onFavoriteClick={onFavoriteClick}

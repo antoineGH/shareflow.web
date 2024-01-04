@@ -2,11 +2,13 @@ import Typography from '@mui/material/Typography'
 import Toolbar from '@mui/material/Toolbar'
 import IconButton from '@mui/material/IconButton'
 import MenuIcon from '@mui/icons-material/Menu'
+import useMediaQuery from '@mui/material/useMediaQuery'
+import { Button, Link } from '@mui/material'
+import { useTheme } from '@mui/material/styles'
 
 import StyledTopBar from './StyledTopBar'
 import AccountMenu from './accountMenu/AccountMenu'
 import Search from './Search'
-import { Button, Link } from '@mui/material'
 
 type Props = {
   drawerWidth: number
@@ -15,6 +17,11 @@ type Props = {
 }
 
 function TopBar({ drawerWidth, appBarHeight, toggleDrawer }: Props) {
+  const theme = useTheme()
+  const isXs = useMediaQuery(theme.breakpoints.down('xs'))
+  const isMd = useMediaQuery(theme.breakpoints.down('md'))
+  const hideSearch = isXs || isMd
+
   return (
     <StyledTopBar
       position="absolute"
@@ -57,7 +64,7 @@ function TopBar({ drawerWidth, appBarHeight, toggleDrawer }: Props) {
             shareFlow
           </Typography>
         </Button>
-        <Search />
+        {!hideSearch && <Search />}
         <AccountMenu />
       </Toolbar>
     </StyledTopBar>

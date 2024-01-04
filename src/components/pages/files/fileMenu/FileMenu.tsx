@@ -15,7 +15,6 @@ type Props = {
   isPageFavorite?: boolean
   isPageTag?: boolean
   isPageDelete?: boolean
-  isHovered?: boolean
   toggleDrawer: (fileId: number) => void
   handleDrawerOpen: (fileId: number) => void
   onFavoriteClick: (id: number) => void
@@ -28,7 +27,6 @@ function FileMenu({
   isPageFavorite,
   isPageTag,
   isPageDelete,
-  isHovered,
   toggleDrawer,
   handleDrawerOpen,
   onFavoriteClick,
@@ -38,7 +36,7 @@ function FileMenu({
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
   const shouldDisplayFavoriteButton =
-    !isPageFavorite && !isPageTag && !isPageDelete && isHovered
+    !isPageFavorite && !isPageTag && !isPageDelete
 
   const actions: ListItem['id'][] = useMemo(() => {
     const result = files.find(file => file.id === id)?.action || []

@@ -159,7 +159,7 @@ function TagsSeachField({ userId }: Props) {
                 {selectedOptions.map(option => (
                   <Chip
                     key={option.id}
-                    label={option.tag}
+                    label={option.tag.toLowerCase()}
                     onDelete={() => handleRemoveSelectOption(option)}
                     deleteIcon={
                       <CancelIcon
