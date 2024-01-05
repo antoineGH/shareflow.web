@@ -33,6 +33,21 @@ function SnackBarComponent() {
         variant="filled"
         sx={{
           width: '100%',
+
+          backgroundColor: theme => {
+            switch (severity) {
+              case 'error':
+                return theme.palette.error.main
+              case 'warning':
+                return theme.palette.warning.main
+              case 'info':
+                return theme.palette.info.main
+              case 'success':
+                return theme.palette.success.main
+              default:
+                return theme.palette.info.main
+            }
+          },
         }}
       >
         {message}

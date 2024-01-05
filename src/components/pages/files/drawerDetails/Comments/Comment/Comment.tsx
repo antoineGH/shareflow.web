@@ -115,7 +115,7 @@ function CommentsSection({
               sx={{
                 width: 32,
                 height: 32,
-                border: '0.1px solid lightgray',
+                backgroundColor: '#6c63ff29',
               }}
             >
               {defineAvatarInitials(comment.user?.fullName || '')}

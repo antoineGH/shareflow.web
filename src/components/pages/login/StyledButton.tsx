@@ -8,6 +8,9 @@ const StyledButton = styled(LoadingButton)(() => ({
   fontWeight: 'bold',
   width: '100%',
   marginTop: '1rem',
+  '&:hover': {
+    backgroundColor: '#6C63FF',
+  },
 }))
 
 export default StyledButton
