@@ -75,11 +75,14 @@ const createTag = createAsyncThunk<
 
 const removeTag = createAsyncThunk<
   Tag['id'],
-  { userId: number; fileId: number; tagToDeleteId: number },
+  { userId: number; fileId: number; tagToDeleteId: number; cb?: () => void },
   { state: RootState; rejectValue: { errorMessage: string; code?: number } }
 >(
   'tags/removeTag',
-  async ({ userId, fileId, tagToDeleteId }, { signal, rejectWithValue }) => {
+  async (
+    { userId, fileId, tagToDeleteId, cb },
+    { signal, rejectWithValue },
+  ) => {
     try {
       const { error, tagId } = await deleteTag(
         userId,
@@ -90,6 +93,7 @@ const removeTag = createAsyncThunk<
 
       if (error) throw new HttpResponseError(error.code || null, error.message)
 
+      cb?.()
       return tagId
     } catch (error) {
       return catchAsyncThunk(error, rejectWithValue)

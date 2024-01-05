@@ -8,8 +8,9 @@ import InputAdornment from '@mui/material/InputAdornment'
 import ClearIcon from '@mui/icons-material/Clear'
 import Option from './Option'
 import type { Tag } from 'types/tags'
-import { dispatch } from 'store/store'
 import { createTag } from 'store/tags/actions'
+import { useDispatch } from 'store/hooks'
+import { openSnackbar } from 'store/snackbar/slice'
 
 type Props = {
   userId: number
@@ -20,6 +21,7 @@ function TagsSeachField({ userId, fileId }: Props) {
   const [search, setSearch] = useState('')
   const highlightedOption = useRef<Tag | null>(null)
   const debounceSearch = useDebounce(search, 500)
+  const dispatch = useDispatch()
 
   const {
     areSuggestionsOpen,
@@ -90,6 +92,13 @@ function TagsSeachField({ userId, fileId }: Props) {
             newTag: tag,
             cb: () => {
               setSearch('')
+              dispatch(
+                openSnackbar({
+                  isOpen: true,
+                  message: 'Tag successfully added',
+                  severity: 'success',
+                }),
+              )
             },
           }),
         )

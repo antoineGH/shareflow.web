@@ -1,5 +1,6 @@
 import { combineReducers } from 'redux'
 import activities from './activities/slice'
+import snackbar from './snackbar/slice'
 import comments from './comments/slice'
 import tags from './tags/slice'
 import user from './user/slice'
@@ -11,6 +12,7 @@ const settings = combineReducers({
 })
 
 const rootReducer = combineReducers({
+  snackbar,
   activities,
   comments,
   tags,

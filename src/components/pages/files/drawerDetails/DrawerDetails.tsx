@@ -16,6 +16,7 @@ import StyledChip from './StyledChip'
 import Tabs from './Tabs/Tabs'
 import CancelIcon from '@mui/icons-material/Cancel'
 import { useTheme } from '@mui/material'
+import { openSnackbar } from 'store/snackbar/slice'
 
 type Props = {
   open: boolean
@@ -47,7 +48,22 @@ function DrawerDetails({
 
   const handleClickDeleteTag = (tagId: number) => {
     if (!tagId) return
-    dispatch(removeTag({ userId, fileId, tagToDeleteId: tagId }))
+    dispatch(
+      removeTag({
+        userId,
+        fileId,
+        tagToDeleteId: tagId,
+        cb: () => {
+          dispatch(
+            openSnackbar({
+              isOpen: true,
+              message: 'Tag successfully removed',
+              severity: 'success',
+            }),
+          )
+        },
+      }),
+    )
   }
 
   return (
