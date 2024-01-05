@@ -59,11 +59,11 @@ const createComment = createAsyncThunk<
 
 const removeComment = createAsyncThunk<
   Comment['id'],
-  { userId: number; fileId: number; commentToDeleteId: number }
+  { userId: number; fileId: number; commentToDeleteId: number; cb?: () => void }
 >(
   'comments/deleteComment',
   async (
-    { userId, fileId, commentToDeleteId },
+    { userId, fileId, commentToDeleteId, cb },
     { signal, rejectWithValue },
   ) => {
     try {
@@ -76,6 +76,7 @@ const removeComment = createAsyncThunk<
 
       if (error) throw new HttpResponseError(error.code || null, error.message)
 
+      cb?.()
       return commentId
     } catch (error) {
       return catchAsyncThunk(error, rejectWithValue)

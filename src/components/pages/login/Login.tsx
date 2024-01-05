@@ -14,6 +14,8 @@ import Typography from '@mui/material/Typography'
 import StyledButton from './StyledButton'
 import { FormHelperText } from '@mui/material'
 import { Status } from 'types/store'
+import { useDispatch } from 'store/hooks'
+import { openSnackbar } from 'store/snackbar/slice'
 
 type FormData = {
   email: string
@@ -24,6 +26,7 @@ const Login = () => {
   const [status, setStatus] = useState<Status>(Status.IDLE)
   const { login } = useContext(AuthContext)
   const navigate = useNavigate()
+  const dispatch = useDispatch()
   const {
     register,
     handleSubmit,
@@ -39,13 +42,25 @@ const Login = () => {
     navigate('/auth/files')
   }
 
+  const onLoadingError = () => {
+    setStatus(Status.FAILED)
+  }
+
   const onSubmit: SubmitHandler<FormData> = data => {
     const { email, password } = data
 
-    if (!email || !password) return
+    if (!email || !password) {
+      return dispatch(
+        openSnackbar({
+          isOpen: true,
+          message: 'Please fill in all fields',
+          severity: 'error',
+        }),
+      )
+    }
 
     setStatus(Status.PENDING)
-    login(email, password, onLoadingSuccess)
+    login(email, password, onLoadingSuccess, onLoadingError)
   }
 
   return (
@@ -61,7 +76,6 @@ const Login = () => {
         backgroundPosition: 'center',
         maxWidth: '1920px',
         '@media (min-width: 1200px)': {
-          backgroundColor: 'orange',
           maxWidth: '2560px',
         },
         '& .MuiContainer-root': {},

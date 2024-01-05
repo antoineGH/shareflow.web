@@ -11,6 +11,8 @@ import type { Comment } from 'types/comments'
 import { formatDate } from './utils'
 import { IconButton } from '@mui/material'
 import ClearIcon from '@mui/icons-material/Clear'
+import { useSelector } from 'store/hooks'
+import { selectUserSelector } from 'store/user/selector'
 
 type Props = {
   comments: Comment[]
@@ -27,6 +29,8 @@ function CommentsSection({
   isLoadingDelete,
   handleDeleteComment,
 }: Props) {
+  const user = useSelector(selectUserSelector)
+
   if (isLoading)
     return [...Array(3)].map((_, index) => (
       <Box
@@ -67,7 +71,7 @@ function CommentsSection({
       </Box>
     ))
 
-  if (hasError)
+  if (hasError || !user)
     return (
       <Stack
         direction="column"
@@ -109,11 +113,9 @@ function CommentsSection({
               alt="avatar comment"
               src={comment.user?.avatarUrl || ''}
               sx={{
-                width: 24,
-                height: 24,
-                fontSize: '.7rem',
-                pt: 0.4,
-                pb: 0.4,
+                width: 32,
+                height: 32,
+                border: '0.1px solid lightgray',
               }}
             >
               {defineAvatarInitials(comment.user?.fullName || '')}
@@ -121,14 +123,17 @@ function CommentsSection({
             <Typography variant="body2" fontWeight="bold">
               {comment.user?.fullName || ''}
             </Typography>
+
             <Box flexGrow={1} />
-            <IconButton
-              disabled={isLoadingDelete}
-              onClick={() => handleDeleteComment(comment.id)}
-              sx={{ m: 0, p: 0 }}
-            >
-              <ClearIcon fontSize="small" />
-            </IconButton>
+            {comment.user.userId === user.id && (
+              <IconButton
+                disabled={isLoadingDelete}
+                onClick={() => handleDeleteComment(comment.id)}
+                sx={{ m: 0, p: 0 }}
+              >
+                <ClearIcon fontSize="small" />
+              </IconButton>
+            )}
           </Stack>
           <Card
             sx={{

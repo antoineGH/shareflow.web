@@ -35,7 +35,12 @@ function Avatar() {
     <Stack sx={{ width: '100%' }} direction="row" gap={1} alignItems="center">
       <AvatarMUI
         alt="avatar"
-        sx={{ width: 28, height: 28, fontSize: '.8rem', pt: '3px', mb: 1 }}
+        sx={{
+          width: 36,
+          height: 36,
+          mb: 1,
+          border: '0.1px solid lightgray',
+        }}
         src={avatarUrl}
       >
         {fullName[0]}

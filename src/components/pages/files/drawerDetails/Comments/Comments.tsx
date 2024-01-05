@@ -11,6 +11,7 @@ import {
   selectCommentsSelector,
 } from 'store/comments/selector'
 import { selectUserSelector } from 'store/user/selector'
+import { openSnackbar } from 'store/snackbar/slice'
 
 type Props = {
   fileId: number
@@ -30,10 +31,22 @@ function Comments({ fileId }: Props) {
   }, [dispatch, fileId, user])
 
   const handleDeleteComment = (commentId: number) => {
-    // TODO: CHECK IF USER IS THE OWNER OF THE COMMENT
     if (!user) return
     dispatch(
-      removeComment({ userId: user.id, fileId, commentToDeleteId: commentId }),
+      removeComment({
+        userId: user.id,
+        fileId,
+        commentToDeleteId: commentId,
+        cb: () => {
+          dispatch(
+            openSnackbar({
+              isOpen: true,
+              message: 'Comment removed successfully',
+              severity: 'success',
+            }),
+          )
+        },
+      }),
     )
   }
 

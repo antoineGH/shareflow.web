@@ -6,12 +6,12 @@ import Typography from '@mui/material/Typography'
 import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
 import EditIcon from '@mui/icons-material/Edit'
-import CancelIcon from '@mui/icons-material/Cancel'
 import type { User } from 'types/users'
 import LoadingButton from '@mui/lab/LoadingButton'
 import { useDispatch, useSelector } from 'store/hooks'
 import { userStateSelector } from 'store/user/selector'
 import { patchUserPassword } from 'store/user/actions'
+import { openSnackbar } from 'store/snackbar/slice'
 
 type FormData = {
   password: string
@@ -56,6 +56,13 @@ function Password({
         cb: () => {
           handleEditMode(null)
           reset()
+          dispatch(
+            openSnackbar({
+              isOpen: true,
+              message: 'Password successfully updated',
+              severity: 'success',
+            }),
+          )
         },
       }),
     )
@@ -127,28 +134,18 @@ function Password({
               size="small"
               sx={{
                 textTransform: 'capitalize',
-                color:
-                  editMode === 'password'
-                    ? '#d32f2f'
-                    : theme.palette.secondary.main,
+                color: theme.palette.secondary.main,
+                mt: 0.25,
               }}
               onClick={() => handleEditMode('password')}
               startIcon={
-                editMode === 'password' ? (
-                  <CancelIcon
-                    fontSize="small"
-                    color="error"
-                    sx={{ position: 'relative', top: '-2px' }}
-                  />
-                ) : (
-                  <EditIcon
-                    fontSize="small"
-                    sx={{ position: 'relative', top: '-2px' }}
-                  />
-                )
+                <EditIcon
+                  fontSize="small"
+                  sx={{ position: 'relative', top: '-2px' }}
+                />
               }
             >
-              {editMode === 'password' ? 'Cancel' : 'Edit'}
+              {editMode === 'password' ? 'Back' : 'Edit'}
             </Button>
           </Grid>
         </Grid>

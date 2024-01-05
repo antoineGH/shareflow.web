@@ -7,6 +7,7 @@ import TextField from '@mui/material/TextField'
 import { commentsStatesStateSelector } from 'store/comments/selector'
 import { createComment } from 'store/comments/actions'
 import LoadingButton from '@mui/lab/LoadingButton'
+import { openSnackbar } from 'store/snackbar/slice'
 
 type FormData = {
   comment: string
@@ -42,6 +43,13 @@ function AddCommentForm({ fileId }: Props) {
         newComment: data.comment,
         cb: () => {
           reset()
+          dispatch(
+            openSnackbar({
+              isOpen: true,
+              message: 'Comment added successfully',
+              severity: 'success',
+            }),
+          )
         },
       }),
     )

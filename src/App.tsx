@@ -7,6 +7,7 @@ import Login from 'components/pages/login/Login'
 import PrivateComponent from 'components/auth/PrivateRoute'
 import { routes } from 'components/routes/routes'
 import './App.css'
+import SnackBarComponent from 'components/common/SnackBarComponent'
 
 function App() {
   return (
@@ -34,6 +35,7 @@ function App() {
             ))}
           </Routes>
         </Router>
+        <SnackBarComponent />
       </AuthProvider>
     </ThemeProvider>
   )

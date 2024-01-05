@@ -10,10 +10,10 @@ import { FormHelperText, useTheme } from '@mui/material'
 import Button from '@mui/material/Button'
 import LoadingButton from '@mui/lab/LoadingButton'
 import EditIcon from '@mui/icons-material/Edit'
-import CancelIcon from '@mui/icons-material/Cancel'
 import { useDispatch, useSelector } from 'store/hooks'
 import { updateUser } from 'store/user/actions'
 import { userStateSelector } from 'store/user/selector'
+import { openSnackbar } from 'store/snackbar/slice'
 
 type FormData = {
   fullName: string
@@ -55,6 +55,13 @@ function AccountInfo({
         cb: () => {
           handleEditMode(null)
           reset()
+          dispatch(
+            openSnackbar({
+              isOpen: true,
+              message: 'Account Successfully updated',
+              severity: 'success',
+            }),
+          )
         },
       }),
     )
@@ -101,29 +108,19 @@ function AccountInfo({
             <Button
               size="small"
               sx={{
+                mt: 0.25,
                 textTransform: 'capitalize',
-                color:
-                  editMode === 'userInfo'
-                    ? '#d32f2f'
-                    : theme.palette.secondary.main,
+                color: theme.palette.secondary.main,
               }}
               onClick={() => handleEditMode('userInfo')}
               startIcon={
-                editMode === 'userInfo' ? (
-                  <CancelIcon
-                    fontSize="small"
-                    color="error"
-                    sx={{ position: 'relative', top: '-2px' }}
-                  />
-                ) : (
-                  <EditIcon
-                    fontSize="small"
-                    sx={{ position: 'relative', top: '-2px' }}
-                  />
-                )
+                <EditIcon
+                  fontSize="small"
+                  sx={{ position: 'relative', top: '-2px' }}
+                />
               }
             >
-              {editMode === 'userInfo' ? 'Cancel' : 'Edit'}
+              {editMode === 'userInfo' ? 'Back' : 'Edit'}
             </Button>
           </Grid>
         </Grid>
