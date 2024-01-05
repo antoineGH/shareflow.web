@@ -8,14 +8,15 @@ import Container from '@mui/material/Container'
 import Grid from '@mui/material/Grid'
 import Paper from '@mui/material/Paper'
 import Box from '@mui/material/Box'
-import Alert from '@mui/material/Alert'
 import AlertTitle from '@mui/material/AlertTitle'
 import Typography from '@mui/material/Typography'
 import StyledButton from './StyledButton'
-import { FormHelperText } from '@mui/material'
+import { FormHelperText, useTheme } from '@mui/material'
 import { Status } from 'types/store'
 import { useDispatch } from 'store/hooks'
 import { openSnackbar } from 'store/snackbar/slice'
+import StyledAlert from './StyledAlert'
+import backgroundSVG from 'assets/stacked-waves.svg'
 
 type FormData = {
   email: string
@@ -25,6 +26,7 @@ type FormData = {
 const Login = () => {
   const [status, setStatus] = useState<Status>(Status.IDLE)
   const { login } = useContext(AuthContext)
+  const theme = useTheme()
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const {
@@ -63,6 +65,17 @@ const Login = () => {
     login(email, password, onLoadingSuccess, onLoadingError)
   }
 
+  const copyToClipboard = (text: string) => {
+    navigator.clipboard.writeText(text)
+    dispatch(
+      openSnackbar({
+        isOpen: true,
+        message: 'Copied to clipboard',
+        severity: 'info',
+      }),
+    )
+  }
+
   return (
     <Container
       sx={{
@@ -70,13 +83,12 @@ const Login = () => {
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundImage: 'url(/assets/bg_1400.png)',
+        backgroundImage: `url(${backgroundSVG})`,
         height: '100vh',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
-        maxWidth: '1920px',
         '@media (min-width: 1200px)': {
-          maxWidth: '2560px',
+          maxWidth: 'none',
         },
         '& .MuiContainer-root': {},
       }}
@@ -89,28 +101,43 @@ const Login = () => {
               flexDirection: 'column',
               alignItems: 'center',
               justifyContent: 'start',
-              height: '40vh',
-              minHeight: '400px',
               px: '1rem',
               py: '2rem',
-              backgroundColor: alpha('#ffffff', 0.85),
+              backgroundColor: alpha('#ffffff', 0.9),
             }}
             elevation={1}
           >
-            <Typography variant="h4" component="h1" gutterBottom>
+            <Typography
+              variant="h4"
+              component="h1"
+              gutterBottom
+              mb={4}
+              color={theme.palette.primary.main}
+              sx={{ fontWeight: 'bold' }}
+            >
               shareFlow
             </Typography>
-            <Alert severity="info" sx={{ mb: 1 }}>
+            <StyledAlert severity="info">
               <AlertTitle>Demo App</AlertTitle>
               <Grid container>
-                <Grid item xs={12}>
-                  username: <strong>demo@demo.au</strong>
+                <Grid item xs={12} my={0.75}>
+                  <Box
+                    onClick={() => copyToClipboard('demo@demo.au')}
+                    style={{ cursor: 'pointer' }}
+                  >
+                    username: <strong>demo@demo.au</strong>
+                  </Box>
                 </Grid>
-                <Grid item xs={12}>
-                  password: <strong>demo1234</strong>
+                <Grid item xs={12} mb={0.75}>
+                  <Box
+                    onClick={() => copyToClipboard('demo1234')}
+                    style={{ cursor: 'pointer' }}
+                  >
+                    password: <strong>demo1234</strong>
+                  </Box>
                 </Grid>
               </Grid>
-            </Alert>
+            </StyledAlert>
             <TextField
               {...register('email', {
                 required: {
@@ -139,7 +166,7 @@ const Login = () => {
               sx={{ width: '100%', backgroundColor: 'white' }}
             />
             <FormHelperText
-              sx={{ height: '15px' }}
+              sx={{ height: '15px', textAlign: 'right', width: '100%' }}
               error={Boolean(errors.email)}
               style={{ visibility: errors.email ? 'visible' : 'hidden' }}
             >
@@ -163,7 +190,7 @@ const Login = () => {
             />
 
             <FormHelperText
-              sx={{ height: '15px' }}
+              sx={{ height: '15px', textAlign: 'right', width: '100%' }}
               error={Boolean(errors.password)}
               style={{ visibility: errors.password ? 'visible' : 'hidden' }}
             >

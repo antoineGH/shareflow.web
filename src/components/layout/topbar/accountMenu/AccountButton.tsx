@@ -27,7 +27,7 @@ function AccountButton({ openMenu }: Props) {
             width: 28,
             height: 28,
             fontSize: '1rem',
-            backgroundColor: 'white',
+            backgroundColor: '#9993f3',
           }}
         >
           AR

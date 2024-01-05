@@ -143,8 +143,7 @@ function AccountInfo({
                 width: 150,
                 height: 150,
                 fontSize: '3.5rem',
-                border: '0.1px solid lightgray',
-                backgroundColor: 'lightgrey',
+                backgroundColor: '#6c63ff29',
               }}
               src={avatarUrl || ''}
             >
@@ -186,6 +185,7 @@ function AccountInfo({
                   variant="outlined"
                   size="small"
                   disabled={isLoadingUpdate}
+                  defaultValue={fullName}
                 />
                 <FormHelperText
                   sx={{ height: '15px' }}
@@ -233,6 +233,7 @@ function AccountInfo({
                   type="email"
                   onBlur={() => trigger('email')}
                   disabled={isLoadingUpdate}
+                  defaultValue={email}
                 />
                 <FormHelperText
                   sx={{ height: '15px' }}

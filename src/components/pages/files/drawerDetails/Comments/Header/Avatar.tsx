@@ -1,6 +1,7 @@
 import { Skeleton, Typography } from '@mui/material'
 import AvatarMUI from '@mui/material/Avatar'
 import Stack from '@mui/material/Stack'
+
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'store/hooks'
 import { fetchUser } from 'store/user/actions'
@@ -39,7 +40,7 @@ function Avatar() {
           width: 36,
           height: 36,
           mb: 1,
-          border: '0.1px solid lightgray',
+          backgroundColor: '#6c63ff29',
         }}
         src={avatarUrl}
       >
