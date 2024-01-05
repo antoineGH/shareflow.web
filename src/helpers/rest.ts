@@ -32,6 +32,12 @@ const handle =
       const headers = customHeaders || {
         'Content-Type': 'application/json',
       }
+
+      const token = localStorage.getItem('token')
+      if (token) {
+        headers.Authorization = `Bearer ${token}`
+      }
+
       const response = await fetch(url, {
         body,
         credentials: 'include',

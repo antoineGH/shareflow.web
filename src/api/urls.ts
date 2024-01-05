@@ -1,9 +1,10 @@
-// TODO: Update base api url
-// const BASE_API = 'http://localhost:5000/api/v1'
 const BASE_API = 'http://localhost:8080'
 
 // ### STORAGE ###
 const GET_STORAGE = `${BASE_API}/users/{userId}/settings`
+
+// ### AUTH ###
+const POST_AUTH = `${BASE_API}/login`
 
 // ### USER ###
 const GET_USER = `${BASE_API}/users/{userId}`
@@ -33,6 +34,7 @@ const DELETE_FILE = `${BASE_API}/users/{userId}/files/{fileId}`
 
 export {
   GET_STORAGE,
+  POST_AUTH,
   GET_USER,
   PUT_USER,
   PATCH_USER,

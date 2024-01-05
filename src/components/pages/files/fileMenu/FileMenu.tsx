@@ -98,7 +98,6 @@ function FileMenu({
 
   const handleClickRestore = (e: MouseEvent<HTMLButtonElement>) => {
     console.log('Clicked Restore')
-    console.log(e)
     closeMenu(e)
   }
 

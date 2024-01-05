@@ -57,7 +57,6 @@ async function postComment(
     const url = formatURL(`${POST_COMMENT}`, { userId, fileId })
 
     const body = JSON.stringify({ comment: newComment })
-    console.log('body', body)
 
     const res = await rest.post({ url, body, signal })
 
