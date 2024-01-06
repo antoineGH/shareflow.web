@@ -13,10 +13,11 @@
     "import",
     "react-hooks",
     "jest-dom",
-    "testing-library"
+    "testing-library",
+    "import"
   ],
   "extends": [
-    "airbnb",
+    "airbnb-typescript",
     "prettier",
     "plugin:import/errors",
     "plugin:import/warnings",
@@ -38,10 +39,14 @@
   },
   "rules": {
     "react/jsx-uses-react": "off",
+    "no-unused-expressions": "off",
     "react/react-in-jsx-scope": "off",
+    "react-hooks/exhaustive-deps": "off",
     "no-invalid-regexp": 2,
     "radix": 2,
     "no-unused-vars": 0,
+    "@typescript-eslint/no-redeclare": 0,
+    "import/no-cycle": 0,
     "@typescript-eslint/no-unused-vars": [
       "warn",
       { "varsIgnorePattern": "^_", "argsIgnorePattern": "^_" }
@@ -53,7 +58,6 @@
     "no-negated-condition": 2,
     "arrow-parens": [2, "as-needed"],
     "react-hooks/rules-of-hooks": 2,
-    "react-hooks/exhaustive-deps": 1,
     "no-use-before-define": "off",
     "@typescript-eslint/no-use-before-define": ["error"],
     "no-console": [
@@ -73,7 +77,7 @@
     "jsx-a11y/click-events-have-key-events": 0,
     "no-template-curly-in-string": 2,
     "react/jsx-wrap-multilines": [
-      1,
+      0,
       {
         "declaration": "parens",
         "assignment": "parens",
@@ -87,7 +91,7 @@
     "react/jsx-curly-newline": 0,
     "react/jsx-props-no-spreading": 0,
     "react/jsx-filename-extension": [
-      1,
+      0,
       { "extensions": [".js", ".jsx", ".ts", ".tsx"] }
     ],
     "import/extensions": [
@@ -100,7 +104,6 @@
         "tsx": "never"
       }
     ],
-    "import/no-cycle": 2,
     "react/prop-types": 0,
     "react/no-unused-prop-types": 0,
     "react/require-default-props": 0,
@@ -111,7 +114,39 @@
         "format": ["PascalCase"]
       }
     ],
-    "react/function-component-definition": 0
+    "react/function-component-definition": 0,
+    "sort-imports": [
+      "error",
+      { "ignoreCase": true, "ignoreDeclarationSort": true }
+    ],
+    "import/order": [
+      "error",
+      {
+        "groups": [
+          ["external", "builtin"],
+          "internal",
+          ["sibling", "parent"],
+          "index"
+        ],
+        "pathGroups": [
+          {
+            "pattern": "@(react|react-native)",
+            "group": "external",
+            "position": "before"
+          },
+          {
+            "pattern": "@src/**",
+            "group": "internal"
+          }
+        ],
+        "pathGroupsExcludedImportTypes": ["internal", "react"],
+        "newlines-between": "always",
+        "alphabetize": {
+          "order": "asc",
+          "caseInsensitive": true
+        }
+      }
+    ]
   },
   "globals": {
     "JSX": "readonly",

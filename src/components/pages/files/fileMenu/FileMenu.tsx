@@ -1,13 +1,16 @@
-import { useState, type MouseEvent, useMemo } from 'react'
+import { type MouseEvent, useMemo, useState } from 'react'
+
+import GradeIcon from '@mui/icons-material/Grade'
 import InfoIcon from '@mui/icons-material/Info'
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz'
-import IconButton from '@mui/material/IconButton'
-import GradeIcon from '@mui/icons-material/Grade'
-import Menu from './Menu'
 import { useTheme } from '@mui/material'
+import IconButton from '@mui/material/IconButton'
+
+import { File } from 'types/files'
+
 import { getAvailableActions } from './helpers'
 import type { ListItem } from './listItems'
-import { File } from 'types/files'
+import Menu from './Menu'
 
 type Props = {
   id: number
@@ -41,7 +44,7 @@ function FileMenu({
     !isPageFavorite && !isPageTag && !isPageDelete && isHovered
 
   const actions: ListItem['id'][] = useMemo(() => {
-    const result = files.find(file => file.id === id)?.action || []
+    const result = files.find(file => file.id === id)?.actions || []
     return result
   }, [files, id])
 
@@ -116,7 +119,7 @@ function FileMenu({
     remove: handleClickRemove,
   }
 
-  const handleClickMore = (e: MouseEvent<HTMLLIElement>, id: string) => {
+  const handleClickMore = (e: MouseEvent<HTMLLIElement>) => {
     e.stopPropagation()
     actionMap[id]?.(e)
   }

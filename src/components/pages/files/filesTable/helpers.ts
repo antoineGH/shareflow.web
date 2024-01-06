@@ -1,13 +1,14 @@
-import { ListItemKey } from '../fileMenu/listItems'
 import type { File } from 'types/files'
-import type { Order } from './types'
 
-function createData(id: number, name: string, size: string, modified: string) {
+import type { Order } from './types'
+import { ListItemKey } from '../fileMenu/listItems'
+
+function createData(id: number, name: string, size: string, updatedAt: string) {
   return {
     id,
     name,
     size,
-    modified,
+    updatedAt,
   }
 }
 
@@ -55,13 +56,35 @@ function getSelectedMultiActions(
   files: File[],
 ): ListItemKey[] {
   const selectedFiles = files.filter(file => selectedFilesId.includes(file.id))
-  const actionsArrays = selectedFiles.map(file => file.action)
+  const actionsArrays = selectedFiles.map(file => file.actions)
   if (!actionsArrays.length) return []
   const selectedAvailableActions = actionsArrays.reduce((common, actions) => {
     return common.filter(action => actions.includes(action))
   })
 
   return selectedAvailableActions
+}
+
+export function formatDate(dateString: string): string {
+  const date = new Date(dateString)
+  const now = new Date()
+
+  const diffTime = Math.abs(now.getTime() - date.getTime())
+  const diffHours = Math.floor(diffTime / (1000 * 60 * 60))
+
+  if (diffHours < 1) return 'Last hour'
+  if (diffHours < 24) return 'Today'
+
+  const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24))
+
+  if (diffDays === 1) return 'Yesterday'
+
+  const formattedDate = `${String(date.getDate()).padStart(2, '0')}/${String(
+    date.getMonth() + 1,
+  ).padStart(2, '0')}/${String(date.getFullYear()).slice(-2)} - ${String(
+    date.getHours(),
+  ).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}`
+  return formattedDate
 }
 
 export {

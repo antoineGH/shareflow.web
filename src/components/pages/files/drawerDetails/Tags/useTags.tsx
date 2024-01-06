@@ -71,7 +71,6 @@ function useTags({ userId, fileId, debounceSearch }: Props): HookReturnValue {
     if (!debounceSearch || !userId || (tags && debounceSearch.length < 3))
       return
     dispatch(searchTags({ userId, search: debounceSearch }))
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debounceSearch, dispatch])
 
   return {

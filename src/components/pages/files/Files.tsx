@@ -1,34 +1,78 @@
 import { useEffect } from 'react'
-import { useDispatch, useSelector } from 'store/hooks'
-import { selectUserSelector, userStateSelector } from 'store/user/selector'
-import { useParams } from 'react-router-dom'
-import { FileData } from 'types/files'
+
 import Grid from '@mui/material/Grid'
+import { useParams } from 'react-router-dom'
+
+import useFetchUserFromToken from 'hooks/useFetchUserFromToken'
+import { fetchFiles } from 'store/files/actions'
+import {
+  filesDataStateSelector,
+  filesStateSelector,
+} from 'store/files/selector'
+import { useDispatch, useSelector } from 'store/hooks'
+import { openSnackbar } from 'store/snackbar/slice'
+import { fetchUser } from 'store/user/actions'
+import { selectUserSelector, userStateSelector } from 'store/user/selector'
+
 import Breadcrumbs from './breadcrumbs/Breadcrumbs'
-import TextContainer from './filesUploadModal/filesUploadDragNDrop/TextContainer'
-import DocumentsUploadModal from './filesUploadModal/FilesUploadModal'
-import useAddDocumentsDropZone from './filesUploadModal/filesUploadDragNDrop/useAddDocumentsDropZone'
+import CountFiles from './countFiles/CountFiles'
+import DrawerDetails from './drawerDetails/DrawerDetails'
 import useDrawerDetails from './drawerDetails/useDrawerDetails'
 import FilesTable from './filesTable/FilesTable'
-import DrawerDetails from './drawerDetails/DrawerDetails'
-import CountFiles from './countFiles/CountFiles'
-import useFirstConnect from './firstLoginModal/useFirstConnect'
+import TextContainer from './filesUploadModal/filesUploadDragNDrop/TextContainer'
+import useAddDocumentsDropZone from './filesUploadModal/filesUploadDragNDrop/useAddDocumentsDropZone'
+import DocumentsUploadModal from './filesUploadModal/FilesUploadModal'
 import FirstLoginModal from './firstLoginModal/FirstLoginModal'
+import useFirstConnect from './firstLoginModal/useFirstConnect'
 import { extractRoutingParams } from './helpers'
-import useFetchUserFromToken from 'hooks/useFetchUserFromToken'
-import { fetchUser } from 'store/user/actions'
 
 function Files() {
   const dispatch = useDispatch()
-  const user = useSelector(selectUserSelector)
-  const { isLoadingFetch, hasErrorFetch } = useSelector(userStateSelector)
-  const { userId, error } = useFetchUserFromToken(user)
-  // TODO: SNACKBAR ERROR IF ERROR
-
   const params = useParams<{ path: string }>()
-  // TODO: use routingParams to fetch files in context from the API
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const routingParams = extractRoutingParams(params)
+  // TODO: use routingParams to fetch files in context from the API
+
+  // ### User ###
+  const user = useSelector(selectUserSelector)
+  const { userId, error } = useFetchUserFromToken(user)
+  const {
+    isLoadingFetch: isLoadingFetchUser,
+    hasErrorFetch: hasErrorFetchUser,
+  } = useSelector(userStateSelector)
+
+  useEffect(() => {
+    if (!userId || user) return
+    dispatch(fetchUser({ userId }))
+  }, [userId, user])
+
+  // ### Files ###
+  const filesData = useSelector(filesDataStateSelector)
+  const {
+    isLoadingFetch: isLoadingFetchFiles,
+    hasErrorFetch: hasErrorFetchFiles,
+  } = useSelector(filesStateSelector)
+
+  useEffect(() => {
+    if (!userId || filesData.files.length !== 0) return
+    dispatch(fetchFiles({ userId }))
+  }, [userId])
+
+  // ### Error ###
+  const isLoading = isLoadingFetchUser || isLoadingFetchFiles
+  const hasError = hasErrorFetchUser || hasErrorFetchFiles || error
+
+  useEffect(() => {
+    if (error) {
+      dispatch(
+        openSnackbar({
+          isOpen: true,
+          severity: 'error',
+          message: error?.message || 'Error, please try again',
+        }),
+      )
+    }
+  }, [dispatch, error])
 
   const {
     open: openFirstConnectModal,
@@ -52,57 +96,10 @@ function Files() {
     toggleDrawer,
   } = useDrawerDetails()
 
-  useEffect(() => {
-    if (error || !userId || user) return
-    dispatch(fetchUser({ userId }))
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [userId])
-
-  const filesData: FileData = {
-    files: [
-      {
-        id: 18,
-        name: 'Documents',
-        size: '305 KB',
-        modified: '2012-12-14',
-        path: 'Documents',
-        isFavorite: true,
-        action: ['comments', 'tags', 'restore', 'download', 'delete'],
-      },
-      {
-        id: 2,
-        name: 'Photos',
-        size: '452 KB',
-        modified: '2012-12-14',
-        path: 'Photos',
-        action: ['comments', 'tags', 'restore', 'download', 'delete'],
-      },
-      {
-        id: 3,
-        name: 'Images',
-        size: '262 KB',
-        modified: '2012-12-14',
-        path: 'Images',
-        action: ['comments', 'tags', 'restore', 'download', 'delete'],
-      },
-      {
-        id: 4,
-        name: 'Download',
-        size: '159 KB',
-        modified: '2012-12-14',
-        path: 'Download',
-        action: ['comments', 'tags', 'restore', 'download', 'delete'],
-      },
-    ],
-    countFiles: 4,
-    countFolders: 4,
-    totalSize: '1.17 MB',
-  }
+  if (isLoading) return <>isLoading</>
+  if (hasError || !userId || error || !filesData) return <>hasError</>
 
   const { files, countFiles, countFolders, totalSize } = filesData
-
-  if (isLoadingFetch) return <>isLoading</>
-  if (hasErrorFetch || !userId || error) return <>hasError</>
 
   return (
     <Grid
@@ -122,9 +119,9 @@ function Files() {
         toggleDrawer={toggleDrawer}
       />
       <CountFiles
-        countFiles={countFiles}
-        countFolders={countFolders}
-        totalSize={totalSize}
+        countFiles={countFiles || 0}
+        countFolders={countFolders || 0}
+        totalSize={totalSize || '0'}
       />
       <DrawerDetails
         open={isDrawerOpen}

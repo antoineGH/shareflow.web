@@ -1,23 +1,12 @@
 import { Skeleton, Typography } from '@mui/material'
 import AvatarMUI from '@mui/material/Avatar'
 import Stack from '@mui/material/Stack'
-
-import { useEffect } from 'react'
-import { useDispatch, useSelector } from 'store/hooks'
-import { fetchUser } from 'store/user/actions'
+import { useSelector } from 'store/hooks'
 import { selectUserSelector, userStateSelector } from 'store/user/selector'
 
 function Avatar() {
-  const dispatch = useDispatch()
   const user = useSelector(selectUserSelector)
   const { isLoadingFetch, hasErrorFetch } = useSelector(userStateSelector)
-
-  useEffect(() => {
-    // TODO: Get userId from JWT
-    if (!user) {
-      dispatch(fetchUser({ userId: 1 }))
-    }
-  }, [dispatch, user])
 
   const fullName = user?.fullName || ''
   const avatarUrl = user?.avatarUrl || ''

@@ -1,70 +1,34 @@
-import { useDispatch, useSelector } from 'store/hooks'
 import { useEffect } from 'react'
+
+import Breadcrumbs from '@mui/material/Breadcrumbs'
+import Grid from '@mui/material/Grid'
+
+import BreadcrumbEntry from 'components/common/breadcrumbEntry/BreadcrumbEntry'
+import useFetchUserFromToken from 'hooks/useFetchUserFromToken'
+import { useDispatch, useSelector } from 'store/hooks'
 import { fetchUser } from 'store/user/actions'
 import { selectUserSelector, userStateSelector } from 'store/user/selector'
-import Grid from '@mui/material/Grid'
-import Breadcrumbs from '@mui/material/Breadcrumbs'
-import BreadcrumbEntry from 'components/common/breadcrumbEntry/BreadcrumbEntry'
-import TagsSeachField from './tagsSearchField/TagsSearchField'
 import { FileData } from 'types/files'
+
+import TagsSeachField from './tagsSearchField/TagsSearchField'
 import FilesTable from '../files/filesTable/FilesTable'
-import useFetchUserFromToken from 'hooks/useFetchUserFromToken'
 
 function Tags() {
   const dispatch = useDispatch()
   const user = useSelector(selectUserSelector)
   const { isLoadingFetch, hasErrorFetch } = useSelector(userStateSelector)
   const { userId, error } = useFetchUserFromToken(user)
-  // TODO: SNACKBAR ERROR IF ERROR
 
   useEffect(() => {
     if (error || !userId || user) return
     dispatch(fetchUser({ userId }))
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userId])
 
   if (isLoadingFetch) return <>Loading</>
   if (hasErrorFetch || !userId) return <>Error</>
 
   const filesData: FileData = {
-    files: [
-      {
-        id: 18,
-        name: 'Documents',
-        size: '305 KB',
-        modified: '2012-12-14',
-        isFavorite: true,
-        path: 'Documents',
-        action: ['comments', 'tags', 'restore', 'download', 'delete'],
-      },
-      {
-        id: 2,
-        name: 'Photos',
-        size: '452 KB',
-        modified: '2012-12-14',
-        isFavorite: true,
-        path: 'Photos',
-        action: ['comments', 'tags', 'restore', 'download', 'delete'],
-      },
-      {
-        id: 3,
-        name: 'Images',
-        size: '262 KB',
-        modified: '2012-12-14',
-        isFavorite: true,
-        path: 'Images',
-        action: ['comments', 'tags', 'restore', 'download', 'delete'],
-      },
-      {
-        id: 4,
-        name: 'Download',
-        size: '159 KB',
-        modified: '2012-12-14',
-        isFavorite: true,
-        path: 'Download',
-        action: ['comments', 'tags', 'restore', 'download', 'delete'],
-      },
-    ],
+    files: [],
     countFiles: 4,
     countFolders: 4,
     totalSize: '1.17 MB',

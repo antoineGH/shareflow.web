@@ -15,8 +15,12 @@ export type FileApi = {
   size: string
   modified: string
   path?: string
+  created_at: string
+  updated_at: string
   is_favorite?: boolean
-  action: ListItemKey[]
+  is_deleted?: boolean
+  is_folder?: boolean
+  actions: ListItemKey[]
 }
 
 export type FileDataApi = {
@@ -28,6 +32,8 @@ export type FileDataApi = {
 
 export type File = SnakeCaseToCamelCase<FileApi>
 export type FileData = SnakeCaseToCamelCase<FileDataApi>
+
+export type RowFile = Pick<File, 'id' | 'name' | 'size' | 'updatedAt'>
 
 export type PostFileDataApi = {
   file: File

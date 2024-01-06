@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react'
+import { useMemo, useState } from 'react'
 
 import Box from '@mui/material/Box'
 import Paper from '@mui/material/Paper'
@@ -8,18 +8,19 @@ import TableCell from '@mui/material/TableCell'
 import TableContainer from '@mui/material/TableContainer'
 import TablePagination from '@mui/material/TablePagination'
 import TableRowMUI from '@mui/material/TableRow'
-import TableRow from './TableRow'
-import TableHead from './TableHead'
+
+import type { File, RowFile } from 'types/files'
+
 import {
   createData,
-  stableSort,
   getComparator,
   getSelectedMultiActions,
+  stableSort,
 } from './helpers'
-
-import type { Data, Order } from './types'
+import TableHead from './TableHead'
+import TableRow from './TableRow'
 import Toolbar from './Toolbar'
-import type { File } from 'types/files'
+import type { Order } from './types'
 
 type Props = {
   files: File[]
@@ -42,25 +43,24 @@ function FilesTable({
 }: Props) {
   const [selected, setSelected] = useState<number[]>([])
   const [order, setOrder] = useState<Order>('asc')
-  const [orderBy, setOrderBy] = useState<keyof Data>('name')
+  const [orderBy, setOrderBy] = useState<keyof RowFile>('name')
   const [page, setPage] = useState(0)
 
   const rowsPerPage = 20
 
-  const rows = files.map(file =>
-    createData(file.id, file.name, file.size, file.modified),
+  const rows: RowFile[] = files.map(file =>
+    createData(file.id, file.name, file.size, file.updatedAt),
   )
 
   const filteredSelectedActions = useMemo(() => {
     const filteredActions = ['comments', 'tags']
     const result = files.map(file => ({
       ...file,
-      action: file.action.filter(action => !filteredActions.includes(action)),
+      actions: file.actions.filter(action => !filteredActions.includes(action)),
     }))
     return result
   }, [files])
 
-  // TODO: get actions from redux for each selectedAction, then only keep similar actions at once
   const selectedMultiActions = getSelectedMultiActions(
     selected,
     filteredSelectedActions,
@@ -100,7 +100,7 @@ function FilesTable({
 
   const handleRequestSort = (
     event: React.MouseEvent<unknown>,
-    property: keyof Data,
+    property: keyof RowFile,
   ) => {
     const isAsc = orderBy === property && order === 'asc'
     setOrder(isAsc ? 'desc' : 'asc')
@@ -116,12 +116,12 @@ function FilesTable({
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0
 
-  const visibleRows = useMemo(
+  const visibleRows: RowFile[] = useMemo(
     () =>
-      stableSort(rows, getComparator(order, orderBy)).slice(
-        page * rowsPerPage,
-        page * rowsPerPage + rowsPerPage,
-      ),
+      stableSort<RowFile>(
+        rows,
+        getComparator<keyof RowFile>(order, orderBy),
+      ).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage),
     [order, orderBy, page, rows],
   )
 

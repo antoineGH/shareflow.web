@@ -108,7 +108,6 @@ function TagsSeachField({ userId, fileId }: Props) {
         return
       }
     },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     [onCleanSearch, selectedOptions],
   )
 

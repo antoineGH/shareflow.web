@@ -41,7 +41,6 @@ function DrawerDetails({
   useEffect(() => {
     if (!open) return
     dispatch(fetchTags({ userId, fileId }))
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch, fileId, open])
 
   const tagsFile = useSelector(selectAllTagsSelector)

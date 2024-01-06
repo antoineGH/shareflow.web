@@ -1,21 +1,26 @@
 import { createEntityAdapter, createSlice } from '@reduxjs/toolkit'
-import { Status } from 'types/store'
-import type { File, FileData } from 'types/files'
+
 import { getStateSliceFromError } from 'store/utils'
+import type { File, FileData } from 'types/files'
+import { Status } from 'types/store'
+
 import { createFile, fetchFiles, removeFile, updateFile } from './actions'
 
 type InitialState = {
-  status: Status
-  countFiles: FileData['countFiles']
-  countFolders: FileData['countFolders']
-  totalSize: FileData['totalSize']
+  statusAction: Record<string, Status>
+  countFiles?: FileData['countFiles']
+  countFolders?: FileData['countFolders']
+  totalSize?: FileData['totalSize']
 }
 
 const initialState: InitialState = {
-  status: Status.IDLE,
-  countFiles: 0,
-  countFolders: 0,
-  totalSize: '',
+  statusAction: {
+    fetch: Status.IDLE,
+    create: Status.IDLE,
+    update: Status.IDLE,
+    patch: Status.IDLE,
+    remove: Status.IDLE,
+  },
 }
 
 export const FilesAdapter = createEntityAdapter({
@@ -29,59 +34,59 @@ const filesSlice = createSlice({
   extraReducers: builder => {
     // ### fetchFiles ###
     builder.addCase(fetchFiles.pending, state => {
-      state.status = Status.PENDING
+      state.statusAction.fetch = Status.PENDING
     })
     builder.addCase(fetchFiles.fulfilled, (state, action) => {
-      state.status = Status.SUCCEEDED
+      state.statusAction.fetch = Status.SUCCEEDED
       state.countFiles = action.payload.countFiles
       state.countFolders = action.payload.countFolders
       state.totalSize = action.payload.totalSize
       FilesAdapter.setAll(state, action.payload.files)
     })
     builder.addCase(fetchFiles.rejected, (state, action) => {
-      state.status = getStateSliceFromError(action)
+      state.statusAction.fetch = getStateSliceFromError(action)
     })
 
     // ### createFile ###
     builder.addCase(createFile.pending, state => {
-      state.status = Status.PENDING
+      state.statusAction.create = Status.PENDING
     })
     builder.addCase(createFile.fulfilled, (state, action) => {
-      state.status = Status.SUCCEEDED
+      state.statusAction.create = Status.SUCCEEDED
       state.countFiles = action.payload.countFiles
       state.countFolders = action.payload.countFolders
       state.totalSize = action.payload.totalSize
       FilesAdapter.addOne(state, action.payload.file)
     })
     builder.addCase(createFile.rejected, (state, action) => {
-      state.status = getStateSliceFromError(action)
+      state.statusAction.create = getStateSliceFromError(action)
     })
 
     // ### updateFile ###
     builder.addCase(updateFile.pending, state => {
-      state.status = Status.PENDING
+      state.statusAction.update = Status.PENDING
     })
     builder.addCase(updateFile.fulfilled, (state, action) => {
-      state.status = Status.SUCCEEDED
+      state.statusAction.update = Status.SUCCEEDED
       state.countFiles = action.payload.countFiles
       state.countFolders = action.payload.countFolders
       state.totalSize = action.payload.totalSize
       FilesAdapter.upsertOne(state, action.payload.file)
     })
     builder.addCase(updateFile.rejected, (state, action) => {
-      state.status = getStateSliceFromError(action)
+      state.statusAction.update = getStateSliceFromError(action)
     })
 
     // ### removeFile ###
     builder.addCase(removeFile.pending, state => {
-      state.status = Status.PENDING
+      state.statusAction.remove = Status.PENDING
     })
     builder.addCase(removeFile.fulfilled, (state, action) => {
-      state.status = Status.SUCCEEDED
+      state.statusAction.remove = Status.SUCCEEDED
       FilesAdapter.removeOne(state, action.payload)
     })
     builder.addCase(removeFile.rejected, (state, action) => {
-      state.status = getStateSliceFromError(action)
+      state.statusAction.remove = getStateSliceFromError(action)
     })
   },
 })
