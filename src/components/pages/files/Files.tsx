@@ -13,6 +13,7 @@ import { useDispatch, useSelector } from 'store/hooks'
 import { openSnackbar } from 'store/snackbar/slice'
 import { fetchUser } from 'store/user/actions'
 import { selectUserSelector, userStateSelector } from 'store/user/selector'
+import { FileData } from 'types/files'
 
 import Breadcrumbs from './breadcrumbs/Breadcrumbs'
 import CountFiles from './countFiles/CountFiles'
@@ -47,14 +48,14 @@ function Files() {
   }, [userId, user])
 
   // ### Files ###
-  const filesData = useSelector(filesDataStateSelector)
+  const fileData: FileData = useSelector(filesDataStateSelector)
   const {
     isLoadingFetch: isLoadingFetchFiles,
     hasErrorFetch: hasErrorFetchFiles,
   } = useSelector(filesStateSelector)
 
   useEffect(() => {
-    if (!userId || filesData.files.length !== 0) return
+    if (!userId) return
     dispatch(fetchFiles({ userId }))
   }, [userId])
 
@@ -96,10 +97,11 @@ function Files() {
     toggleDrawer,
   } = useDrawerDetails()
 
+  // TODO: UI PART FOR LOADING AND ERROR
   if (isLoading) return <>isLoading</>
-  if (hasError || !userId || error || !filesData) return <>hasError</>
+  if (hasError || !userId || !fileData) return <>hasError</>
 
-  const { files, countFiles, countFolders, totalSize } = filesData
+  const { files, countFiles, countFolders, totalSize } = fileData
 
   return (
     <Grid

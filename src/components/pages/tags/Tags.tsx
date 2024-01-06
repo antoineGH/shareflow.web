@@ -5,7 +5,13 @@ import Grid from '@mui/material/Grid'
 
 import BreadcrumbEntry from 'components/common/breadcrumbEntry/BreadcrumbEntry'
 import useFetchUserFromToken from 'hooks/useFetchUserFromToken'
+import { fetchFiles } from 'store/files/actions'
+import {
+  filesDataStateSelector,
+  filesStateSelector,
+} from 'store/files/selector'
 import { useDispatch, useSelector } from 'store/hooks'
+import { openSnackbar } from 'store/snackbar/slice'
 import { fetchUser } from 'store/user/actions'
 import { selectUserSelector, userStateSelector } from 'store/user/selector'
 import { FileData } from 'types/files'
@@ -15,26 +21,52 @@ import FilesTable from '../files/filesTable/FilesTable'
 
 function Tags() {
   const dispatch = useDispatch()
+
+  // ### User ###
   const user = useSelector(selectUserSelector)
-  const { isLoadingFetch, hasErrorFetch } = useSelector(userStateSelector)
   const { userId, error } = useFetchUserFromToken(user)
+  const {
+    isLoadingFetch: isLoadingFetchUser,
+    hasErrorFetch: hasErrorFetchUser,
+  } = useSelector(userStateSelector)
 
   useEffect(() => {
-    if (error || !userId || user) return
+    if (!userId || user) return
     dispatch(fetchUser({ userId }))
+  }, [userId, user])
+
+  // ### Files ###
+  const fileData: FileData = useSelector(filesDataStateSelector)
+  const {
+    isLoadingFetch: isLoadingFetchFiles,
+    hasErrorFetch: hasErrorFetchFiles,
+  } = useSelector(filesStateSelector)
+
+  useEffect(() => {
+    if (!userId) return
+    dispatch(fetchFiles({ userId }))
   }, [userId])
 
-  if (isLoadingFetch) return <>Loading</>
-  if (hasErrorFetch || !userId) return <>Error</>
+  // ### Error ###
+  const isLoading = isLoadingFetchUser || isLoadingFetchFiles
+  const hasError = hasErrorFetchUser || hasErrorFetchFiles || error
 
-  const filesData: FileData = {
-    files: [],
-    countFiles: 4,
-    countFolders: 4,
-    totalSize: '1.17 MB',
-  }
+  useEffect(() => {
+    if (error) {
+      dispatch(
+        openSnackbar({
+          isOpen: true,
+          severity: 'error',
+          message: error?.message || 'Error, please try again',
+        }),
+      )
+    }
+  }, [dispatch, error])
 
-  const { files } = filesData
+  if (isLoading) return <>Loading</>
+  if (hasError || !userId || !fileData) return <>Error</>
+
+  const { files } = fileData
 
   return (
     <Grid

@@ -1,4 +1,4 @@
-import Deleted from 'components/pages/deleted/deleted'
+import Deleted from 'components/pages/deleted/Deleted'
 import Favorites from 'components/pages/favorites/Favorites'
 import Files from 'components/pages/files/Files'
 import NotFound from 'components/pages/notFound/NotFound'

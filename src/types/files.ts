@@ -25,9 +25,9 @@ export type FileApi = {
 
 export type FileDataApi = {
   files: SnakeCaseToCamelCase<FileApi>[]
-  count_files: number
-  count_folders: number
-  total_size: string
+  count_files?: number
+  count_folders?: number
+  total_size?: string
 }
 
 export type File = SnakeCaseToCamelCase<FileApi>

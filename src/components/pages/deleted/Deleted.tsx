@@ -5,7 +5,10 @@ import Grid from '@mui/material/Grid'
 
 import BreadcrumbEntry from 'components/common/breadcrumbEntry/BreadcrumbEntry'
 import useFetchUserFromToken from 'hooks/useFetchUserFromToken'
+import { fetchFiles } from 'store/files/actions'
+import { filesDataStateSelector } from 'store/files/selector'
 import { useDispatch, useSelector } from 'store/hooks'
+import { openSnackbar } from 'store/snackbar/slice'
 import { fetchUser } from 'store/user/actions'
 import { selectUserSelector, userStateSelector } from 'store/user/selector'
 import type { FileData } from 'types/files'
@@ -16,14 +19,47 @@ import FilesTable from '../files/filesTable/FilesTable'
 
 function Deleted() {
   const dispatch = useDispatch()
+
+  // ### User ###
   const user = useSelector(selectUserSelector)
-  const { isLoadingFetch, hasErrorFetch } = useSelector(userStateSelector)
   const { userId, error } = useFetchUserFromToken(user)
+  const {
+    isLoadingFetch: isLoadingFetchUser,
+    hasErrorFetch: hasErrorFetchUser,
+  } = useSelector(userStateSelector)
 
   useEffect(() => {
-    if (error || !userId || user) return
+    if (!userId || user) return
     dispatch(fetchUser({ userId }))
+  }, [userId, user])
+
+  // ### Files ###
+  const fileData: FileData = useSelector(filesDataStateSelector)
+  const {
+    isLoadingFetch: isLoadingFetchFiles,
+    hasErrorFetch: hasErrorFetchFiles,
+  } = useSelector(userStateSelector)
+
+  useEffect(() => {
+    if (!userId) return
+    dispatch(fetchFiles({ userId }))
   }, [userId])
+
+  // ### Error ###
+  const isLoading = isLoadingFetchUser || isLoadingFetchFiles
+  const hasError = hasErrorFetchUser || hasErrorFetchFiles || error
+
+  useEffect(() => {
+    if (error) {
+      dispatch(
+        openSnackbar({
+          isOpen: true,
+          severity: 'error',
+          message: error?.message || 'Error, please try again',
+        }),
+      )
+    }
+  }, [dispatch, error])
 
   const {
     isDrawerOpen,
@@ -35,17 +71,11 @@ function Deleted() {
     toggleDrawer,
   } = useDrawerDetails()
 
-  const filesData: FileData = {
-    files: [],
-    countFiles: 4,
-    countFolders: 4,
-    totalSize: '1.17 MB',
-  }
+  const { files } = fileData
 
-  const { files } = filesData
-
-  if (isLoadingFetch) return <>isLoading</>
-  if (hasErrorFetch || !userId) return <>hasError</>
+  // TODO: UI PART FOR LOADING AND ERROR
+  if (isLoading) return <>isLoading</>
+  if (hasError || !userId || !fileData) return <>hasError</>
 
   return (
     <Grid
