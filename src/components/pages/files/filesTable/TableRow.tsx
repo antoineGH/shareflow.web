@@ -1,25 +1,23 @@
-import { useState, type MouseEvent } from 'react'
-import Stack from '@mui/material/Stack'
-import IconButton from '@mui/material/IconButton'
-import Checkbox from '@mui/material/Checkbox'
+import { type MouseEvent, useState } from 'react'
+
 import FolderIcon from '@mui/icons-material/Folder'
-import TableRowMUI from '@mui/material/TableRow'
-import TableCell from '@mui/material/TableCell'
-import FileMenu from '../fileMenu/FileMenu'
 import GradeIcon from '@mui/icons-material/Grade'
-import { getPath } from './helpers'
-import { useNavigate } from 'react-router-dom'
-import type { File } from 'types/files'
 import { useTheme } from '@mui/material'
+import Checkbox from '@mui/material/Checkbox'
+import IconButton from '@mui/material/IconButton'
+import Stack from '@mui/material/Stack'
+import TableCell from '@mui/material/TableCell'
+import TableRowMUI from '@mui/material/TableRow'
+import { useNavigate } from 'react-router-dom'
+
 import TagsTableCell from 'components/pages/tags/tagsTableCell/TagsTableCell'
+import type { File, RowFile } from 'types/files'
+
+import { formatDate, getPath } from './helpers'
+import FileMenu from '../fileMenu/FileMenu'
 
 type Props = {
-  row: {
-    id: number
-    name: string
-    size: string
-    modified: string
-  }
+  row: RowFile
   files: File[]
   isItemSelected: boolean
   labelId: string
@@ -27,7 +25,7 @@ type Props = {
   isPageTag?: boolean
   isPageDelete?: boolean
   onCheckBoxClick: (id: number) => void
-  onFavoriteClick: (id: number) => void
+  onFavoriteClick: (id: number, fileFavState: boolean) => void
   handleChangeDrawerTab: (tab: number) => void
   handleDrawerOpen: (fileId: number) => void
   toggleDrawer: (fileId: number) => void
@@ -62,7 +60,7 @@ function TableRow({
 
   const handleClickFavorite = (e: MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation()
-    onFavoriteClick(row.id)
+    onFavoriteClick(row.id, isFavorite)
   }
 
   const handleClickRow = (e: MouseEvent<HTMLTableRowElement>) => {
@@ -71,7 +69,7 @@ function TableRow({
     if (isPageDelete) return handleDrawerOpen(row.id)
 
     const path = getPath(row.id, files)
-    if (path) return navigate(`/auth/files/${path}`)
+    if (path) return navigate(`/auth/files${path}`)
   }
 
   return (
@@ -144,7 +142,7 @@ function TableRow({
             {row.size}
           </Stack>
           <Stack direction="row" alignItems="center">
-            {row.modified}
+            {formatDate(row.updatedAt)}
           </Stack>
         </Stack>
       </TableCell>

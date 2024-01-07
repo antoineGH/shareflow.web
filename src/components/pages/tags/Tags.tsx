@@ -1,105 +1,158 @@
+import { useEffect, useMemo, useState } from 'react'
+
+import { Typography } from '@mui/material'
+import Breadcrumbs from '@mui/material/Breadcrumbs'
+import Grid from '@mui/material/Grid'
+
+import BreadcrumbEntry from 'components/common/breadcrumbEntry/BreadcrumbEntry'
+import ErrorFiles from 'components/common/ErrorFiles'
+import LoadingFiles from 'components/common/LoadingFiles'
+import useFetchUserFromToken from 'hooks/useFetchUserFromToken'
+import { fetchFiles } from 'store/files/actions'
+import {
+  filesDataStateSelector,
+  filesStateSelector,
+} from 'store/files/selector'
 import { useDispatch, useSelector } from 'store/hooks'
-import { useEffect } from 'react'
+import { openSnackbar } from 'store/snackbar/slice'
+import { selectedTagsSelector } from 'store/tags/selector'
 import { fetchUser } from 'store/user/actions'
 import { selectUserSelector, userStateSelector } from 'store/user/selector'
-import Grid from '@mui/material/Grid'
-import Breadcrumbs from '@mui/material/Breadcrumbs'
-import BreadcrumbEntry from 'components/common/breadcrumbEntry/BreadcrumbEntry'
-import TagsSeachField from './tagsSearchField/TagsSearchField'
 import { FileData } from 'types/files'
+
+import TagsSeachField from './tagsSearchField/TagsSearchField'
+import { getSelectedTagsName } from './utils'
 import FilesTable from '../files/filesTable/FilesTable'
-import useFetchUserFromToken from 'hooks/useFetchUserFromToken'
 
 function Tags() {
+  const [hasStartedFetching, setHasStartedFetching] = useState(false)
   const dispatch = useDispatch()
+
+  // ### User ###
   const user = useSelector(selectUserSelector)
-  const { isLoadingFetch, hasErrorFetch } = useSelector(userStateSelector)
   const { userId, error } = useFetchUserFromToken(user)
-  // TODO: SNACKBAR ERROR IF ERROR
+  const {
+    isLoadingFetch: isLoadingFetchUser,
+    hasErrorFetch: hasErrorFetchUser,
+  } = useSelector(userStateSelector)
+
+  const selectedTags = useSelector(selectedTagsSelector)
+
+  const selectedTagsName = useMemo(
+    () => getSelectedTagsName(selectedTags),
+    [selectedTags],
+  )
+
+  const [previousSelectedTagsName, setPreviousSelectedTagsName] =
+    useState(selectedTagsName)
 
   useEffect(() => {
-    if (error || !userId || user) return
-    dispatch(fetchUser({ userId }))
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [userId])
+    if (!userId) return
+    if (!user) dispatch(fetchUser({ userId }))
+    setHasStartedFetching(true)
+    dispatch(fetchFiles({ userId, filter: 'all_files' }))
+  }, [userId, user])
 
-  if (isLoadingFetch) return <>Loading</>
-  if (hasErrorFetch || !userId) return <>Error</>
+  // ### Files ###
+  const fileData: FileData = useSelector(filesDataStateSelector)
+  const {
+    isLoadingFetch: isLoadingFetchFiles,
+    hasErrorFetch: hasErrorFetchFiles,
+  } = useSelector(filesStateSelector)
 
-  const filesData: FileData = {
-    files: [
-      {
-        id: 18,
-        name: 'Documents',
-        size: '305 KB',
-        modified: '2012-12-14',
-        isFavorite: true,
-        path: 'Documents',
-        action: ['comments', 'tags', 'restore', 'download', 'delete'],
-      },
-      {
-        id: 2,
-        name: 'Photos',
-        size: '452 KB',
-        modified: '2012-12-14',
-        isFavorite: true,
-        path: 'Photos',
-        action: ['comments', 'tags', 'restore', 'download', 'delete'],
-      },
-      {
-        id: 3,
-        name: 'Images',
-        size: '262 KB',
-        modified: '2012-12-14',
-        isFavorite: true,
-        path: 'Images',
-        action: ['comments', 'tags', 'restore', 'download', 'delete'],
-      },
-      {
-        id: 4,
-        name: 'Download',
-        size: '159 KB',
-        modified: '2012-12-14',
-        isFavorite: true,
-        path: 'Download',
-        action: ['comments', 'tags', 'restore', 'download', 'delete'],
-      },
-    ],
-    countFiles: 4,
-    countFolders: 4,
-    totalSize: '1.17 MB',
-  }
+  //  On selected tags change fetch files
+  useEffect(() => {
+    if (!userId) return
 
-  const { files } = filesData
+    // Compare previously selectedTagsName with current selectedTagsName
+    if (
+      Array.isArray(selectedTagsName) &&
+      Array.isArray(previousSelectedTagsName) &&
+      selectedTagsName.length === previousSelectedTagsName.length &&
+      selectedTagsName.every(value => previousSelectedTagsName.includes(value))
+    ) {
+      return
+    }
 
-  return (
-    <Grid
-      container
-      sx={{
-        height: 'calc(100% - 42px)',
-        mt: '42px',
-      }}
-      gap={1.5}
-    >
-      <Grid item pt={1.5} px={2}>
-        <Breadcrumbs aria-label="breadcrumb">
-          <BreadcrumbEntry pageName="Tags" />
-        </Breadcrumbs>
+    dispatch(
+      fetchFiles({
+        userId: userId,
+        filter: 'all_files',
+        tags: selectedTagsName,
+      }),
+    )
+    setPreviousSelectedTagsName(selectedTagsName)
+  }, [userId, selectedTagsName])
+
+  // ### Error ###
+  const isLoading = isLoadingFetchUser || isLoadingFetchFiles
+  const hasError = hasErrorFetchUser || hasErrorFetchFiles || error
+
+  useEffect(() => {
+    if (!isLoading) return
+    setHasStartedFetching(true)
+  }, [isLoading])
+
+  useEffect(() => {
+    if (error) {
+      dispatch(
+        openSnackbar({
+          isOpen: true,
+          severity: 'error',
+          message: error?.message || 'Error, please try again',
+        }),
+      )
+    }
+  }, [dispatch, error])
+
+  const { files } = fileData
+
+  if (isLoading || !userId || !hasStartedFetching)
+    return <LoadingFiles pageName="Tags" />
+
+  if (hasError) return <ErrorFiles pageName="Tags" />
+
+  if (!isLoading && !hasError)
+    return (
+      <Grid
+        container
+        sx={{
+          height: 'calc(100% - 42px)',
+          mt: '42px',
+        }}
+        gap={1.5}
+      >
+        <Grid item pt={1.5} px={2}>
+          <Breadcrumbs aria-label="breadcrumb">
+            <BreadcrumbEntry pageName="Tags" />
+          </Breadcrumbs>
+        </Grid>
+        <Grid item sx={{ width: '100%' }} py={0} px={2}>
+          <TagsSeachField userId={userId} />
+        </Grid>
+        <Grid item sx={{ width: '100%' }} py={0}>
+          {files.length > 0 ? (
+            <FilesTable
+              userId={userId}
+              files={files}
+              isPageTag={true}
+              handleChangeDrawerTab={() => {}}
+              handleDrawerOpen={() => {}}
+              toggleDrawer={() => {}}
+            />
+          ) : (
+            <Typography sx={{ fontSize: '.9rem', px: 2 }}>
+              No files found
+            </Typography>
+          )}
+        </Grid>
       </Grid>
-      <Grid item sx={{ width: '100%' }} py={0} px={2}>
-        <TagsSeachField userId={userId} />
-      </Grid>
-      <Grid item sx={{ width: '100%' }} py={0}>
-        <FilesTable
-          files={files}
-          isPageTag={true}
-          handleChangeDrawerTab={() => {}}
-          handleDrawerOpen={() => {}}
-          toggleDrawer={() => {}}
-        />
-      </Grid>
-    </Grid>
-  )
+    )
+
+  // if (files.length === 0 && !hasError && hasStartedFetching)
+  //   return <EmptyFiles pageName="Tags" emptyText="No files yet" />
+
+  // return null
 }
 
 export default Tags

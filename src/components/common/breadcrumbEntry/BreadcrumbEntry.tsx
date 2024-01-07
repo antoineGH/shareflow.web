@@ -1,9 +1,10 @@
+import { useTheme } from '@mui/material'
 import Grid from '@mui/material/Grid'
 import Typography from '@mui/material/Typography'
-import StyledIcon from './StyledIcon'
+
 import breadcrumbsLabelIcon from './breadcrumbLabelIcon'
+import StyledIcon from './StyledIcon'
 import type { BreadcrumbPageName, PageName } from './types'
-import { useTheme } from '@mui/material'
 
 type Props = {
   pageName: PageName

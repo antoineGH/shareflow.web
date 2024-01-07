@@ -1,7 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit'
+
 import { getStateSliceFromError } from 'store/utils'
 import { Status } from 'types/store'
 import { User } from 'types/users'
+
 import { fetchUser, patchUserPassword, updateUser } from './actions'
 
 type InitialState = {

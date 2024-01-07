@@ -1,22 +1,25 @@
 import { useEffect } from 'react'
-import { useDispatch, useSelector } from 'store/hooks'
-import { fetchTags, removeTag } from 'store/tags/actions'
-import { selectAllTagsSelector } from 'store/tags/selector'
+
+import CancelIcon from '@mui/icons-material/Cancel'
+import ClearIcon from '@mui/icons-material/Clear'
+import FolderIcon from '@mui/icons-material/Folder'
+import StarIcon from '@mui/icons-material/Star'
+import { useTheme } from '@mui/material'
+import Box from '@mui/material/Box'
+import Divider from '@mui/material/Divider'
 import Drawer from '@mui/material/Drawer'
 import IconButton from '@mui/material/IconButton'
-import Divider from '@mui/material/Divider'
-import ClearIcon from '@mui/icons-material/Clear'
-import DrawerHeader from './StyledDrawerHead'
 import Stack from '@mui/material/Stack'
-import Box from '@mui/material/Box'
-import StarIcon from '@mui/icons-material/Star'
-import FolderIcon from '@mui/icons-material/Folder'
 import Typography from '@mui/material/Typography'
-import StyledChip from './StyledChip'
-import Tabs from './Tabs/Tabs'
-import CancelIcon from '@mui/icons-material/Cancel'
-import { useTheme } from '@mui/material'
+
+import { useDispatch, useSelector } from 'store/hooks'
 import { openSnackbar } from 'store/snackbar/slice'
+import { fetchTags, removeTag } from 'store/tags/actions'
+import { selectAllTagsSelector } from 'store/tags/selector'
+
+import StyledChip from './StyledChip'
+import DrawerHeader from './StyledDrawerHead'
+import Tabs from './Tabs/Tabs'
 
 type Props = {
   open: boolean
@@ -41,7 +44,6 @@ function DrawerDetails({
   useEffect(() => {
     if (!open) return
     dispatch(fetchTags({ userId, fileId }))
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch, fileId, open])
 
   const tagsFile = useSelector(selectAllTagsSelector)

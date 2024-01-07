@@ -1,30 +1,44 @@
-import { DELETE_FILE, GET_FILES, PATCH_FILE, POST_FILE, PUT_FILE } from './urls'
-import { rest } from 'helpers/rest'
 import { HttpResponseError } from 'helpers/errors'
-import { convertObjectKeys, formatURL } from './utils'
+import { rest } from 'helpers/rest'
 import type {
+  DeleteFileReturnType,
+  File,
+  FileApi,
+  FileData,
+  FileDataApi,
   GetFilesReturnType,
+  PatchFileReturnType,
+  PostFileData,
+  PostFileDataApi,
   PostFileReturnType,
   PutFileReturnType,
-  DeleteFileReturnType,
-  FileDataApi,
-  FileData,
-  File,
-  PutFileDataApi,
-  PutFileData,
-  PostFileDataApi,
-  PostFileData,
-  FileApi,
 } from 'types/files'
+import { TagApi } from 'types/tags'
+import { SnakeCaseToCamelCase } from 'types/utils'
+
+import { DELETE_FILE, GET_FILES, PATCH_FILE, POST_FILE, PUT_FILE } from './urls'
+import { convertObjectKeys, formatURL, generateUrlParams } from './utils'
 
 const errGetFilesMsg = 'An error occurred while getting files. Please try again'
 
-async function getFiles(userId: number, signal?: AbortSignal) {
-  Promise<GetFilesReturnType>
+async function getFiles(
+  userId: number,
+  filter: 'all_files' | 'is_deleted' | 'is_favorite',
+  tags?: (SnakeCaseToCamelCase<TagApi> | string)[],
+  signal?: AbortSignal,
+): Promise<GetFilesReturnType> {
   try {
-    // TODO: replace with proper URL and update status code
-    // const url = formatURL(`${GET_FILES}`, { userId })
-    const url = 'http://localhost:5000/files'
+    let queries = generateUrlParams({
+      [filter]: 1,
+    })
+
+    if (tags && tags.length > 0) {
+      queries += '&tags=' + tags.join(',')
+    }
+
+    const baseUrl = formatURL(`${GET_FILES}`, { userId })
+    const url = `${baseUrl}?${queries}`
+
     const res = await rest.get({ url, signal })
     if (res?.response?.status !== 200) {
       throw new HttpResponseError(res?.response?.status ?? null, errGetFilesMsg)
@@ -46,12 +60,9 @@ async function postFile(
   userId: number,
   newFile: Omit<File, 'id'>,
   signal?: AbortSignal,
-) {
-  Promise<PostFileReturnType>
+): Promise<PostFileReturnType> {
   try {
-    // TODO: replace with proper URL and update status code
-    // const url = formatURL(`${POST_FILE}`, { userId })
-    const url = 'http://localhost:5000/files'
+    const url = formatURL(`${POST_FILE}`, { userId })
     const body = JSON.stringify(newFile)
 
     const res = await rest.post({ url, body, signal })
@@ -77,12 +88,9 @@ async function putFile(
   fileId: number,
   updatedFile: File,
   signal?: AbortSignal,
-) {
-  Promise<PutFileReturnType>
+): Promise<PutFileReturnType> {
   try {
-    // TODO: replace with proper URL and update status code
-    // const url = formatURL(`${PUT_FILE}`, { userId, fileId })
-    const url = 'http://localhost:5000/files'
+    const url = formatURL(`${PUT_FILE}`, { userId, fileId })
     const body = JSON.stringify(updatedFile)
 
     const res = await rest.put({ url, body, signal })
@@ -92,8 +100,8 @@ async function putFile(
     }
 
     const { object } = res
-    const fileData = convertObjectKeys<PutFileDataApi, PutFileData>(object)
-    return { fileData }
+    const file = convertObjectKeys<FileApi, File>(object)
+    return { file }
   } catch (error) {
     console.error(error)
     return { error }
@@ -108,17 +116,18 @@ async function patchFile(
   fileId: number,
   updates: Partial<File>,
   signal?: AbortSignal,
-) {
-  Promise<PutFileReturnType>
+): Promise<PatchFileReturnType> {
   try {
-    // TODO: replace with proper URL and update status code
-    // const url = formatURL(`${PATCH_FILE}`, { userId, fileId })
-    const url = 'http://localhost:5000/files'
-    const body = JSON.stringify(updates)
+    const url = formatURL(`${PATCH_FILE}`, { userId, fileId })
+    const updatesApi = convertObjectKeys<Partial<File>, Partial<FileApi>>(
+      updates,
+      'snakeCase',
+    )
+    const body = JSON.stringify(updatesApi)
 
     const res = await rest.patch({ url, body, signal })
 
-    if (res?.response?.status !== 204) {
+    if (res?.response?.status !== 201) {
       throw new HttpResponseError(
         res?.response?.status ?? null,
         errPatchFileMsg,
@@ -141,12 +150,9 @@ async function deleteFile(
   userId: number,
   fileId: number,
   signal?: AbortSignal,
-) {
-  Promise<DeleteFileReturnType>
+): Promise<DeleteFileReturnType> {
   try {
-    // TODO: replace with proper URL and update status code
-    // const url = formatURL(`${DELETE_FILE}`, { userId, fileId })
-    const url = 'http://localhost:5000/files'
+    const url = formatURL(`${DELETE_FILE}`, { userId, fileId })
     const res = await rest.delete({ url, signal })
 
     if (res?.response?.status !== 204) {

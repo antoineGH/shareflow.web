@@ -1,17 +1,20 @@
 import { useCallback, useMemo, useRef, useState } from 'react'
-import { useDebounce } from 'hooks/useDebounce'
-import useTags from './useTags'
-import Autocomplete from '@mui/material/Autocomplete'
-import TextField from '@mui/material/TextField'
-import Chip from '@mui/material/Chip'
-import InputAdornment from '@mui/material/InputAdornment'
-import IconButton from '@mui/material/IconButton'
+
+import CancelIcon from '@mui/icons-material/Cancel'
 import ClearIcon from '@mui/icons-material/Clear'
 import SearchIcon from '@mui/icons-material/Search'
-import Option from './Option'
-import type { Tag } from 'types/tags'
 import { useTheme } from '@mui/material'
-import CancelIcon from '@mui/icons-material/Cancel'
+import Autocomplete from '@mui/material/Autocomplete'
+import Chip from '@mui/material/Chip'
+import IconButton from '@mui/material/IconButton'
+import InputAdornment from '@mui/material/InputAdornment'
+import TextField from '@mui/material/TextField'
+
+import { useDebounce } from 'hooks/useDebounce'
+import type { Tag } from 'types/tags'
+
+import Option from './Option'
+import useTags from './useTags'
 
 function generateInputProps(selectedOptions: Tag[], onCleanSearch: () => void) {
   return {
@@ -98,7 +101,6 @@ function TagsSeachField({ userId }: Props) {
         return
       }
     },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     [onCleanSearch, selectedOptions],
   )
 
@@ -127,7 +129,6 @@ function TagsSeachField({ userId }: Props) {
       onOpen={onOpenSuggestions}
       onClose={onCloseSuggestions}
       sx={{
-        maxWidth: '1440px',
         mt: '1px',
         '&.MuiAutocomplete-root.MuiAutocomplete-hasPopupIcon .MuiOutlinedInput-root':
           {
@@ -138,7 +139,6 @@ function TagsSeachField({ userId }: Props) {
       inputValue={search}
       getOptionLabel={option => getOptionLabel(option)}
       filterOptions={opts => opts}
-      multiple
       value={selectedOptions}
       renderInput={params => (
         <TextField

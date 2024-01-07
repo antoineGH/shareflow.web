@@ -6,17 +6,14 @@ import { getStateSliceFromError } from 'store/utils'
 
 type InitialState = {
   statusAction: Record<string, Status>
-  storage: Settings['storage']
+  storage: Settings['storage'] | Record<string, never>
 }
 
 const initialState: InitialState = {
   statusAction: {
     fetch: Status.IDLE,
   },
-  storage: {
-    storageUsed: 0,
-    totalStorage: 0,
-  },
+  storage: {},
 }
 
 const storageSlice = createSlice({

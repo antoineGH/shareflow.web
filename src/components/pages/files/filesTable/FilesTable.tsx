@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react'
+import { useMemo, useState } from 'react'
 
 import Box from '@mui/material/Box'
 import Paper from '@mui/material/Paper'
@@ -8,20 +8,27 @@ import TableCell from '@mui/material/TableCell'
 import TableContainer from '@mui/material/TableContainer'
 import TablePagination from '@mui/material/TablePagination'
 import TableRowMUI from '@mui/material/TableRow'
-import TableRow from './TableRow'
-import TableHead from './TableHead'
+import { create } from 'domain'
+import { useLocation } from 'react-router-dom'
+
+import { partialUpdateFile } from 'store/files/actions'
+import { useDispatch } from 'store/hooks'
+import { openSnackbar } from 'store/snackbar/slice'
+import type { File, RowFile } from 'types/files'
+
 import {
   createData,
-  stableSort,
   getComparator,
   getSelectedMultiActions,
+  stableSort,
 } from './helpers'
-
-import type { Data, Order } from './types'
+import TableHead from './TableHead'
+import TableRow from './TableRow'
 import Toolbar from './Toolbar'
-import type { File } from 'types/files'
+import type { Order } from './types'
 
 type Props = {
+  userId: number
   files: File[]
   isPageFavorite?: boolean
   isPageTag?: boolean
@@ -32,6 +39,7 @@ type Props = {
 }
 
 function FilesTable({
+  userId,
   files,
   isPageFavorite,
   isPageTag,
@@ -42,25 +50,28 @@ function FilesTable({
 }: Props) {
   const [selected, setSelected] = useState<number[]>([])
   const [order, setOrder] = useState<Order>('asc')
-  const [orderBy, setOrderBy] = useState<keyof Data>('name')
+  const [orderBy, setOrderBy] = useState<keyof RowFile>('name')
   const [page, setPage] = useState(0)
 
+  const location = useLocation()
+  const dispatch = useDispatch()
+
+  const isFavoritePage = location.pathname === '/auth/favorites'
   const rowsPerPage = 20
 
-  const rows = files.map(file =>
-    createData(file.id, file.name, file.size, file.modified),
+  const rows: RowFile[] = files.map(file =>
+    createData(file.id, file.name, file.size, file.updatedAt),
   )
 
   const filteredSelectedActions = useMemo(() => {
     const filteredActions = ['comments', 'tags']
     const result = files.map(file => ({
       ...file,
-      action: file.action.filter(action => !filteredActions.includes(action)),
+      actions: file.actions.filter(action => !filteredActions.includes(action)),
     }))
     return result
   }, [files])
 
-  // TODO: get actions from redux for each selectedAction, then only keep similar actions at once
   const selectedMultiActions = getSelectedMultiActions(
     selected,
     filteredSelectedActions,
@@ -85,8 +96,27 @@ function FilesTable({
     setSelected(newSelected)
   }
 
-  const onFavoriteClick = (id: number) => {
-    console.log('onFavoriteClick', id)
+  const onFavoriteClick = (id: number, fileFavState: boolean) => {
+    const message = fileFavState
+      ? 'File removed from favorites'
+      : 'File added to favorites'
+    dispatch(
+      partialUpdateFile({
+        userId,
+        fileId: id,
+        updates: { isFavorite: !fileFavState },
+        isFavoritePage,
+        cb: () => {
+          dispatch(
+            openSnackbar({
+              isOpen: true,
+              severity: 'success',
+              message: message,
+            }),
+          )
+        },
+      }),
+    )
   }
 
   const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -100,7 +130,7 @@ function FilesTable({
 
   const handleRequestSort = (
     event: React.MouseEvent<unknown>,
-    property: keyof Data,
+    property: keyof RowFile,
   ) => {
     const isAsc = orderBy === property && order === 'asc'
     setOrder(isAsc ? 'desc' : 'asc')
@@ -116,12 +146,12 @@ function FilesTable({
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0
 
-  const visibleRows = useMemo(
+  const visibleRows: RowFile[] = useMemo(
     () =>
-      stableSort(rows, getComparator(order, orderBy)).slice(
-        page * rowsPerPage,
-        page * rowsPerPage + rowsPerPage,
-      ),
+      stableSort<RowFile>(
+        rows,
+        getComparator<keyof RowFile>(order, orderBy),
+      ).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage),
     [order, orderBy, page, rows],
   )
 

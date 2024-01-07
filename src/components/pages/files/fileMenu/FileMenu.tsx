@@ -1,13 +1,20 @@
-import { useState, type MouseEvent, useMemo } from 'react'
+import { type MouseEvent, useMemo, useState } from 'react'
+
+import GradeIcon from '@mui/icons-material/Grade'
 import InfoIcon from '@mui/icons-material/Info'
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz'
-import IconButton from '@mui/material/IconButton'
-import GradeIcon from '@mui/icons-material/Grade'
-import Menu from './Menu'
 import { useTheme } from '@mui/material'
-import { getAvailableActions } from './helpers'
-import type { ListItem } from './listItems'
+import IconButton from '@mui/material/IconButton'
+
+import { partialRemoveFile } from 'store/files/actions'
+import { useDispatch, useSelector } from 'store/hooks'
+import { openSnackbar } from 'store/snackbar/slice'
+import { selectUserSelector } from 'store/user/selector'
 import { File } from 'types/files'
+
+import { getAvailableActions } from './helpers'
+import type { ListItem, ListItemKey } from './listItems'
+import Menu from './Menu'
 
 type Props = {
   id: number
@@ -18,7 +25,7 @@ type Props = {
   isHovered?: boolean
   toggleDrawer: (fileId: number) => void
   handleDrawerOpen: (fileId: number) => void
-  onFavoriteClick: (id: number) => void
+  onFavoriteClick: (id: number, fileFavState: boolean) => void
   handleChangeDrawerTab: (tab: number) => void
 }
 
@@ -34,18 +41,21 @@ function FileMenu({
   onFavoriteClick,
   handleChangeDrawerTab,
 }: Props) {
-  const theme = useTheme()
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
+  const theme = useTheme()
+  const dispatch = useDispatch()
+  const user = useSelector(selectUserSelector)
   const shouldDisplayFavoriteButton =
     !isPageFavorite && !isPageTag && !isPageDelete && isHovered
 
   const actions: ListItem['id'][] = useMemo(() => {
-    const result = files.find(file => file.id === id)?.action || []
+    const result = files.find(file => file.id === id)?.actions || []
     return result
   }, [files, id])
 
   const isFavorite = files.find(file => file.id === id)?.isFavorite || false
+  const isDelete = files.find(file => file.id === id)?.isDeleted || false
   const filteredAction = getAvailableActions(actions)
 
   const openMenu = (e: MouseEvent<HTMLElement>) => {
@@ -60,7 +70,7 @@ function FileMenu({
 
   const handleClickFavorite = (e: MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation()
-    onFavoriteClick(id)
+    onFavoriteClick(id, isFavorite)
   }
 
   const handleClickDetails = (e: MouseEvent<HTMLButtonElement>) => {
@@ -69,39 +79,93 @@ function FileMenu({
     toggleDrawer(id)
   }
 
-  const handleClickComment = (e: MouseEvent<HTMLButtonElement>) => {
+  const handleClickComment = (
+    e: MouseEvent<HTMLButtonElement> | MouseEvent<HTMLLIElement>,
+  ) => {
     handleDrawerOpen(id)
     handleChangeDrawerTab(1)
     closeMenu(e)
   }
 
-  const handleClickTag = (e: MouseEvent<HTMLButtonElement>) => {
+  const handleClickTag = (
+    e: MouseEvent<HTMLButtonElement> | MouseEvent<HTMLLIElement>,
+  ) => {
     handleDrawerOpen(id)
     handleChangeDrawerTab(2)
     closeMenu(e)
   }
 
-  const handleClickRename = (e: MouseEvent<HTMLButtonElement>) => {
+  const handleClickRename = (
+    e: MouseEvent<HTMLButtonElement> | MouseEvent<HTMLLIElement>,
+  ) => {
     console.log('Clicked Rename')
     closeMenu(e)
   }
 
-  const handleClickDownload = (e: MouseEvent<HTMLButtonElement>) => {
+  const handleClickDownload = (
+    e: MouseEvent<HTMLButtonElement> | MouseEvent<HTMLLIElement>,
+  ) => {
     console.log('Clicked Download')
     closeMenu(e)
   }
 
-  const handleClickDelete = (e: MouseEvent<HTMLButtonElement>) => {
-    console.log('Clicked Delete')
+  const handleClickDelete = (
+    e: MouseEvent<HTMLButtonElement> | MouseEvent<HTMLLIElement>,
+  ) => {
+    if (typeof id === 'number') {
+      dispatch(
+        partialRemoveFile({
+          userId: user!.id,
+          fileId: id,
+          updates: { isDeleted: !isDelete },
+          cb: () => {
+            dispatch(
+              openSnackbar({
+                isOpen: true,
+                severity: 'success',
+                message: isDelete ? 'File restored' : 'File deleted',
+              }),
+            )
+          },
+        }),
+      )
+      closeMenu(e)
+    }
+    // TODO: handle multi delete here
+
     closeMenu(e)
   }
 
-  const handleClickRestore = (e: MouseEvent<HTMLButtonElement>) => {
-    console.log('Clicked Restore')
+  const handleClickRestore = (
+    e: MouseEvent<HTMLButtonElement> | MouseEvent<HTMLLIElement>,
+  ) => {
+    if (typeof id === 'number') {
+      dispatch(
+        partialRemoveFile({
+          userId: user!.id,
+          fileId: id,
+          updates: { isDeleted: !isDelete },
+          cb: () => {
+            dispatch(
+              openSnackbar({
+                isOpen: true,
+                severity: 'success',
+                message: isDelete ? 'File restored' : 'File deleted',
+              }),
+            )
+          },
+        }),
+      )
+      closeMenu(e)
+    }
+    // TODO: handle multi restore here
+
     closeMenu(e)
   }
 
-  const handleClickRemove = (e: MouseEvent<HTMLButtonElement>) => {
+  const handleClickRemove = (
+    e: MouseEvent<HTMLButtonElement> | MouseEvent<HTMLLIElement>,
+  ) => {
     console.log('Clicked Remove')
     closeMenu(e)
   }
@@ -116,9 +180,12 @@ function FileMenu({
     remove: handleClickRemove,
   }
 
-  const handleClickMore = (e: MouseEvent<HTMLLIElement>, id: string) => {
+  const handleClickMore = (
+    e: MouseEvent<HTMLLIElement>,
+    clickedAction: ListItemKey,
+  ) => {
     e.stopPropagation()
-    actionMap[id]?.(e)
+    actionMap[clickedAction]?.(e)
   }
 
   return (

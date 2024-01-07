@@ -1,16 +1,19 @@
 import { useCallback, useMemo, useRef, useState } from 'react'
-import { useDebounce } from 'hooks/useDebounce'
-import useTags from './useTags'
+
+import ClearIcon from '@mui/icons-material/Clear'
 import Autocomplete from '@mui/material/Autocomplete'
 import IconButton from '@mui/material/IconButton'
-import TextField from '@mui/material/TextField'
 import InputAdornment from '@mui/material/InputAdornment'
-import ClearIcon from '@mui/icons-material/Clear'
-import Option from './Option'
-import type { Tag } from 'types/tags'
-import { createTag } from 'store/tags/actions'
+import TextField from '@mui/material/TextField'
+
+import { useDebounce } from 'hooks/useDebounce'
 import { useDispatch } from 'store/hooks'
 import { openSnackbar } from 'store/snackbar/slice'
+import { createTag } from 'store/tags/actions'
+import type { Tag } from 'types/tags'
+
+import Option from './Option'
+import useTags from './useTags'
 
 type Props = {
   userId: number
@@ -85,6 +88,8 @@ function TagsSeachField({ userId, fileId }: Props) {
         if (typeof tag === 'object') {
           tag = tag.tag
         }
+        tag = tag.replace(/\s/g, '')
+
         dispatch(
           createTag({
             userId,
@@ -108,7 +113,6 @@ function TagsSeachField({ userId, fileId }: Props) {
         return
       }
     },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     [onCleanSearch, selectedOptions],
   )
 

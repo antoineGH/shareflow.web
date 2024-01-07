@@ -23,7 +23,7 @@ import DrawerDetails from '../files/drawerDetails/DrawerDetails'
 import useDrawerDetails from '../files/drawerDetails/useDrawerDetails'
 import FilesTable from '../files/filesTable/FilesTable'
 
-function Favorites() {
+function Deleted() {
   const [hasStartedFetching, setHasStartedFetching] = useState(false)
   const dispatch = useDispatch()
 
@@ -39,7 +39,7 @@ function Favorites() {
     if (!userId) return
     if (!user) dispatch(fetchUser({ userId }))
     setHasStartedFetching(true)
-    dispatch(fetchFiles({ userId, filter: 'is_favorite' }))
+    dispatch(fetchFiles({ userId, filter: 'is_deleted' }))
   }, [userId])
 
   // ### Files ###
@@ -83,9 +83,9 @@ function Favorites() {
   const { files } = fileData
 
   if (isLoading || !userId || !hasStartedFetching)
-    return <LoadingFiles pageName="Favorites" />
+    return <LoadingFiles pageName="Deleted" />
 
-  if (hasError) return <ErrorFiles pageName="Favorites" />
+  if (hasError) return <ErrorFiles pageName="Deleted" />
 
   if (files.length >= 1 && !isLoading && !hasError)
     return (
@@ -96,23 +96,23 @@ function Favorites() {
           mt: '42px',
         }}
       >
-        <Grid item pt={1.5} px={2} mb={1.5}>
+        <Grid item py={1.5} px={2}>
           <Breadcrumbs aria-label="breadcrumb">
-            <BreadcrumbEntry pageName="Favorites" />
+            <BreadcrumbEntry pageName="Deleted" />
           </Breadcrumbs>
         </Grid>
         <FilesTable
           userId={userId}
           files={files}
-          isPageFavorite={true}
+          isPageDelete
           handleChangeDrawerTab={handleChangeDrawerTab}
           handleDrawerOpen={handleDrawerOpen}
           toggleDrawer={toggleDrawer}
         />
         <DrawerDetails
+          open={isDrawerOpen}
           userId={userId}
           fileId={drawerFileId}
-          open={isDrawerOpen}
           activeDrawerTab={activeDrawerTab}
           handleChangeDrawerTab={handleChangeDrawerTab}
           handleDrawerClose={handleDrawerClose}
@@ -121,9 +121,9 @@ function Favorites() {
     )
 
   if (files.length === 0 && !hasError && hasStartedFetching)
-    return <EmptyFiles pageName="Favorites" emptyText="No favorite files yet" />
+    return <EmptyFiles pageName="Deleted" emptyText="No deleted files yet" />
 
   return null
 }
 
-export default Favorites
+export default Deleted

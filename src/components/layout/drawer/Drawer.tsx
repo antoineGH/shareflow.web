@@ -1,13 +1,14 @@
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
+import { Box } from '@mui/material'
+import Divider from '@mui/material/Divider'
+import IconButton from '@mui/material/IconButton'
+import List from '@mui/material/List'
 import Toolbar from '@mui/material/Toolbar'
 import { useNavigate } from 'react-router-dom'
-import IconButton from '@mui/material/IconButton'
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
-import Divider from '@mui/material/Divider'
-import List from '@mui/material/List'
-import { Box } from '@mui/material'
+
+import DrawerButton from './drawerButton/DrawerButton'
 import StyledDrawer from './StyledDrawer'
 import { mainListItems, secondaryListItems } from '../listItems'
-import DrawerButton from './drawerButton/DrawerButton'
 
 type Props = {
   open: boolean

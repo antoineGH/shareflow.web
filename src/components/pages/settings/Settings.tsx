@@ -11,12 +11,54 @@ import Version from './version/Version'
 import BreadcrumbEntry from 'components/common/breadcrumbEntry/BreadcrumbEntry'
 import { fetchUser } from 'store/user/actions'
 import { fetchStorage } from 'store/settings/storage/actions'
+import useFetchUserFromToken from 'hooks/useFetchUserFromToken'
+import { openSnackbar } from 'store/snackbar/slice'
+import { selectStorageSelector } from 'store/settings/storage/selector'
 
 function Settings() {
   const [editMode, setEditMode] = useState<'userInfo' | 'password' | null>(null)
-  const user = useSelector(selectUserSelector)
-  const { isLoadingFetch, hasErrorFetch } = useSelector(userStateSelector)
   const dispatch = useDispatch()
+
+  // ### User ###
+  const user = useSelector(selectUserSelector)
+  const { userId, error } = useFetchUserFromToken(user)
+  const {
+    isLoadingFetch: isLoadingFetchUser,
+    hasErrorFetch: hasErrorFetchUser,
+  } = useSelector(userStateSelector)
+
+  useEffect(() => {
+    if (!userId || user) return
+    dispatch(fetchUser({ userId }))
+  }, [userId, dispatch, user])
+
+  // ### Storage ###
+  const storage = useSelector(selectStorageSelector)
+  const {
+    isLoadingFetch: isLoadingFetchStorage,
+    hasErrorFetch: hasErrorFetchStorage,
+  } = useSelector(userStateSelector)
+
+  useEffect(() => {
+    if (!userId || Object.keys(storage).length !== 0) return
+    dispatch(fetchStorage({ userId }))
+  }, [userId, dispatch, storage])
+
+  // ### Error ###
+  useEffect(() => {
+    if (error) {
+      dispatch(
+        openSnackbar({
+          isOpen: true,
+          severity: 'error',
+          message: error.message,
+        }),
+      )
+    }
+  }, [dispatch, error])
+
+  const isLoadingFetch = isLoadingFetchUser || isLoadingFetchStorage
+  const hasErrorFetch = hasErrorFetchUser || hasErrorFetchStorage
 
   const handleEditMode = (mode: 'userInfo' | 'password' | null) => {
     if (editMode === mode) {
@@ -25,14 +67,6 @@ function Settings() {
       setEditMode(mode)
     }
   }
-
-  useEffect(() => {
-    if (!user) {
-      // TODO: update userId here from JWT
-      dispatch(fetchUser({ userId: 1 }))
-      dispatch(fetchStorage({ userId: 1 }))
-    }
-  }, [dispatch, user])
 
   return (
     <Grid

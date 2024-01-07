@@ -1,15 +1,18 @@
 import { useEffect } from 'react'
-import { useDispatch, useSelector } from 'store/hooks'
-import { selectUserSelector } from 'store/user/selector'
+
+import Box from '@mui/material/Box'
+import Stack from '@mui/material/Stack'
+
+import { fetchActivities } from 'store/activities/actions'
 import {
   activitiesStateSelector,
   selectActivitiesSelector,
 } from 'store/activities/selector'
-import { fetchActivities } from 'store/activities/actions'
-import Stack from '@mui/material/Stack'
-import Box from '@mui/material/Box'
-import ActivitySection from './ActivitiesSection'
+import { useDispatch, useSelector } from 'store/hooks'
+import { selectUserSelector } from 'store/user/selector'
 import type { Activity } from 'types/activities'
+
+import ActivitySection from './ActivitiesSection'
 
 type Props = {
   fileId: number

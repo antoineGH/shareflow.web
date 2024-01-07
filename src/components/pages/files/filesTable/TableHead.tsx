@@ -1,13 +1,16 @@
-import Box from '@mui/material/Box'
-import Stack from '@mui/material/Stack'
-import TableHeadMUI from '@mui/material/TableHead'
-import TableSortLabel from '@mui/material/TableSortLabel'
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp'
-import TableRow from '@mui/material/TableRow'
-import TableCell from '@mui/material/TableCell'
+import Box from '@mui/material/Box'
 import Checkbox from '@mui/material/Checkbox'
+import Stack from '@mui/material/Stack'
+import TableCell from '@mui/material/TableCell'
+import TableHeadMUI from '@mui/material/TableHead'
+import TableRow from '@mui/material/TableRow'
+import TableSortLabel from '@mui/material/TableSortLabel'
 import { visuallyHidden } from '@mui/utils'
-import type { EnhancedTableProps, Data, HeadCell } from './types'
+
+import { RowFile } from 'types/files'
+
+import type { EnhancedTableProps, HeadCell } from './types'
 
 const headCells: HeadCell[] = [
   {
@@ -23,7 +26,7 @@ const headCells: HeadCell[] = [
     label: 'Size',
   },
   {
-    id: 'modified',
+    id: 'updatedAt',
     numeric: true,
     disablePadding: false,
     label: 'Modified',
@@ -41,7 +44,7 @@ function TableHead({
   isPageTag,
 }: EnhancedTableProps) {
   const createSortHandler =
-    (property: keyof Data) => (event: React.MouseEvent<unknown>) => {
+    (property: keyof RowFile) => (event: React.MouseEvent<unknown>) => {
       onRequestSort(event, property)
     }
 

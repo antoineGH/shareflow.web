@@ -1,12 +1,15 @@
-import { useLocation, useNavigate } from 'react-router-dom'
-import MenuItem from '@mui/material/MenuItem'
+import { useContext } from 'react'
+
 import ListItemIcon from '@mui/material/ListItemIcon'
+import MenuItem from '@mui/material/MenuItem'
+import { useLocation, useNavigate } from 'react-router-dom'
+
+import { AuthContext } from 'components/auth/AuthContext'
+
+import { drawerNavigation } from './helpers'
 import listItems from './listItems'
 import StyledIcon from './StyledIcon'
-import { drawerNavigation } from './helpers'
 import StyledMenu from './StyledMenu'
-import { useContext } from 'react'
-import { AuthContext } from 'components/auth/AuthContext'
 
 type Props = {
   anchorEl: null | HTMLElement
@@ -36,7 +39,7 @@ function Menu({ anchorEl, open, closeMenu }: Props) {
       transformOrigin={{ horizontal: 'right', vertical: 'top' }}
       anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
     >
-      {listItems.map(({ id, label, icon, pathname }) => (
+      {listItems.map(({ id, label, icon }) => (
         <MenuItem key={id} onClick={() => handleDrawerNavigation(pathname)}>
           <ListItemIcon>
             <StyledIcon>{icon}</StyledIcon>
