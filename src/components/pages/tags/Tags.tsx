@@ -1,10 +1,10 @@
 import { useEffect, useMemo, useState } from 'react'
 
+import { Typography } from '@mui/material'
 import Breadcrumbs from '@mui/material/Breadcrumbs'
 import Grid from '@mui/material/Grid'
 
 import BreadcrumbEntry from 'components/common/breadcrumbEntry/BreadcrumbEntry'
-import EmptyFiles from 'components/common/EmptyFiles'
 import ErrorFiles from 'components/common/ErrorFiles'
 import LoadingFiles from 'components/common/LoadingFiles'
 import useFetchUserFromToken from 'hooks/useFetchUserFromToken'
@@ -112,7 +112,7 @@ function Tags() {
 
   if (hasError) return <ErrorFiles pageName="Tags" />
 
-  if (files.length >= 1 && !isLoading && !hasError)
+  if (!isLoading && !hasError)
     return (
       <Grid
         container
@@ -131,22 +131,28 @@ function Tags() {
           <TagsSeachField userId={userId} />
         </Grid>
         <Grid item sx={{ width: '100%' }} py={0}>
-          <FilesTable
-            userId={userId}
-            files={files}
-            isPageTag={true}
-            handleChangeDrawerTab={() => {}}
-            handleDrawerOpen={() => {}}
-            toggleDrawer={() => {}}
-          />
+          {files.length > 0 ? (
+            <FilesTable
+              userId={userId}
+              files={files}
+              isPageTag={true}
+              handleChangeDrawerTab={() => {}}
+              handleDrawerOpen={() => {}}
+              toggleDrawer={() => {}}
+            />
+          ) : (
+            <Typography sx={{ fontSize: '.9rem', px: 2 }}>
+              No files found
+            </Typography>
+          )}
         </Grid>
       </Grid>
     )
 
-  if (files.length === 0 && !hasError && hasStartedFetching)
-    return <EmptyFiles pageName="Tags" emptyText="No files yet" />
+  // if (files.length === 0 && !hasError && hasStartedFetching)
+  //   return <EmptyFiles pageName="Tags" emptyText="No files yet" />
 
-  return null
+  // return null
 }
 
 export default Tags

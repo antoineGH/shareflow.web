@@ -10,7 +10,11 @@ type Props = {
 function CountFiles({ countFiles, countFolders, totalSize }: Props) {
   return (
     <Stack p={2}>
-      <Typography variant="body2">{`${countFiles} files, ${countFolders} folders. Total size: ${totalSize}`}</Typography>
+      <Typography variant="body2">{`${countFiles} file${
+        countFiles > 1 ? 's' : ''
+      }, ${countFolders} folder${
+        countFolders > 1 ? 's' : ''
+      }. Total size: ${totalSize}`}</Typography>
     </Stack>
   )
 }

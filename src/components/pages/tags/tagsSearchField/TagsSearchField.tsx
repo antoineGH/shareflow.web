@@ -129,7 +129,6 @@ function TagsSeachField({ userId }: Props) {
       onOpen={onOpenSuggestions}
       onClose={onCloseSuggestions}
       sx={{
-        maxWidth: '1440px',
         mt: '1px',
         '&.MuiAutocomplete-root.MuiAutocomplete-hasPopupIcon .MuiOutlinedInput-root':
           {

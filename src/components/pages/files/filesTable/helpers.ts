@@ -80,10 +80,8 @@ export function formatDate(dateString: string): string {
   if (diffDays === 1) return 'Yesterday'
 
   const formattedDate = `${String(date.getDate()).padStart(2, '0')}/${String(
-    date.getMonth() + 1,
-  ).padStart(2, '0')}/${String(date.getFullYear()).slice(-2)} - ${String(
-    date.getHours(),
-  ).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}`
+    date.getFullYear(),
+  ).slice(-2)}`
   return formattedDate
 }
 
