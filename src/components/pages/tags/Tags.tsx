@@ -4,13 +4,15 @@ import Breadcrumbs from '@mui/material/Breadcrumbs'
 import Grid from '@mui/material/Grid'
 
 import BreadcrumbEntry from 'components/common/breadcrumbEntry/BreadcrumbEntry'
+import EmptyFiles from 'components/common/EmptyFiles'
+import ErrorFiles from 'components/common/ErrorFiles'
+import LoadingFiles from 'components/common/LoadingFiles'
 import useFetchUserFromToken from 'hooks/useFetchUserFromToken'
 import { fetchFiles } from 'store/files/actions'
 import {
   filesDataStateSelector,
   filesStateSelector,
 } from 'store/files/selector'
-import { resetFileSlice } from 'store/files/slice'
 import { useDispatch, useSelector } from 'store/hooks'
 import { openSnackbar } from 'store/snackbar/slice'
 import { selectedTagsSelector } from 'store/tags/selector'
@@ -23,6 +25,7 @@ import { getSelectedTagsName } from './utils'
 import FilesTable from '../files/filesTable/FilesTable'
 
 function Tags() {
+  const [hasStartedFetching, setHasStartedFetching] = useState(false)
   const dispatch = useDispatch()
 
   // ### User ###
@@ -44,8 +47,10 @@ function Tags() {
     useState(selectedTagsName)
 
   useEffect(() => {
-    if (!userId || user) return
-    dispatch(fetchUser({ userId }))
+    if (!userId) return
+    if (!user) dispatch(fetchUser({ userId }))
+    setHasStartedFetching(true)
+    dispatch(fetchFiles({ userId, filter: 'all_files' }))
   }, [userId, user])
 
   // ### Files ###
@@ -54,13 +59,6 @@ function Tags() {
     isLoadingFetch: isLoadingFetchFiles,
     hasErrorFetch: hasErrorFetchFiles,
   } = useSelector(filesStateSelector)
-
-  // On mount fetch files
-  useEffect(() => {
-    if (!userId) return
-    dispatch(resetFileSlice())
-    dispatch(fetchFiles({ userId, filter: 'all_files' }))
-  }, [userId])
 
   //  On selected tags change fetch files
   useEffect(() => {
@@ -91,6 +89,11 @@ function Tags() {
   const hasError = hasErrorFetchUser || hasErrorFetchFiles || error
 
   useEffect(() => {
+    if (!isLoading) return
+    setHasStartedFetching(true)
+  }, [isLoading])
+
+  useEffect(() => {
     if (error) {
       dispatch(
         openSnackbar({
@@ -102,40 +105,48 @@ function Tags() {
     }
   }, [dispatch, error])
 
-  if (isLoading) return <>Loading</>
-  if (hasError || !userId || !fileData) return <>Error</>
-
   const { files } = fileData
 
-  return (
-    <Grid
-      container
-      sx={{
-        height: 'calc(100% - 42px)',
-        mt: '42px',
-      }}
-      gap={1.5}
-    >
-      <Grid item pt={1.5} px={2}>
-        <Breadcrumbs aria-label="breadcrumb">
-          <BreadcrumbEntry pageName="Tags" />
-        </Breadcrumbs>
+  if (isLoading || !userId || !hasStartedFetching)
+    return <LoadingFiles pageName="Tags" />
+
+  if (hasError) return <ErrorFiles pageName="Tags" />
+
+  if (files.length >= 1 && !isLoading && !hasError)
+    return (
+      <Grid
+        container
+        sx={{
+          height: 'calc(100% - 42px)',
+          mt: '42px',
+        }}
+        gap={1.5}
+      >
+        <Grid item pt={1.5} px={2}>
+          <Breadcrumbs aria-label="breadcrumb">
+            <BreadcrumbEntry pageName="Tags" />
+          </Breadcrumbs>
+        </Grid>
+        <Grid item sx={{ width: '100%' }} py={0} px={2}>
+          <TagsSeachField userId={userId} />
+        </Grid>
+        <Grid item sx={{ width: '100%' }} py={0}>
+          <FilesTable
+            userId={userId}
+            files={files}
+            isPageTag={true}
+            handleChangeDrawerTab={() => {}}
+            handleDrawerOpen={() => {}}
+            toggleDrawer={() => {}}
+          />
+        </Grid>
       </Grid>
-      <Grid item sx={{ width: '100%' }} py={0} px={2}>
-        <TagsSeachField userId={userId} />
-      </Grid>
-      <Grid item sx={{ width: '100%' }} py={0}>
-        <FilesTable
-          userId={userId}
-          files={files}
-          isPageTag={true}
-          handleChangeDrawerTab={() => {}}
-          handleDrawerOpen={() => {}}
-          toggleDrawer={() => {}}
-        />
-      </Grid>
-    </Grid>
-  )
+    )
+
+  if (files.length === 0 && !hasError && hasStartedFetching)
+    return <EmptyFiles pageName="Tags" emptyText="No files yet" />
+
+  return null
 }
 
 export default Tags

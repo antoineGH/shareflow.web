@@ -29,7 +29,7 @@ const headCells: HeadCell[] = [
     id: 'updatedAt',
     numeric: true,
     disablePadding: false,
-    label: 'Created',
+    label: 'Last Modified',
   },
 ]
 

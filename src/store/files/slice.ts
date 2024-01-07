@@ -42,6 +42,9 @@ const filesSlice = createSlice({
       FilesAdapter.getInitialState(initialState)
       state.statusAction = initialState.statusAction
     },
+    setLoadingPendingFetchFiles: state => {
+      state.statusAction.fetch = Status.PENDING
+    },
   },
   extraReducers: builder => {
     // ### fetchFiles ###
@@ -131,6 +134,7 @@ const filesSlice = createSlice({
 
 export default filesSlice.reducer
 
-export const { resetFileSlice } = filesSlice.actions
+export const { resetFileSlice, setLoadingPendingFetchFiles } =
+  filesSlice.actions
 
 export const { selectById, selectAll } = FilesAdapter.getSelectors()

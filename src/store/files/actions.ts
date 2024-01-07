@@ -94,6 +94,7 @@ const partialUpdateFile = createAsyncThunk<
 >(
   'files/patchFile',
   async (
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     { userId, fileId, updates, isFavoritePage, cb },
     { signal, rejectWithValue },
   ) => {
