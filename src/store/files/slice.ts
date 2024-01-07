@@ -93,6 +93,10 @@ const filesSlice = createSlice({
     })
     builder.addCase(partialUpdateFile.fulfilled, (state, action) => {
       state.statusAction.patch = Status.SUCCEEDED
+      if (action.meta.arg.isFavoritePage) {
+        FilesAdapter.removeOne(state, action.payload.id)
+        return
+      }
       FilesAdapter.upsertOne(state, action.payload)
     })
     builder.addCase(partialUpdateFile.rejected, (state, action) => {

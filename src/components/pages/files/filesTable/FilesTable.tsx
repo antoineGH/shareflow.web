@@ -9,6 +9,7 @@ import TableContainer from '@mui/material/TableContainer'
 import TablePagination from '@mui/material/TablePagination'
 import TableRowMUI from '@mui/material/TableRow'
 import { create } from 'domain'
+import { useLocation } from 'react-router-dom'
 
 import { partialUpdateFile } from 'store/files/actions'
 import { useDispatch } from 'store/hooks'
@@ -52,8 +53,10 @@ function FilesTable({
   const [orderBy, setOrderBy] = useState<keyof RowFile>('name')
   const [page, setPage] = useState(0)
 
+  const location = useLocation()
   const dispatch = useDispatch()
 
+  const isFavoritePage = location.pathname === '/auth/favorites'
   const rowsPerPage = 20
 
   const rows: RowFile[] = files.map(file =>
@@ -102,6 +105,7 @@ function FilesTable({
         userId,
         fileId: id,
         updates: { isFavorite: !fileFavState },
+        isFavoritePage,
         cb: () => {
           dispatch(
             openSnackbar({

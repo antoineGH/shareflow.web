@@ -87,12 +87,16 @@ const partialUpdateFile = createAsyncThunk<
     userId: number
     fileId: File['id']
     updates: Partial<File>
+    isFavoritePage?: boolean
     cb?: () => void
   },
   { state: RootState; rejectValue: { errorMessage: string; code?: number } }
 >(
   'files/patchFile',
-  async ({ userId, fileId, updates, cb }, { signal, rejectWithValue }) => {
+  async (
+    { userId, fileId, updates, isFavoritePage, cb },
+    { signal, rejectWithValue },
+  ) => {
     try {
       const { error, file } = await patchFile(userId, fileId, updates, signal)
 
