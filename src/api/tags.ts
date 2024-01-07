@@ -1,14 +1,15 @@
+import { HttpResponseError } from 'helpers/errors'
+import { rest } from 'helpers/rest'
 import type {
+  DeleteTagReturnType,
   GetTagsReturnType,
   PostTagsReturnType,
-  DeleteTagReturnType,
-  TagApi,
   Tag,
+  TagApi,
 } from 'types/tags'
+
 import { DELETE_TAG, GET_TAGS, POST_TAG } from './urls'
 import { convertObjectKeys, formatURL, generateUrlParams } from './utils'
-import { rest } from 'helpers/rest'
-import { HttpResponseError } from 'helpers/errors'
 
 const errGetTagsMsg = 'An error occurred while getting tags. Please try again'
 
@@ -19,8 +20,12 @@ type GetTags = {
   signal?: AbortSignal
 }
 
-async function getTags({ userId, fileId, search, signal }: GetTags) {
-  Promise<GetTagsReturnType>
+async function getTags({
+  userId,
+  fileId,
+  search,
+  signal,
+}: GetTags): Promise<GetTagsReturnType> {
   try {
     const queries = generateUrlParams({ search })
     fileId = fileId ?? -1
@@ -50,8 +55,7 @@ async function postTag(
   fileId: number,
   newTag: string,
   signal?: AbortSignal,
-) {
-  Promise<PostTagsReturnType>
+): Promise<PostTagsReturnType> {
   try {
     const url = formatURL(`${POST_TAG}`, { userId, fileId })
 
@@ -82,8 +86,7 @@ async function deleteTag(
   fileId: number,
   tagId: number,
   signal?: AbortSignal,
-) {
-  Promise<DeleteTagReturnType>
+): Promise<DeleteTagReturnType> {
   try {
     const url = formatURL(`${DELETE_TAG}`, { userId, fileId, tagId })
     const res = await rest.delete({ url, signal })

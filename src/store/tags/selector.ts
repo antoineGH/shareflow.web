@@ -1,8 +1,10 @@
+import { createSelector } from '@reduxjs/toolkit'
+
 import { RootState } from 'store/store'
 import { Status } from 'types/store'
-import { TagsAdapter } from './slice'
-import { createSelector } from '@reduxjs/toolkit'
 import { Tag } from 'types/tags'
+
+import { TagsAdapter } from './slice'
 
 const tagsStoreState = (state: RootState) => state.tags
 

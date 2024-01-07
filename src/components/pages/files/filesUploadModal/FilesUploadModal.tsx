@@ -1,16 +1,18 @@
-import { useState, useCallback } from 'react'
-import { FileRejection } from 'react-dropzone'
+import { useCallback, useState } from 'react'
+
 import Badge from '@mui/material/Badge'
 import Dialog from '@mui/material/Dialog'
 import DialogContent from '@mui/material/DialogContent'
 import Stack from '@mui/material/Stack'
 import Typography from '@mui/material/Typography'
-import { formatAcceptedFiles } from './helpers'
+import { FileRejection } from 'react-dropzone'
+
 import DropZone from './dropzone/Dropzone'
-import Header from './Header'
-import Footer from './Footer'
 import { RejectedFiles, ValidFiles } from './filesUploadDragNDrop/Files'
 import type { DroppedFiles, FileState } from './filesUploadDragNDrop/types'
+import Footer from './Footer'
+import Header from './Header'
+import { formatAcceptedFiles } from './helpers'
 
 type Props = {
   open: boolean

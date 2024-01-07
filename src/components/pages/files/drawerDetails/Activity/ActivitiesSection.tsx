@@ -1,8 +1,11 @@
-import Box from '@mui/material/Box'
-import Activity from './Activity'
-import { Activity as ActivityT } from 'types/activities'
 import { Skeleton, Stack, Typography } from '@mui/material'
+import Box from '@mui/material/Box'
+// eslint-disable-next-line import/no-unresolved
 import EmptySearchSVG from 'assets/empty_search.svg?react'
+
+import { Activity as ActivityT } from 'types/activities'
+
+import Activity from './Activity'
 
 type Props = {
   activities: ActivityT[]
@@ -49,13 +52,19 @@ function ActivitySection({ activities, isLoading, hasError }: Props) {
     )
 
   return (
-    <>
+    <Box
+      sx={{
+        width: '100%',
+        overflowY: 'auto',
+        maxHeight: 'calc(100vh - 250px)',
+      }}
+    >
       {activities.map(({ id, activity, createdAt }) => (
         <Box key={id}>
           <Activity activity={activity} createdAt={createdAt} />
         </Box>
       ))}
-    </>
+    </Box>
   )
 }
 

@@ -1,16 +1,21 @@
 import type { MouseEvent } from 'react'
-import MenuItem from '@mui/material/MenuItem'
+
 import ListItemIcon from '@mui/material/ListItemIcon'
+import MenuItem from '@mui/material/MenuItem'
+
+import type { ListItem, ListItemKey } from './listItems'
 import StyledMenu from './StyledMenu'
 import StyledIcon from './StyleIcon'
-import type { ListItem } from './listItems'
 
 type Props = {
   anchorEl: null | HTMLElement
   open: boolean
   actions: ListItem[]
   closeMenu: (e) => void
-  handleClickMore: (e: MouseEvent<HTMLLIElement>, id: string) => void
+  handleClickMore: (
+    e: MouseEvent<HTMLLIElement>,
+    clickedAction: ListItemKey,
+  ) => void
 }
 
 function Menu({ anchorEl, open, actions, closeMenu, handleClickMore }: Props) {

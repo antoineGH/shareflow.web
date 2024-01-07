@@ -7,28 +7,38 @@ import type {
   FileData,
   FileDataApi,
   GetFilesReturnType,
-  PatchFileData,
-  PatchFileDataApi,
   PatchFileReturnType,
   PostFileData,
   PostFileDataApi,
   PostFileReturnType,
-  PutFileData,
-  PutFileDataApi,
   PutFileReturnType,
 } from 'types/files'
+import { TagApi } from 'types/tags'
+import { SnakeCaseToCamelCase } from 'types/utils'
 
 import { DELETE_FILE, GET_FILES, PATCH_FILE, POST_FILE, PUT_FILE } from './urls'
-import { convertObjectKeys, formatURL } from './utils'
+import { convertObjectKeys, formatURL, generateUrlParams } from './utils'
 
 const errGetFilesMsg = 'An error occurred while getting files. Please try again'
 
 async function getFiles(
   userId: number,
+  filter: 'all_files' | 'is_deleted' | 'is_favorite',
+  tags?: (SnakeCaseToCamelCase<TagApi> | string)[],
   signal?: AbortSignal,
 ): Promise<GetFilesReturnType> {
   try {
-    const url = formatURL(`${GET_FILES}`, { userId })
+    let queries = generateUrlParams({
+      [filter]: 1,
+    })
+
+    if (tags && tags.length > 0) {
+      queries += '&tags=' + tags.join(',')
+    }
+
+    const baseUrl = formatURL(`${GET_FILES}`, { userId })
+    const url = `${baseUrl}?${queries}`
+
     const res = await rest.get({ url, signal })
     if (res?.response?.status !== 200) {
       throw new HttpResponseError(res?.response?.status ?? null, errGetFilesMsg)
@@ -126,7 +136,6 @@ async function patchFile(
 
     const { object } = res
     const file = convertObjectKeys<FileApi, File>(object)
-    console.log('file API', file)
     return { file }
   } catch (error) {
     console.error(error)

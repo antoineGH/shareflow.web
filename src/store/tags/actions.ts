@@ -1,4 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
+
 import { deleteTag, getTags, postTag } from 'api/tags'
 import { HttpResponseError } from 'helpers/errors'
 import { RootState } from 'store/store'
@@ -17,7 +18,7 @@ const fetchTags = createAsyncThunk<
       signal,
     })
 
-    if (error) throw new HttpResponseError(error.code || null, error.message)
+    if (error) throw new HttpResponseError(null, error.message)
 
     return tags
   } catch (error) {
@@ -39,7 +40,7 @@ const searchTags = createAsyncThunk<
         signal,
       })
 
-      if (error) throw new HttpResponseError(error.code || null, error.message)
+      if (error) throw new HttpResponseError(null, error.message)
 
       return tags
     } catch (error) {
@@ -63,7 +64,7 @@ const createTag = createAsyncThunk<
     try {
       const { error, tag } = await postTag(userId, fileId, newTag, signal)
 
-      if (error) throw new HttpResponseError(error.code || null, error.message)
+      if (error) throw new HttpResponseError(null, error.message)
 
       cb?.()
       return tag
@@ -91,7 +92,7 @@ const removeTag = createAsyncThunk<
         signal,
       )
 
-      if (error) throw new HttpResponseError(error.code || null, error.message)
+      if (error) throw new HttpResponseError(null, error.message)
 
       cb?.()
       return tagId

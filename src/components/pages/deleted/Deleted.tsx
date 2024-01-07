@@ -7,6 +7,7 @@ import BreadcrumbEntry from 'components/common/breadcrumbEntry/BreadcrumbEntry'
 import useFetchUserFromToken from 'hooks/useFetchUserFromToken'
 import { fetchFiles } from 'store/files/actions'
 import { filesDataStateSelector } from 'store/files/selector'
+import { resetFileSlice } from 'store/files/slice'
 import { useDispatch, useSelector } from 'store/hooks'
 import { openSnackbar } from 'store/snackbar/slice'
 import { fetchUser } from 'store/user/actions'
@@ -42,7 +43,9 @@ function Deleted() {
 
   useEffect(() => {
     if (!userId) return
-    dispatch(fetchFiles({ userId }))
+    dispatch(resetFileSlice())
+    dispatch(fetchFiles({ userId, filter: 'is_deleted' }))
+    // TODO: HANDLE WHEN THERE IS NO FILE RETURN REDUX FILE SLICE !!!
   }, [userId])
 
   // ### Error ###

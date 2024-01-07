@@ -9,6 +9,7 @@ import {
   filesDataStateSelector,
   filesStateSelector,
 } from 'store/files/selector'
+import { resetFileSlice } from 'store/files/slice'
 import { useDispatch, useSelector } from 'store/hooks'
 import { openSnackbar } from 'store/snackbar/slice'
 import { fetchUser } from 'store/user/actions'
@@ -56,7 +57,8 @@ function Files() {
 
   useEffect(() => {
     if (!userId) return
-    dispatch(fetchFiles({ userId }))
+    dispatch(resetFileSlice())
+    dispatch(fetchFiles({ userId, filter: 'all_files' }))
   }, [userId])
 
   // ### Error ###

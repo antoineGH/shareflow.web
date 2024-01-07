@@ -1,12 +1,14 @@
 import {
-  PayloadAction,
   createEntityAdapter,
   createSlice,
+  PayloadAction,
 } from '@reduxjs/toolkit'
+
+import { getStateSliceFromError } from 'store/utils'
 import { Status } from 'types/store'
 import { Tag } from 'types/tags'
+
 import { createTag, fetchTags, removeTag, searchTags } from './actions'
-import { getStateSliceFromError } from 'store/utils'
 
 type InitialState = {
   statusAction: Record<string, Status>

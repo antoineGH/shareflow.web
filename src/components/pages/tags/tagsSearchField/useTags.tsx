@@ -1,19 +1,24 @@
 import { useEffect, useState } from 'react'
-import { removeDuplicates } from './helpers'
-import type { Tag } from 'types/tags'
+
+import { fetchFiles } from 'store/files/actions'
+import { resetFileSlice } from 'store/files/slice'
 import { useDispatch, useSelector } from 'store/hooks'
-import {
-  selectSearchedTagsSelector,
-  selectedTagsSelector,
-  tagsStateSelector,
-} from 'store/tags/selector'
 import { searchTags } from 'store/tags/actions'
 import {
+  selectedTagsSelector,
+  selectSearchedTagsSelector,
+  tagsStateSelector,
+} from 'store/tags/selector'
+import {
+  resetSearchTags,
   resetSelectedTags,
   resetTags,
   selectTag,
   unselectTag,
 } from 'store/tags/slice'
+import type { Tag } from 'types/tags'
+
+import { removeDuplicates } from './helpers'
 
 type HookReturnValue = {
   areSuggestionsOpen: boolean
@@ -48,11 +53,17 @@ function useTags({ userId, debounceSearch }: Props): HookReturnValue {
 
   const onSelectOption = (option: Tag) => {
     dispatch(selectTag(option))
+    dispatch(resetSearchTags())
     onCloseSuggestions()
   }
 
   const onRemoveSelectOption = (option: Tag) => {
     dispatch(unselectTag(option))
+    if (selectedTags.length === 0) {
+      dispatch(resetFileSlice())
+      return
+    }
+    dispatch(fetchFiles({ userId, filter: 'all_files', tags: selectedTags }))
   }
 
   const onResetselectedOptions = () => {
@@ -63,7 +74,7 @@ function useTags({ userId, debounceSearch }: Props): HookReturnValue {
     if (!debounceSearch || !userId || (tags && debounceSearch.length < 3))
       return
     dispatch(searchTags({ userId, search: debounceSearch }))
-  }, [debounceSearch, dispatch])
+  }, [debounceSearch])
 
   return {
     areSuggestionsOpen,

@@ -7,6 +7,7 @@ import { Status } from 'types/store'
 import {
   createFile,
   fetchFiles,
+  partialRemoveFile,
   partialUpdateFile,
   removeFile,
   updateFile,
@@ -36,7 +37,12 @@ export const FilesAdapter = createEntityAdapter({
 const filesSlice = createSlice({
   name: 'files',
   initialState: FilesAdapter.getInitialState(initialState),
-  reducers: {},
+  reducers: {
+    resetFileSlice: state => {
+      FilesAdapter.getInitialState(initialState)
+      state.statusAction = initialState.statusAction
+    },
+  },
   extraReducers: builder => {
     // ### fetchFiles ###
     builder.addCase(fetchFiles.pending, state => {
@@ -47,6 +53,7 @@ const filesSlice = createSlice({
       state.countFiles = action.payload.countFiles
       state.countFolders = action.payload.countFolders
       state.totalSize = action.payload.totalSize
+      if (!action.payload.files) return FilesAdapter.removeAll(state)
       FilesAdapter.setAll(state, action.payload.files)
     })
     builder.addCase(fetchFiles.rejected, (state, action) => {
@@ -92,6 +99,18 @@ const filesSlice = createSlice({
       state.statusAction.patch = getStateSliceFromError(action)
     })
 
+    // ### patchRemoveFile ###
+    builder.addCase(partialRemoveFile.pending, state => {
+      state.statusAction.patch = Status.PENDING
+    })
+    builder.addCase(partialRemoveFile.fulfilled, (state, action) => {
+      state.statusAction.patch = Status.SUCCEEDED
+      FilesAdapter.removeOne(state, action.payload.id)
+    })
+    builder.addCase(partialRemoveFile.rejected, (state, action) => {
+      state.statusAction.patch = getStateSliceFromError(action)
+    })
+
     // ### removeFile ###
     builder.addCase(removeFile.pending, state => {
       state.statusAction.remove = Status.PENDING
@@ -107,5 +126,7 @@ const filesSlice = createSlice({
 })
 
 export default filesSlice.reducer
+
+export const { resetFileSlice } = filesSlice.actions
 
 export const { selectById, selectAll } = FilesAdapter.getSelectors()

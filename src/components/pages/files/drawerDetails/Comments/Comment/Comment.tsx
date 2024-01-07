@@ -1,18 +1,20 @@
+import ClearIcon from '@mui/icons-material/Clear'
+import { IconButton } from '@mui/material'
+import Avatar from '@mui/material/Avatar'
 import Box from '@mui/material/Box'
-import Stack from '@mui/material/Stack'
 import Card from '@mui/material/Card'
 import CardContent from '@mui/material/CardContent'
-import Avatar from '@mui/material/Avatar'
-import Typography from '@mui/material/Typography'
 import Skeleton from '@mui/material/Skeleton'
-import { defineAvatarInitials } from '../helpers'
+import Stack from '@mui/material/Stack'
+import Typography from '@mui/material/Typography'
 import EmptyCommentSVG from 'assets/empty_comment.svg?react'
-import type { Comment } from 'types/comments'
-import { formatDate } from './utils'
-import { IconButton } from '@mui/material'
-import ClearIcon from '@mui/icons-material/Clear'
+
 import { useSelector } from 'store/hooks'
 import { selectUserSelector } from 'store/user/selector'
+import type { Comment } from 'types/comments'
+
+import { formatDate } from './utils'
+import { defineAvatarInitials } from '../helpers'
 
 type Props = {
   comments: Comment[]

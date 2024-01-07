@@ -1,8 +1,10 @@
 import { createSelector } from '@reduxjs/toolkit'
-import { Status } from 'types/store'
+
 import { RootState } from 'store/store'
+import type { Comment } from 'types/comments'
+import { Status } from 'types/store'
+
 import { selectAll, selectById } from './slice'
-import { Comment } from 'types/comments'
 
 const commentsStoreState = (state: RootState) => state.comments
 
