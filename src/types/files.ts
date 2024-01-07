@@ -46,14 +46,21 @@ export type PostFileData = SnakeCaseToCamelCase<PostFileDataApi>
 
 export type PutFileDataApi = {
   file: File
-  countFiles: FileData['countFiles']
-  countFolders: FileData['countFolders']
-  totalSize: FileData['totalSize']
+  count_files: FileData['countFiles']
+  count_folders: FileData['countFolders']
+  total_size: FileData['totalSize']
+}
+
+export type PatchFileDataApi = {
+  file: File
+  count_files: FileData['countFiles']
+  count_folders: FileData['countFolders']
+  total_Size: FileData['totalSize']
 }
 
 export type PutFileData = SnakeCaseToCamelCase<PutFileDataApi>
 
-export type PatchFileData = Partial<SnakeCaseToCamelCase<FileApi>>
+export type PatchFileData = SnakeCaseToCamelCase<PatchFileDataApi>
 
 export type GetFilesReturnType =
   | {
@@ -77,11 +84,21 @@ export type PostFileReturnType =
 
 export type PutFileReturnType =
   | {
-      fileData: PutFileData
+      file: File
       error?: never
     }
   | {
-      fileData?: never
+      file?: never
+      error: Error
+    }
+
+export type PatchFileReturnType =
+  | {
+      file: File
+      error?: never
+    }
+  | {
+      file?: never
       error: Error
     }
 

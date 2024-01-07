@@ -87,6 +87,7 @@ function Tags() {
       </Grid>
       <Grid item sx={{ width: '100%' }} py={0}>
         <FilesTable
+          userId={userId}
           files={files}
           isPageTag={true}
           handleChangeDrawerTab={() => {}}

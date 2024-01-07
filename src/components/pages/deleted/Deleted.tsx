@@ -91,6 +91,7 @@ function Deleted() {
         </Breadcrumbs>
       </Grid>
       <FilesTable
+        userId={userId}
         files={files}
         isPageDelete
         handleChangeDrawerTab={handleChangeDrawerTab}

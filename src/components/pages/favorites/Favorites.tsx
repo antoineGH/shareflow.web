@@ -94,6 +94,7 @@ function Favorites() {
         </Breadcrumbs>
       </Grid>
       <FilesTable
+        userId={userId}
         files={files}
         isPageFavorite={true}
         handleChangeDrawerTab={handleChangeDrawerTab}

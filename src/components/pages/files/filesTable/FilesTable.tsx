@@ -8,7 +8,11 @@ import TableCell from '@mui/material/TableCell'
 import TableContainer from '@mui/material/TableContainer'
 import TablePagination from '@mui/material/TablePagination'
 import TableRowMUI from '@mui/material/TableRow'
+import { create } from 'domain'
 
+import { partialUpdateFile } from 'store/files/actions'
+import { useDispatch } from 'store/hooks'
+import { openSnackbar } from 'store/snackbar/slice'
 import type { File, RowFile } from 'types/files'
 
 import {
@@ -23,6 +27,7 @@ import Toolbar from './Toolbar'
 import type { Order } from './types'
 
 type Props = {
+  userId: number
   files: File[]
   isPageFavorite?: boolean
   isPageTag?: boolean
@@ -33,6 +38,7 @@ type Props = {
 }
 
 function FilesTable({
+  userId,
   files,
   isPageFavorite,
   isPageTag,
@@ -45,6 +51,8 @@ function FilesTable({
   const [order, setOrder] = useState<Order>('asc')
   const [orderBy, setOrderBy] = useState<keyof RowFile>('name')
   const [page, setPage] = useState(0)
+
+  const dispatch = useDispatch()
 
   const rowsPerPage = 20
 
@@ -85,8 +93,26 @@ function FilesTable({
     setSelected(newSelected)
   }
 
-  const onFavoriteClick = (id: number) => {
-    console.log('onFavoriteClick', id)
+  const onFavoriteClick = (id: number, fileFavState: boolean) => {
+    const message = fileFavState
+      ? 'File removed from favorites'
+      : 'File added to favorites'
+    dispatch(
+      partialUpdateFile({
+        userId,
+        fileId: id,
+        updates: { isFavorite: !fileFavState },
+        cb: () => {
+          dispatch(
+            openSnackbar({
+              isOpen: true,
+              severity: 'success',
+              message: message,
+            }),
+          )
+        },
+      }),
+    )
   }
 
   const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {

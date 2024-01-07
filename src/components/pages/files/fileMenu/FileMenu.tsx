@@ -21,7 +21,7 @@ type Props = {
   isHovered?: boolean
   toggleDrawer: (fileId: number) => void
   handleDrawerOpen: (fileId: number) => void
-  onFavoriteClick: (id: number) => void
+  onFavoriteClick: (id: number, fileFavState: boolean) => void
   handleChangeDrawerTab: (tab: number) => void
 }
 
@@ -63,7 +63,7 @@ function FileMenu({
 
   const handleClickFavorite = (e: MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation()
-    onFavoriteClick(id)
+    onFavoriteClick(id, isFavorite)
   }
 
   const handleClickDetails = (e: MouseEvent<HTMLButtonElement>) => {

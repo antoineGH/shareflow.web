@@ -115,6 +115,7 @@ function Files() {
       <Breadcrumbs openModalAddDocs={openModalAddDocs} />
       <TextContainer />
       <FilesTable
+        userId={userId}
         files={files}
         handleChangeDrawerTab={handleChangeDrawerTab}
         handleDrawerOpen={handleDrawerOpen}

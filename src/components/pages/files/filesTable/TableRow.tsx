@@ -25,7 +25,7 @@ type Props = {
   isPageTag?: boolean
   isPageDelete?: boolean
   onCheckBoxClick: (id: number) => void
-  onFavoriteClick: (id: number) => void
+  onFavoriteClick: (id: number, fileFavState: boolean) => void
   handleChangeDrawerTab: (tab: number) => void
   handleDrawerOpen: (fileId: number) => void
   toggleDrawer: (fileId: number) => void
@@ -60,7 +60,7 @@ function TableRow({
 
   const handleClickFavorite = (e: MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation()
-    onFavoriteClick(row.id)
+    onFavoriteClick(row.id, isFavorite)
   }
 
   const handleClickRow = (e: MouseEvent<HTMLTableRowElement>) => {

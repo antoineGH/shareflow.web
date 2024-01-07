@@ -4,7 +4,13 @@ import { getStateSliceFromError } from 'store/utils'
 import type { File, FileData } from 'types/files'
 import { Status } from 'types/store'
 
-import { createFile, fetchFiles, removeFile, updateFile } from './actions'
+import {
+  createFile,
+  fetchFiles,
+  partialUpdateFile,
+  removeFile,
+  updateFile,
+} from './actions'
 
 type InitialState = {
   statusAction: Record<string, Status>
@@ -68,13 +74,22 @@ const filesSlice = createSlice({
     })
     builder.addCase(updateFile.fulfilled, (state, action) => {
       state.statusAction.update = Status.SUCCEEDED
-      state.countFiles = action.payload.countFiles
-      state.countFolders = action.payload.countFolders
-      state.totalSize = action.payload.totalSize
       FilesAdapter.upsertOne(state, action.payload.file)
     })
     builder.addCase(updateFile.rejected, (state, action) => {
       state.statusAction.update = getStateSliceFromError(action)
+    })
+
+    // ### patchFile ###
+    builder.addCase(partialUpdateFile.pending, state => {
+      state.statusAction.patch = Status.PENDING
+    })
+    builder.addCase(partialUpdateFile.fulfilled, (state, action) => {
+      state.statusAction.patch = Status.SUCCEEDED
+      FilesAdapter.upsertOne(state, action.payload)
+    })
+    builder.addCase(partialUpdateFile.rejected, (state, action) => {
+      state.statusAction.patch = getStateSliceFromError(action)
     })
 
     // ### removeFile ###

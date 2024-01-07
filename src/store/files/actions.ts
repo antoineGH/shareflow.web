@@ -22,7 +22,7 @@ const fetchFiles = createAsyncThunk<
   try {
     const { error, filesData } = await getFiles(userId, signal)
 
-    if (error) throw new HttpResponseError(error.code || null, error.message)
+    if (error) throw new HttpResponseError(null, error.message)
 
     return filesData
   } catch (error) {
@@ -43,7 +43,7 @@ const createFile = createAsyncThunk<
     try {
       const { error, fileData } = await postFile(userId, newFile, signal)
 
-      if (error) throw new HttpResponseError(error.code || null, error.message)
+      if (error) throw new HttpResponseError(null, error.message)
 
       return fileData
     } catch (error) {
@@ -64,16 +64,16 @@ const updateFile = createAsyncThunk<
   'files/updateFile',
   async ({ userId, fileId, fileToUpdate }, { signal, rejectWithValue }) => {
     try {
-      const { error, fileData } = await putFile(
+      const { error, file } = await putFile(
         userId,
         fileId,
         fileToUpdate,
         signal,
       )
 
-      if (error) throw new HttpResponseError(error.code || null, error.message)
+      if (error) throw new HttpResponseError(null, error.message)
 
-      return fileData
+      return file
     } catch (error) {
       return catchAsyncThunk(error, rejectWithValue)
     }
@@ -81,21 +81,23 @@ const updateFile = createAsyncThunk<
 )
 
 const partialUpdateFile = createAsyncThunk<
-  PatchFileData,
+  File,
   {
     userId: number
     fileId: File['id']
     updates: Partial<File>
+    cb?: () => void
   },
   { state: RootState; rejectValue: { errorMessage: string; code?: number } }
 >(
   'files/patchFile',
-  async ({ userId, fileId, updates }, { signal, rejectWithValue }) => {
+  async ({ userId, fileId, updates, cb }, { signal, rejectWithValue }) => {
     try {
       const { error, file } = await patchFile(userId, fileId, updates, signal)
 
-      if (error) throw new HttpResponseError(error.code || null, error.message)
+      if (error) throw new HttpResponseError(null, error.message)
 
+      cb?.()
       return file
     } catch (error) {
       return catchAsyncThunk(error, rejectWithValue)
@@ -115,7 +117,7 @@ const removeFile = createAsyncThunk<
     try {
       const { error, fileId } = await deleteFile(userId, fileToDeleteId, signal)
 
-      if (error) throw new HttpResponseError(error.code || null, error.message)
+      if (error) throw new HttpResponseError(null, error.message)
 
       return fileId
     } catch (error) {

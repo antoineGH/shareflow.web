@@ -7,6 +7,9 @@ import type {
   FileData,
   FileDataApi,
   GetFilesReturnType,
+  PatchFileData,
+  PatchFileDataApi,
+  PatchFileReturnType,
   PostFileData,
   PostFileDataApi,
   PostFileReturnType,
@@ -20,8 +23,10 @@ import { convertObjectKeys, formatURL } from './utils'
 
 const errGetFilesMsg = 'An error occurred while getting files. Please try again'
 
-async function getFiles(userId: number, signal?: AbortSignal) {
-  Promise<GetFilesReturnType>
+async function getFiles(
+  userId: number,
+  signal?: AbortSignal,
+): Promise<GetFilesReturnType> {
   try {
     const url = formatURL(`${GET_FILES}`, { userId })
     const res = await rest.get({ url, signal })
@@ -45,8 +50,7 @@ async function postFile(
   userId: number,
   newFile: Omit<File, 'id'>,
   signal?: AbortSignal,
-) {
-  Promise<PostFileReturnType>
+): Promise<PostFileReturnType> {
   try {
     const url = formatURL(`${POST_FILE}`, { userId })
     const body = JSON.stringify(newFile)
@@ -74,8 +78,7 @@ async function putFile(
   fileId: number,
   updatedFile: File,
   signal?: AbortSignal,
-) {
-  Promise<PutFileReturnType>
+): Promise<PutFileReturnType> {
   try {
     const url = formatURL(`${PUT_FILE}`, { userId, fileId })
     const body = JSON.stringify(updatedFile)
@@ -87,8 +90,8 @@ async function putFile(
     }
 
     const { object } = res
-    const fileData = convertObjectKeys<PutFileDataApi, PutFileData>(object)
-    return { fileData }
+    const file = convertObjectKeys<FileApi, File>(object)
+    return { file }
   } catch (error) {
     console.error(error)
     return { error }
@@ -103,15 +106,18 @@ async function patchFile(
   fileId: number,
   updates: Partial<File>,
   signal?: AbortSignal,
-) {
-  Promise<PutFileReturnType>
+): Promise<PatchFileReturnType> {
   try {
     const url = formatURL(`${PATCH_FILE}`, { userId, fileId })
-    const body = JSON.stringify(updates)
+    const updatesApi = convertObjectKeys<Partial<File>, Partial<FileApi>>(
+      updates,
+      'snakeCase',
+    )
+    const body = JSON.stringify(updatesApi)
 
     const res = await rest.patch({ url, body, signal })
 
-    if (res?.response?.status !== 204) {
+    if (res?.response?.status !== 201) {
       throw new HttpResponseError(
         res?.response?.status ?? null,
         errPatchFileMsg,
@@ -120,6 +126,7 @@ async function patchFile(
 
     const { object } = res
     const file = convertObjectKeys<FileApi, File>(object)
+    console.log('file API', file)
     return { file }
   } catch (error) {
     console.error(error)
@@ -134,8 +141,7 @@ async function deleteFile(
   userId: number,
   fileId: number,
   signal?: AbortSignal,
-) {
-  Promise<DeleteFileReturnType>
+): Promise<DeleteFileReturnType> {
   try {
     const url = formatURL(`${DELETE_FILE}`, { userId, fileId })
     const res = await rest.delete({ url, signal })
