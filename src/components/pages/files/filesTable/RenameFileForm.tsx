@@ -78,6 +78,7 @@ function RenameFileForm({ userId, id, name, resetRowIdRename }: Props) {
           >
             <TextField
               {...register('fileName', {
+                required: 'Required',
                 minLength: {
                   value: 2,
                   message: '2 characters minimum',

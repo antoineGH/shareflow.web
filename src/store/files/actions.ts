@@ -12,7 +12,7 @@ import {
 import { HttpResponseError } from 'helpers/errors'
 import { RootState } from 'store/store'
 import { catchAsyncThunk } from 'store/utils'
-import type { File, FileData, PostFileData, PutFileData } from 'types/files'
+import type { File, FileData, PutFileData } from 'types/files'
 import { TagApi } from 'types/tags'
 import { SnakeCaseToCamelCase } from 'types/utils'
 
@@ -26,7 +26,7 @@ const fetchFiles = createAsyncThunk<
   { state: RootState; rejectValue: { errorMessage: string; code?: number } }
 >(
   'files/fetchFiles',
-  async ({ userId, filter, tags }, { signal, rejectWithValue }) => {
+  async ({ userId, filter, tags }, { signal, rejectWithValue, dispatch }) => {
     try {
       const { error, filesData } = await getFiles(userId, filter, tags, signal)
 
@@ -34,29 +34,31 @@ const fetchFiles = createAsyncThunk<
 
       return filesData
     } catch (error) {
-      return catchAsyncThunk(error, rejectWithValue)
+      return catchAsyncThunk(error, rejectWithValue, dispatch, true)
     }
   },
 )
 
 const createFile = createAsyncThunk<
-  PostFileData,
+  File,
   {
     userId: number
-    newFile: Omit<File, 'id' | 'path'>
+    newFile: Pick<File, 'name' | 'isFolder'>
+    cb?: () => void
   },
   { state: RootState; rejectValue: { errorMessage: string; code?: number } }
 >(
   'files/createFile',
-  async ({ userId, newFile }, { signal, rejectWithValue }) => {
+  async ({ userId, newFile, cb }, { signal, rejectWithValue, dispatch }) => {
     try {
-      const { error, fileData } = await postFile(userId, newFile, signal)
+      const { error, file } = await postFile(userId, newFile, signal)
 
       if (error) throw new HttpResponseError(null, error.message)
 
-      return fileData
+      cb?.()
+      return file
     } catch (error) {
-      return catchAsyncThunk(error, rejectWithValue)
+      return catchAsyncThunk(error, rejectWithValue, dispatch, true)
     }
   },
 )
@@ -71,7 +73,10 @@ const updateFile = createAsyncThunk<
   { state: RootState; rejectValue: { errorMessage: string; code?: number } }
 >(
   'files/updateFile',
-  async ({ userId, fileId, fileToUpdate }, { signal, rejectWithValue }) => {
+  async (
+    { userId, fileId, fileToUpdate },
+    { signal, rejectWithValue, dispatch },
+  ) => {
     try {
       const { error, file } = await putFile(
         userId,
@@ -84,7 +89,7 @@ const updateFile = createAsyncThunk<
 
       return file
     } catch (error) {
-      return catchAsyncThunk(error, rejectWithValue)
+      return catchAsyncThunk(error, rejectWithValue, dispatch, true)
     }
   },
 )
@@ -104,7 +109,7 @@ const partialUpdateFile = createAsyncThunk<
   async (
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     { userId, fileId, updates, isFavoritePage, cb },
-    { signal, rejectWithValue },
+    { signal, rejectWithValue, dispatch },
   ) => {
     try {
       const { error, file } = await patchFile(userId, fileId, updates, signal)
@@ -114,7 +119,7 @@ const partialUpdateFile = createAsyncThunk<
       cb?.()
       return file
     } catch (error) {
-      return catchAsyncThunk(error, rejectWithValue)
+      return catchAsyncThunk(error, rejectWithValue, dispatch, true)
     }
   },
 )
@@ -130,7 +135,10 @@ const partialRemoveRestoreFile = createAsyncThunk<
   { state: RootState; rejectValue: { errorMessage: string; code?: number } }
 >(
   'files/partialRemoveRestoreFile',
-  async ({ userId, fileId, updates, cb }, { signal, rejectWithValue }) => {
+  async (
+    { userId, fileId, updates, cb },
+    { signal, rejectWithValue, dispatch },
+  ) => {
     try {
       const { error, file } = await patchFile(userId, fileId, updates, signal)
 
@@ -139,7 +147,7 @@ const partialRemoveRestoreFile = createAsyncThunk<
       cb?.()
       return file
     } catch (error) {
-      return catchAsyncThunk(error, rejectWithValue)
+      return catchAsyncThunk(error, rejectWithValue, dispatch, true)
     }
   },
 )
@@ -156,7 +164,7 @@ const partialRemoveRestoreFiles = createAsyncThunk<
   'files/partialRemoveRestoreFiles',
   async (
     { userId, filesToRestoreIds, updates, cb },
-    { signal, rejectWithValue },
+    { signal, rejectWithValue, dispatch },
   ) => {
     try {
       const { error, filesIds } = await patchFiles(
@@ -170,7 +178,7 @@ const partialRemoveRestoreFiles = createAsyncThunk<
       cb?.()
       return filesIds
     } catch (error) {
-      return catchAsyncThunk(error, rejectWithValue)
+      return catchAsyncThunk(error, rejectWithValue, dispatch, true)
     }
   },
 )
@@ -184,7 +192,10 @@ const removeFile = createAsyncThunk<
   }
 >(
   'files/removeFile',
-  async ({ userId, fileToDeleteId, cb }, { signal, rejectWithValue }) => {
+  async (
+    { userId, fileToDeleteId, cb },
+    { signal, rejectWithValue, dispatch },
+  ) => {
     try {
       const { error, fileId } = await deleteFile(userId, fileToDeleteId, signal)
 
@@ -193,7 +204,7 @@ const removeFile = createAsyncThunk<
       cb?.()
       return fileId
     } catch (error) {
-      return catchAsyncThunk(error, rejectWithValue)
+      return catchAsyncThunk(error, rejectWithValue, dispatch, true)
     }
   },
 )
@@ -207,7 +218,10 @@ const removeFiles = createAsyncThunk<
   }
 >(
   'files/removeFiles',
-  async ({ userId, filesToDeleteIds, cb }, { signal, rejectWithValue }) => {
+  async (
+    { userId, filesToDeleteIds, cb },
+    { signal, rejectWithValue, dispatch },
+  ) => {
     try {
       const { error, filesIds } = await deleteFiles(
         userId,
@@ -219,7 +233,7 @@ const removeFiles = createAsyncThunk<
       cb?.()
       return filesIds
     } catch (error) {
-      return catchAsyncThunk(error, rejectWithValue)
+      return catchAsyncThunk(error, rejectWithValue, dispatch, true)
     }
   },
 )

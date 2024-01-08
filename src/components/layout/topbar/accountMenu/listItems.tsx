@@ -1,5 +1,5 @@
-import Settings from '@mui/icons-material/Settings'
 import Logout from '@mui/icons-material/Logout'
+import Settings from '@mui/icons-material/Settings'
 
 type ListItem = {
   id: string

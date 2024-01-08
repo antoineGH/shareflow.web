@@ -71,10 +71,7 @@ const filesSlice = createSlice({
     })
     builder.addCase(createFile.fulfilled, (state, action) => {
       state.statusAction.create = Status.SUCCEEDED
-      state.countFiles = action.payload.countFiles
-      state.countFolders = action.payload.countFolders
-      state.totalSize = action.payload.totalSize
-      FilesAdapter.addOne(state, action.payload.file)
+      FilesAdapter.addOne(state, action.payload)
     })
     builder.addCase(createFile.rejected, (state, action) => {
       state.statusAction.create = getStateSliceFromError(action)

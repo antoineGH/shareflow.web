@@ -10,21 +10,24 @@ const fetchTags = createAsyncThunk<
   Tag[],
   { userId: number; fileId?: number },
   { state: RootState; rejectValue: { errorMessage: string; code?: number } }
->('tags/fetchTags', async ({ userId, fileId }, { signal, rejectWithValue }) => {
-  try {
-    const { error, tags } = await getTags({
-      userId,
-      fileId,
-      signal,
-    })
+>(
+  'tags/fetchTags',
+  async ({ userId, fileId }, { signal, rejectWithValue, dispatch }) => {
+    try {
+      const { error, tags } = await getTags({
+        userId,
+        fileId,
+        signal,
+      })
 
-    if (error) throw new HttpResponseError(null, error.message)
+      if (error) throw new HttpResponseError(null, error.message)
 
-    return tags
-  } catch (error) {
-    return catchAsyncThunk(error, rejectWithValue)
-  }
-})
+      return tags
+    } catch (error) {
+      return catchAsyncThunk(error, rejectWithValue, dispatch, true)
+    }
+  },
+)
 
 const searchTags = createAsyncThunk<
   Tag[],
@@ -32,7 +35,7 @@ const searchTags = createAsyncThunk<
   { state: RootState; rejectValue: { errorMessage: string; code?: number } }
 >(
   'tags/searchTags',
-  async ({ userId, search }, { signal, rejectWithValue }) => {
+  async ({ userId, search }, { signal, rejectWithValue, dispatch }) => {
     try {
       const { error, tags } = await getTags({
         userId,
@@ -44,7 +47,7 @@ const searchTags = createAsyncThunk<
 
       return tags
     } catch (error) {
-      return catchAsyncThunk(error, rejectWithValue)
+      return catchAsyncThunk(error, rejectWithValue, dispatch, true)
     }
   },
 )
@@ -60,7 +63,10 @@ const createTag = createAsyncThunk<
   { state: RootState; rejectValue: { errorMessage: string; code?: number } }
 >(
   'tags/createTag',
-  async ({ userId, fileId, newTag, cb }, { signal, rejectWithValue }) => {
+  async (
+    { userId, fileId, newTag, cb },
+    { signal, rejectWithValue, dispatch },
+  ) => {
     try {
       const { error, tag } = await postTag(userId, fileId, newTag, signal)
 
@@ -69,7 +75,7 @@ const createTag = createAsyncThunk<
       cb?.()
       return tag
     } catch (error) {
-      return catchAsyncThunk(error, rejectWithValue)
+      return catchAsyncThunk(error, rejectWithValue, dispatch, true)
     }
   },
 )
@@ -82,7 +88,7 @@ const removeTag = createAsyncThunk<
   'tags/removeTag',
   async (
     { userId, fileId, tagToDeleteId, cb },
-    { signal, rejectWithValue },
+    { signal, rejectWithValue, dispatch },
   ) => {
     try {
       const { error, tagId } = await deleteTag(
@@ -97,7 +103,7 @@ const removeTag = createAsyncThunk<
       cb?.()
       return tagId
     } catch (error) {
-      return catchAsyncThunk(error, rejectWithValue)
+      return catchAsyncThunk(error, rejectWithValue, dispatch, true)
     }
   },
 )

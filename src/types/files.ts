@@ -35,15 +35,6 @@ export type FileData = SnakeCaseToCamelCase<FileDataApi>
 
 export type RowFile = Pick<File, 'id' | 'name' | 'size' | 'updatedAt'>
 
-export type PostFileDataApi = {
-  file: File
-  countFiles: FileData['countFiles']
-  countFolders: FileData['countFolders']
-  totalSize: FileData['totalSize']
-}
-
-export type PostFileData = SnakeCaseToCamelCase<PostFileDataApi>
-
 export type PutFileDataApi = {
   file: File
   count_files: FileData['countFiles']
@@ -74,11 +65,11 @@ export type GetFilesReturnType =
 
 export type PostFileReturnType =
   | {
-      fileData: PostFileData
+      file: File
       error?: never
     }
   | {
-      fileData?: never
+      file?: never
       error: Error
     }
 

@@ -1,4 +1,5 @@
-import { useState, type MouseEvent } from 'react'
+import { type MouseEvent, useState } from 'react'
+
 import BreadcrumbButton from './breadcrumbButton'
 import Menu from './Menu'
 
