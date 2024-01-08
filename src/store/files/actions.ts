@@ -1,6 +1,14 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
 
-import { deleteFile, getFiles, patchFile, postFile, putFile } from 'api/files'
+import {
+  deleteFile,
+  deleteFiles,
+  getFiles,
+  patchFile,
+  patchFiles,
+  postFile,
+  putFile,
+} from 'api/files'
 import { HttpResponseError } from 'helpers/errors'
 import { RootState } from 'store/store'
 import { catchAsyncThunk } from 'store/utils'
@@ -111,7 +119,7 @@ const partialUpdateFile = createAsyncThunk<
   },
 )
 
-const partialRemoveFile = createAsyncThunk<
+const partialRemoveRestoreFile = createAsyncThunk<
   File,
   {
     userId: number
@@ -121,7 +129,7 @@ const partialRemoveFile = createAsyncThunk<
   },
   { state: RootState; rejectValue: { errorMessage: string; code?: number } }
 >(
-  'files/partialRemoveFile',
+  'files/partialRemoveRestoreFile',
   async ({ userId, fileId, updates, cb }, { signal, rejectWithValue }) => {
     try {
       const { error, file } = await patchFile(userId, fileId, updates, signal)
@@ -130,6 +138,37 @@ const partialRemoveFile = createAsyncThunk<
 
       cb?.()
       return file
+    } catch (error) {
+      return catchAsyncThunk(error, rejectWithValue)
+    }
+  },
+)
+
+const partialRemoveRestoreFiles = createAsyncThunk<
+  File['id'][],
+  {
+    userId: number
+    filesToRestoreIds: File['id'][]
+    updates: Partial<File>
+    cb?: () => void
+  }
+>(
+  'files/partialRemoveRestoreFiles',
+  async (
+    { userId, filesToRestoreIds, updates, cb },
+    { signal, rejectWithValue },
+  ) => {
+    try {
+      const { error, filesIds } = await patchFiles(
+        userId,
+        filesToRestoreIds,
+        updates,
+        signal,
+      )
+      if (error) throw new HttpResponseError(null, error.message)
+
+      cb?.()
+      return filesIds
     } catch (error) {
       return catchAsyncThunk(error, rejectWithValue)
     }
@@ -159,11 +198,39 @@ const removeFile = createAsyncThunk<
   },
 )
 
+const removeFiles = createAsyncThunk<
+  File['id'][],
+  {
+    userId: number
+    filesToDeleteIds: File['id'][]
+    cb?: () => void
+  }
+>(
+  'files/removeFiles',
+  async ({ userId, filesToDeleteIds, cb }, { signal, rejectWithValue }) => {
+    try {
+      const { error, filesIds } = await deleteFiles(
+        userId,
+        filesToDeleteIds,
+        signal,
+      )
+      if (error) throw new HttpResponseError(null, error.message)
+
+      cb?.()
+      return filesIds
+    } catch (error) {
+      return catchAsyncThunk(error, rejectWithValue)
+    }
+  },
+)
+
 export {
   fetchFiles,
   createFile,
   updateFile,
   partialUpdateFile,
-  partialRemoveFile,
+  partialRemoveRestoreFile,
+  partialRemoveRestoreFiles,
   removeFile,
+  removeFiles,
 }

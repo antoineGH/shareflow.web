@@ -31,6 +31,8 @@ const POST_FILE = `${BASE_API}/users/{userId}/files`
 const PUT_FILE = `${BASE_API}/users/{userId}/files/{fileId}`
 const PATCH_FILE = `${BASE_API}/users/{userId}/files/{fileId}`
 const DELETE_FILE = `${BASE_API}/users/{userId}/files/{fileId}`
+const DELETE_FILES = `${BASE_API}/users/{userId}/files`
+const PATCH_FILES = `${BASE_API}/users/{userId}/files`
 
 export {
   GET_STORAGE,
@@ -51,4 +53,6 @@ export {
   PUT_FILE,
   PATCH_FILE,
   DELETE_FILE,
+  DELETE_FILES,
+  PATCH_FILES,
 }

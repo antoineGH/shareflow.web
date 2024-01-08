@@ -6,7 +6,7 @@ import MoreHorizIcon from '@mui/icons-material/MoreHoriz'
 import { useTheme } from '@mui/material'
 import IconButton from '@mui/material/IconButton'
 
-import { partialRemoveFile, removeFile } from 'store/files/actions'
+import { partialRemoveRestoreFile, removeFile } from 'store/files/actions'
 import { useDispatch, useSelector } from 'store/hooks'
 import { openSnackbar } from 'store/snackbar/slice'
 import { selectUserSelector } from 'store/user/selector'
@@ -112,79 +112,66 @@ function FileMenu({
   const handleClickDelete = (
     e: MouseEvent<HTMLButtonElement> | MouseEvent<HTMLLIElement>,
   ) => {
-    if (typeof id === 'number') {
-      dispatch(
-        partialRemoveFile({
-          userId: user!.id,
-          fileId: id,
-          updates: { isDeleted: !isDelete },
-          cb: () => {
-            dispatch(
-              openSnackbar({
-                isOpen: true,
-                severity: 'success',
-                message: isDelete ? 'File restored' : 'File deleted',
-              }),
-            )
-          },
-        }),
-      )
-      closeMenu(e)
-    }
-    // TODO: handle multi delete here
-
-    closeMenu(e)
+    dispatch(
+      partialRemoveRestoreFile({
+        userId: user!.id,
+        fileId: id,
+        updates: { isDeleted: !isDelete },
+        cb: () => {
+          dispatch(
+            openSnackbar({
+              isOpen: true,
+              severity: 'success',
+              message: isDelete ? 'File restored' : 'File deleted',
+            }),
+          )
+          closeMenu(e)
+        },
+      }),
+    )
   }
 
   const handleClickRestore = (
     e: MouseEvent<HTMLButtonElement> | MouseEvent<HTMLLIElement>,
   ) => {
-    if (typeof id === 'number') {
-      dispatch(
-        partialRemoveFile({
-          userId: user!.id,
-          fileId: id,
-          updates: { isDeleted: !isDelete },
-          cb: () => {
-            dispatch(
-              openSnackbar({
-                isOpen: true,
-                severity: 'success',
-                message: isDelete ? 'File restored' : 'File deleted',
-              }),
-              closeMenu(e),
-            )
-          },
-        }),
-      )
-    }
-    // TODO: handle multi restore here
-    closeMenu(e)
+    dispatch(
+      partialRemoveRestoreFile({
+        userId: user!.id,
+        fileId: id,
+        updates: { isDeleted: !isDelete },
+        cb: () => {
+          dispatch(
+            openSnackbar({
+              isOpen: true,
+              severity: 'success',
+              message: isDelete ? 'File restored' : 'File deleted',
+            }),
+          )
+          closeMenu(e)
+        },
+      }),
+    )
   }
 
   const handleClickRemove = (
     e: MouseEvent<HTMLButtonElement> | MouseEvent<HTMLLIElement>,
   ) => {
-    if (typeof id === 'number') {
-      dispatch(
-        removeFile({
-          userId: user!.id,
-          fileToDeleteId: id,
-          cb: () => {
-            dispatch(
-              openSnackbar({
-                isOpen: true,
-                severity: 'success',
-                message: 'File permanantly deleted',
-              }),
-              closeMenu(e),
-            )
-          },
-        }),
-      )
-    }
-    // TODO: handle multi remove here
-    closeMenu(e)
+    dispatch(
+      removeFile({
+        userId: user!.id,
+        fileToDeleteId: id,
+        cb: () => {
+          dispatch(
+            openSnackbar({
+              isOpen: true,
+              severity: 'success',
+              message: 'File permanantly deleted',
+            }),
+          )
+          closeMenu(e)
+        },
+      }),
+    )
   }
 
   const actionMap = {

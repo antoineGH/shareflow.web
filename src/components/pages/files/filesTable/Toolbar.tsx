@@ -1,18 +1,25 @@
-import MUIToolbar from '@mui/material/Toolbar'
-import Grid from '@mui/material/Grid'
-import Typography from '@mui/material/Typography'
 import { alpha, useTheme } from '@mui/material'
+import Grid from '@mui/material/Grid'
+import MUIToolbar from '@mui/material/Toolbar'
+import Typography from '@mui/material/Typography'
+
 import MultiAction from './multiActions/MultiActions'
-import { ListItemKey } from '../fileMenu/listItems'
 import StyledAlert from './StyledAlert'
+import { ListItemKey } from '../fileMenu/listItems'
 
 type Props = {
+  userId: number
   selected: number[]
   selectedMultiActions: ListItemKey[]
   isPageDelete?: boolean
 }
 
-function Toolbar({ selected, selectedMultiActions, isPageDelete }: Props) {
+function Toolbar({
+  userId,
+  selected,
+  selectedMultiActions,
+  isPageDelete,
+}: Props) {
   const theme = useTheme()
   const numSelected = selected.length
 
@@ -28,11 +35,10 @@ function Toolbar({ selected, selectedMultiActions, isPageDelete }: Props) {
           paddingLeft: '16px',
         },
         ...(numSelected > 0 && {
-          bgcolor: theme =>
-            alpha(
-              theme.palette.primary.main,
-              theme.palette.action.activatedOpacity,
-            ),
+          bgcolor: alpha(
+            theme.palette.primary.main,
+            theme.palette.action.activatedOpacity,
+          ),
         }),
       }}
     >
@@ -60,6 +66,7 @@ function Toolbar({ selected, selectedMultiActions, isPageDelete }: Props) {
             </Grid>
             <Grid item>
               <MultiAction
+                userId={userId}
                 selected={selected}
                 selectedMultiActions={selectedMultiActions}
               />

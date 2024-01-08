@@ -111,3 +111,23 @@ export type DeleteFileReturnType =
       fileId?: never
       error: Error
     }
+
+export type DeleteFilesReturnType =
+  | {
+      filesIds: File['id'][]
+      error?: never
+    }
+  | {
+      filesIds?: never
+      error: Error
+    }
+
+export type RestoreFilesReturnType =
+  | {
+      filesIds: File['id'][]
+      error?: never
+    }
+  | {
+      filesIds?: never
+      error: Error
+    }
