@@ -43,7 +43,7 @@ const createFile = createAsyncThunk<
   PostFileData,
   {
     userId: number
-    newFile: Omit<File, 'id'>
+    newFile: Omit<File, 'id' | 'path'>
   },
   { state: RootState; rejectValue: { errorMessage: string; code?: number } }
 >(

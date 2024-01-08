@@ -22,11 +22,11 @@ type Props = {
   isPageFavorite?: boolean
   isPageTag?: boolean
   isPageDelete?: boolean
-  isHovered?: boolean
   toggleDrawer: (fileId: number) => void
   handleDrawerOpen: (fileId: number) => void
   onFavoriteClick: (id: number, fileFavState: boolean) => void
   handleChangeDrawerTab: (tab: number) => void
+  renameRow: () => void
 }
 
 function FileMenu({
@@ -35,11 +35,11 @@ function FileMenu({
   isPageFavorite,
   isPageTag,
   isPageDelete,
-  isHovered,
   toggleDrawer,
   handleDrawerOpen,
   onFavoriteClick,
   handleChangeDrawerTab,
+  renameRow,
 }: Props) {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
@@ -47,7 +47,7 @@ function FileMenu({
   const dispatch = useDispatch()
   const user = useSelector(selectUserSelector)
   const shouldDisplayFavoriteButton =
-    !isPageFavorite && !isPageTag && !isPageDelete && isHovered
+    !isPageFavorite && !isPageTag && !isPageDelete
 
   const actions: ListItem['id'][] = useMemo(() => {
     const result = files.find(file => file.id === id)?.actions || []
@@ -95,18 +95,18 @@ function FileMenu({
     closeMenu(e)
   }
 
-  const handleClickRename = (
-    e: MouseEvent<HTMLButtonElement> | MouseEvent<HTMLLIElement>,
-  ) => {
-    console.log('Clicked Rename')
-    closeMenu(e)
-  }
-
   const handleClickDownload = (
     e: MouseEvent<HTMLButtonElement> | MouseEvent<HTMLLIElement>,
   ) => {
     console.log('Clicked Download')
     closeMenu(e)
+  }
+
+  const handleClickRename = (
+    e: MouseEvent<HTMLButtonElement> | MouseEvent<HTMLLIElement>,
+  ) => {
+    closeMenu(e)
+    renameRow()
   }
 
   const handleClickDelete = (

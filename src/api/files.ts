@@ -68,7 +68,7 @@ const errPostFileMsg =
 
 async function postFile(
   userId: number,
-  newFile: Omit<File, 'id'>,
+  newFile: Omit<File, 'id' | 'path'>,
   signal?: AbortSignal,
 ): Promise<PostFileReturnType> {
   try {

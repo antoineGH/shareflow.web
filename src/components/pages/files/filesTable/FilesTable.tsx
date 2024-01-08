@@ -184,6 +184,7 @@ function FilesTable({
                 const labelId = `enhanced-table-checkbox-${index}`
                 return (
                   <TableRow
+                    userId={userId}
                     key={row.id}
                     row={row}
                     files={files}

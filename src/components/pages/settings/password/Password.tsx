@@ -1,17 +1,18 @@
-import { type SubmitHandler, useForm } from 'react-hook-form'
-import { FormHelperText, Skeleton, useTheme } from '@mui/material'
-import Grid from '@mui/material/Grid'
-import Box from '@mui/material/Box'
-import Typography from '@mui/material/Typography'
-import TextField from '@mui/material/TextField'
-import Button from '@mui/material/Button'
 import EditIcon from '@mui/icons-material/Edit'
-import type { User } from 'types/users'
 import LoadingButton from '@mui/lab/LoadingButton'
+import { FormHelperText, Skeleton, useTheme } from '@mui/material'
+import Box from '@mui/material/Box'
+import Button from '@mui/material/Button'
+import Grid from '@mui/material/Grid'
+import TextField from '@mui/material/TextField'
+import Typography from '@mui/material/Typography'
+import { type SubmitHandler, useForm } from 'react-hook-form'
+
 import { useDispatch, useSelector } from 'store/hooks'
-import { userStateSelector } from 'store/user/selector'
-import { patchUserPassword } from 'store/user/actions'
 import { openSnackbar } from 'store/snackbar/slice'
+import { patchUserPassword } from 'store/user/actions'
+import { userStateSelector } from 'store/user/selector'
+import type { User } from 'types/users'
 
 type FormData = {
   password: string
