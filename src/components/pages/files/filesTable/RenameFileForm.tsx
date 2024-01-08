@@ -67,43 +67,49 @@ function RenameFileForm({ userId, id, name, resetRowIdRename }: Props) {
             display: 'flex',
           }}
         >
-          <TextField
-            {...register('fileName', {
-              minLength: {
-                value: 2,
-                message: '2 characters minimum',
-              },
-              maxLength: {
-                value: 20,
-                message: '20 characters maximum',
-              },
-            })}
-            size="small"
-            error={Boolean(errors.fileName)}
-            onBlur={() => trigger('fileName')}
-            id="rename-multiline-static"
-            placeholder="Rename"
-            defaultValue={name}
-            variant="outlined"
-            FormHelperTextProps={{
-              style: {
-                textAlign: 'right',
-              },
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
             }}
-            inputProps={{
-              style: {
-                fontSize: '.8rem',
-                padding: '0.25rem .5rem',
-              },
-            }}
-          />
-          <FormHelperText
-            sx={{ height: '15px' }}
-            error={Boolean(errors.fileName)}
-            style={{ visibility: errors.fileName ? 'visible' : 'hidden' }}
           >
-            {errors.fileName && errors.fileName.message}
-          </FormHelperText>
+            <TextField
+              {...register('fileName', {
+                minLength: {
+                  value: 2,
+                  message: '2 characters minimum',
+                },
+                maxLength: {
+                  value: 20,
+                  message: '20 characters maximum',
+                },
+              })}
+              size="small"
+              error={Boolean(errors.fileName)}
+              onBlur={() => trigger('fileName')}
+              id="rename-multiline-static"
+              placeholder="Rename"
+              defaultValue={name}
+              variant="outlined"
+              FormHelperTextProps={{
+                style: {
+                  textAlign: 'right',
+                },
+              }}
+              inputProps={{
+                style: {
+                  fontSize: '.8rem',
+                  padding: '0.25rem .5rem',
+                },
+              }}
+            />
+            <FormHelperText
+              error={Boolean(errors.fileName)}
+              style={{ visibility: errors.fileName ? 'visible' : 'hidden' }}
+            >
+              {errors.fileName && errors.fileName.message}
+            </FormHelperText>
+          </Box>
         </Box>
         <Box
           sx={{
