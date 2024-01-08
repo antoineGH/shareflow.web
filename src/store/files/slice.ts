@@ -118,7 +118,7 @@ const filesSlice = createSlice({
       state.statusAction.patch = getStateSliceFromError(action)
     })
 
-    // ### removeFile ###
+    // ### permanantlyRemoveFile ###
     builder.addCase(removeFile.pending, state => {
       state.statusAction.remove = Status.PENDING
     })
