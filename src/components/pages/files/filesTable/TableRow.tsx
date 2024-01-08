@@ -141,7 +141,7 @@ function TableRow({
             />
             {row.size}
           </Stack>
-          <Stack direction="row" alignItems="center">
+          <Stack direction="row" alignItems="center" sx={{ minWidth: '55px' }}>
             {formatDate(row.updatedAt)}
           </Stack>
         </Stack>

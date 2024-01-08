@@ -141,15 +141,17 @@ const removeFile = createAsyncThunk<
   {
     userId: number
     fileToDeleteId: File['id']
+    cb?: () => void
   }
 >(
   'files/removeFile',
-  async ({ userId, fileToDeleteId }, { signal, rejectWithValue }) => {
+  async ({ userId, fileToDeleteId, cb }, { signal, rejectWithValue }) => {
     try {
       const { error, fileId } = await deleteFile(userId, fileToDeleteId, signal)
 
       if (error) throw new HttpResponseError(null, error.message)
 
+      cb?.()
       return fileId
     } catch (error) {
       return catchAsyncThunk(error, rejectWithValue)
