@@ -8,7 +8,6 @@ import TableCell from '@mui/material/TableCell'
 import TableContainer from '@mui/material/TableContainer'
 import TablePagination from '@mui/material/TablePagination'
 import TableRowMUI from '@mui/material/TableRow'
-import { create } from 'domain'
 import { useLocation } from 'react-router-dom'
 
 import { partialUpdateFile } from 'store/files/actions'
@@ -64,7 +63,7 @@ function FilesTable({
   )
 
   const filteredSelectedActions = useMemo(() => {
-    const filteredActions = ['comments', 'tags']
+    const filteredActions = ['comments', 'tags', 'rename']
     const result = files.map(file => ({
       ...file,
       actions: file.actions.filter(action => !filteredActions.includes(action)),
