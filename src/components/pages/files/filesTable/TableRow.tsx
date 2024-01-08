@@ -4,6 +4,7 @@ import FolderIcon from '@mui/icons-material/Folder'
 import GradeIcon from '@mui/icons-material/Grade'
 import { useTheme } from '@mui/material'
 import Checkbox from '@mui/material/Checkbox'
+import ClickAwayListener from '@mui/material/ClickAwayListener'
 import IconButton from '@mui/material/IconButton'
 import Stack from '@mui/material/Stack'
 import TableCell from '@mui/material/TableCell'
@@ -14,9 +15,11 @@ import TagsTableCell from 'components/pages/tags/tagsTableCell/TagsTableCell'
 import type { File, RowFile } from 'types/files'
 
 import { formatDate, getPath } from './helpers'
+import RenameFileForm from './RenameFileForm'
 import FileMenu from '../fileMenu/FileMenu'
 
 type Props = {
+  userId: number
   row: RowFile
   files: File[]
   isItemSelected: boolean
@@ -32,6 +35,7 @@ type Props = {
 }
 
 function TableRow({
+  userId,
   row,
   files,
   isItemSelected,
@@ -48,10 +52,11 @@ function TableRow({
   const navigate = useNavigate()
   const theme = useTheme()
 
-  const [isHovered, setIsHovered] = useState(false)
+  const [rowIdRename, setRowIdRename] = useState<number | null>(null)
+
+  const resetRowIdRename = () => setRowIdRename(null)
 
   const isFavorite = files.find(file => file.id === row.id)?.isFavorite || false
-  const isPageFile = !isPageFavorite && !isPageTag && !isPageDelete
 
   const handleCheckBoxClick = (e: MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation()
@@ -72,81 +77,106 @@ function TableRow({
     if (path) return navigate(`/auth/files${path}`)
   }
 
+  const renameRow = () => {
+    setRowIdRename(row.id)
+  }
+
   return (
-    <TableRowMUI
-      hover
-      onClick={e => handleClickRow(e)}
-      onMouseEnter={isPageFile ? () => setIsHovered(true) : () => {}}
-      onMouseLeave={isPageFile ? () => setIsHovered(false) : () => {}}
-      role="checkbox"
-      aria-checked={isItemSelected}
-      tabIndex={-1}
-      key={row.id}
-      selected={isItemSelected}
-      sx={{ cursor: 'pointer', height: '67px' }}
-    >
-      <TableCell
-        component="th"
-        id={labelId}
-        scope="row"
-        padding="checkbox"
-        align="left"
-        colSpan={2}
+    <ClickAwayListener onClickAway={resetRowIdRename}>
+      <TableRowMUI
+        hover
+        onClick={rowIdRename === row.id ? () => {} : e => handleClickRow(e)}
+        role="checkbox"
+        aria-checked={isItemSelected}
+        tabIndex={-1}
+        key={row.id}
+        selected={isItemSelected}
+        sx={{
+          cursor: rowIdRename === row.id ? 'default' : 'pointer',
+          height: '67px',
+        }}
       >
-        <Stack direction="row" alignItems="center" gap={1}>
-          {isPageFavorite || isPageTag ? (
-            <IconButton onClick={event => handleClickFavorite(event)}>
-              <GradeIcon
-                sx={{
-                  color: isFavorite
-                    ? 'gold'
-                    : theme.palette.primary.contrastText,
+        <TableCell
+          component="th"
+          id={labelId}
+          scope="row"
+          padding="checkbox"
+          align="left"
+          colSpan={2}
+        >
+          <Stack
+            direction="row"
+            alignItems="center"
+            gap={1}
+            sx={{ minWidth: '250px' }}
+          >
+            {isPageFavorite || isPageTag ? (
+              <IconButton onClick={event => handleClickFavorite(event)}>
+                <GradeIcon
+                  sx={{
+                    color: isFavorite
+                      ? 'gold'
+                      : theme.palette.primary.contrastText,
+                  }}
+                />
+              </IconButton>
+            ) : (
+              <Checkbox
+                color="primary"
+                size="small"
+                checked={isItemSelected}
+                onClick={event => handleCheckBoxClick(event)}
+                inputProps={{
+                  'aria-labelledby': labelId,
                 }}
               />
-            </IconButton>
-          ) : (
-            <Checkbox
-              color="primary"
-              size="small"
-              checked={isItemSelected}
-              onClick={event => handleCheckBoxClick(event)}
-              inputProps={{
-                'aria-labelledby': labelId,
-              }}
-            />
-          )}
-          <FolderIcon color="secondary" fontSize="medium" />
-          {row.name}
-        </Stack>
-      </TableCell>
-      <TableCell align="right" colSpan={2}>
-        <Stack direction="row" justifyContent="flex-end" gap={4} mr={3}>
-          {isPageTag && (
+            )}
+            <FolderIcon color="secondary" fontSize="medium" />
+            {rowIdRename === row.id ? (
+              <RenameFileForm
+                userId={userId}
+                id={row.id}
+                name={row.name}
+                resetRowIdRename={resetRowIdRename}
+              />
+            ) : (
+              row.name
+            )}
+          </Stack>
+        </TableCell>
+        <TableCell align="right" colSpan={1}>
+          <Stack direction="row" justifyContent="flex-end" gap={4} mr={3}>
+            {isPageTag && (
+              <Stack direction="row" alignItems="center" gap={2}>
+                <TagsTableCell />
+              </Stack>
+            )}
             <Stack direction="row" alignItems="center" gap={2}>
-              <TagsTableCell />
+              <FileMenu
+                id={row.id}
+                files={files}
+                isPageFavorite={isPageFavorite}
+                isPageTag={isPageTag}
+                isPageDelete={isPageDelete}
+                toggleDrawer={toggleDrawer}
+                handleDrawerOpen={handleDrawerOpen}
+                onFavoriteClick={onFavoriteClick}
+                handleChangeDrawerTab={handleChangeDrawerTab}
+                renameRow={renameRow}
+              />
+              {row.size}
             </Stack>
-          )}
-          <Stack direction="row" alignItems="center" gap={2}>
-            <FileMenu
-              id={row.id}
-              files={files}
-              isPageFavorite={isPageFavorite}
-              isPageTag={isPageTag}
-              isPageDelete={isPageDelete}
-              isHovered={isHovered}
-              toggleDrawer={toggleDrawer}
-              handleDrawerOpen={handleDrawerOpen}
-              onFavoriteClick={onFavoriteClick}
-              handleChangeDrawerTab={handleChangeDrawerTab}
-            />
-            {row.size}
+            <Stack
+              direction="row"
+              alignItems="center"
+              sx={{ minWidth: '55px' }}
+            >
+              {formatDate(row.updatedAt)}
+            </Stack>
           </Stack>
-          <Stack direction="row" alignItems="center" sx={{ minWidth: '55px' }}>
-            {formatDate(row.updatedAt)}
-          </Stack>
-        </Stack>
-      </TableCell>
-    </TableRowMUI>
+        </TableCell>
+      </TableRowMUI>
+    </ClickAwayListener>
   )
 }
 

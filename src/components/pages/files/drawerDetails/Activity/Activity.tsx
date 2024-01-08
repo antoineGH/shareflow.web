@@ -1,9 +1,8 @@
-import RssFeedIcon from '@mui/icons-material/RssFeed'
-import { useTheme } from '@mui/material'
+import { Stack, useTheme } from '@mui/material'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 
-import { formatDate } from './utils'
+import { formatDate, getActivityIcon } from './utils'
 
 type Props = {
   activity: string
@@ -13,37 +12,30 @@ type Props = {
 function Activity({ activity, createdAt }: Props) {
   const theme = useTheme()
   return (
-    <Box
+    <Stack
       sx={{
         my: 1.5,
         backgroundColor: '#6c63ff29',
         borderRadius: '10px',
-        padding: '0.7rem',
+        padding: '0.5rem',
         marginRight: '1rem',
         '&:last-child': {
-          paddingBottom: '.3rem',
+          paddingBottom: '.4rem',
         },
+        flexDirection: 'row',
       }}
+      gap={1.5}
     >
-      <Box display="flex" alignItems="center" mb={1.5}>
-        <RssFeedIcon sx={{ color: theme.palette.primary.main }} />
-        <Typography
-          variant="body2"
-          ml={1}
-          sx={{ justifyContent: 'center', alignContent: 'center' }}
-        >
-          {activity}
+      <Box display="flex" alignItems="center" ml={0.5}>
+        {getActivityIcon(activity, theme)}
+      </Box>
+      <Box display="flex" flexDirection="column" alignItems="flex-start">
+        <Typography variant="body2">{activity}</Typography>
+        <Typography variant="body2" color="text.secondary" fontSize="0.7rem">
+          {formatDate(createdAt)}
         </Typography>
       </Box>
-      <Typography
-        variant="body2"
-        color="text.secondary"
-        fontSize="0.7rem"
-        align="right"
-      >
-        {formatDate(createdAt)}
-      </Typography>
-    </Box>
+    </Stack>
   )
 }
 
