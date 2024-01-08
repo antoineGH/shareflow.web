@@ -71,6 +71,9 @@ function RenameFileForm({ userId, id, name, resetRowIdRename }: Props) {
             sx={{
               display: 'flex',
               flexDirection: 'column',
+              width: '100%',
+              justifyContent: 'center',
+              alignContent: 'center',
             }}
           >
             <TextField
@@ -124,7 +127,7 @@ function RenameFileForm({ userId, id, name, resetRowIdRename }: Props) {
             loading={isLoadingPatch}
             disabled={disabledSubmit}
             type="submit"
-            sx={{ color: 'white', textTransform: 'capitalize' }}
+            sx={{ color: 'white', textTransform: 'capitalize', mb: 0.5 }}
           >
             Rename
           </LoadingButton>
