@@ -1,4 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
+
 import { getUser, patchUser, putUser } from 'api/users'
 import { HttpResponseError } from 'helpers/errors'
 import { RootState } from 'store/store'
@@ -11,17 +12,20 @@ const fetchUser = createAsyncThunk<
     userId: number
   },
   { state: RootState; rejectValue: { errorMessage: string; code?: number } }
->('user/fetchUser', async ({ userId }, { signal, rejectWithValue }) => {
-  try {
-    const { error, user } = await getUser(userId, signal)
+>(
+  'user/fetchUser',
+  async ({ userId }, { signal, rejectWithValue, dispatch }) => {
+    try {
+      const { error, user } = await getUser(userId, signal)
 
-    if (error) throw new HttpResponseError(error.code || null, error.message)
+      if (error) throw new HttpResponseError(error.code || null, error.message)
 
-    return user
-  } catch (error) {
-    return catchAsyncThunk(error, rejectWithValue)
-  }
-})
+      return user
+    } catch (error) {
+      return catchAsyncThunk(error, rejectWithValue, dispatch, true)
+    }
+  },
+)
 
 const updateUser = createAsyncThunk<
   void,
@@ -33,7 +37,7 @@ const updateUser = createAsyncThunk<
   { state: RootState; rejectValue: { errorMessage: string; code?: number } }
 >(
   'user/updateUser',
-  async ({ userId, newUser, cb }, { signal, rejectWithValue }) => {
+  async ({ userId, newUser, cb }, { signal, rejectWithValue, dispatch }) => {
     try {
       const { error } = await putUser(userId, newUser, signal)
 
@@ -41,7 +45,7 @@ const updateUser = createAsyncThunk<
 
       cb?.()
     } catch (error) {
-      return catchAsyncThunk(error, rejectWithValue)
+      return catchAsyncThunk(error, rejectWithValue, dispatch, true)
     }
   },
 )
@@ -56,7 +60,10 @@ const patchUserPassword = createAsyncThunk<
   { state: RootState; rejectValue: { errorMessage: string; code?: number } }
 >(
   'user/patchUserPassword',
-  async ({ userId, newPassword, cb }, { signal, rejectWithValue }) => {
+  async (
+    { userId, newPassword, cb },
+    { signal, rejectWithValue, dispatch },
+  ) => {
     try {
       const { error } = await patchUser(userId, newPassword, signal)
 
@@ -64,7 +71,7 @@ const patchUserPassword = createAsyncThunk<
 
       cb?.()
     } catch (error) {
-      return catchAsyncThunk(error, rejectWithValue)
+      return catchAsyncThunk(error, rejectWithValue, dispatch, true)
     }
   },
 )

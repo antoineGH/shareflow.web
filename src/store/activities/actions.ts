@@ -1,8 +1,9 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
-import { catchAsyncThunk } from 'store/utils'
+
 import { getActivities, postActivities } from 'api/activities'
 import { HttpResponseError } from 'helpers/errors'
 import type { RootState } from 'store/store'
+import { catchAsyncThunk } from 'store/utils'
 import type { Activity } from 'types/activities'
 
 const fetchActivities = createAsyncThunk<
@@ -14,7 +15,7 @@ const fetchActivities = createAsyncThunk<
   { state: RootState; rejectValue: { errorMessage: string; code?: number } }
 >(
   'activties/fetchActivities',
-  async ({ userId, fileId }, { signal, rejectWithValue }) => {
+  async ({ userId, fileId }, { signal, rejectWithValue, dispatch }) => {
     try {
       const { error, activities } = await getActivities(userId, fileId, signal)
 
@@ -22,7 +23,7 @@ const fetchActivities = createAsyncThunk<
 
       return activities
     } catch (error) {
-      return catchAsyncThunk(error, rejectWithValue)
+      return catchAsyncThunk(error, rejectWithValue, dispatch, true)
     }
   },
 )
@@ -40,7 +41,10 @@ const createActivity = createAsyncThunk<
   { state: RootState; rejectValue: { errorMessage: string; code?: number } }
 >(
   'activities/createActivity',
-  async ({ userId, fileId, newActivity }, { signal, rejectWithValue }) => {
+  async (
+    { userId, fileId, newActivity },
+    { signal, rejectWithValue, dispatch },
+  ) => {
     try {
       const { error, activity } = await postActivities(
         userId,
@@ -53,7 +57,7 @@ const createActivity = createAsyncThunk<
 
       return activity
     } catch (error) {
-      return catchAsyncThunk(error, rejectWithValue)
+      return catchAsyncThunk(error, rejectWithValue, dispatch, true)
     }
   },
 )

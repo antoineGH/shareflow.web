@@ -1,15 +1,29 @@
-import MenuItem from '@mui/material/MenuItem'
-import Stack from '@mui/material/Stack'
+import FolderIcon from '@mui/icons-material/Folder'
+import LoadingButton from '@mui/lab/LoadingButton'
+import { FormHelperText, useTheme } from '@mui/material'
 import Button from '@mui/material/Button'
 import Divider from '@mui/material/Divider'
-import TextField from '@mui/material/TextField'
 import ListItemIcon from '@mui/material/ListItemIcon'
+import MenuItem from '@mui/material/MenuItem'
+import Stack from '@mui/material/Stack'
+import TextField from '@mui/material/TextField'
+import { SubmitHandler, useForm } from 'react-hook-form'
+
+import { createFile } from 'store/files/actions'
+import { filesStateSelector } from 'store/files/selector'
+import { useDispatch, useSelector } from 'store/hooks'
+import { openSnackbar } from 'store/snackbar/slice'
+import { selectUserSelector } from 'store/user/selector'
+
+import { breadcrumbAction } from './helpers'
+import { useFolderMenu } from './hooks/useFolderMenu'
 import listItems from './listItems'
 import StyledIcon from './styledIcon'
-import FolderIcon from '@mui/icons-material/Folder'
-import { breadcrumbAction } from './helpers'
 import StyledMenu from './StyledMenu'
-import { useFolderMenu } from './hooks/useFolderMenu'
+
+type FormData = {
+  fileName: string
+}
 
 type Props = {
   anchorEl: null | HTMLElement
@@ -20,6 +34,42 @@ type Props = {
 
 function Menu({ anchorEl, open, openModalAddDocs, closeMenu }: Props) {
   const { isHidden, openFolder, closeFolder } = useFolderMenu()
+  const user = useSelector(selectUserSelector)
+  const { isLoadingCreate } = useSelector(filesStateSelector)
+  const theme = useTheme()
+  const dispatch = useDispatch()
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    trigger,
+    reset,
+    watch,
+  } = useForm<FormData>()
+
+  const fileName = watch('fileName')
+
+  const onSubmit: SubmitHandler<FormData> = async data => {
+    if (!user || !user.id) return
+
+    await dispatch(
+      createFile({
+        userId: user.id,
+        newFile: { name: data.fileName, isFolder: true },
+        cb: () => {
+          dispatch(
+            openSnackbar({
+              isOpen: true,
+              severity: 'success',
+              message: 'File created',
+            }),
+          )
+          reset()
+          closeMenu()
+        },
+      }),
+    )
+  }
 
   function handleBreadCrumbAction(
     e: React.MouseEvent<HTMLLIElement>,
@@ -31,6 +81,7 @@ function Menu({ anchorEl, open, openModalAddDocs, closeMenu }: Props) {
 
   function cancelFolder(e: React.MouseEvent<HTMLButtonElement>) {
     e.stopPropagation()
+    reset()
     closeFolder()
   }
 
@@ -50,6 +101,7 @@ function Menu({ anchorEl, open, openModalAddDocs, closeMenu }: Props) {
       {!isHidden && (
         <MenuItem
           key="menu-item-folder"
+          disableRipple
           onClick={event => event.stopPropagation()}
         >
           <ListItemIcon>
@@ -57,31 +109,74 @@ function Menu({ anchorEl, open, openModalAddDocs, closeMenu }: Props) {
               <FolderIcon />
             </StyledIcon>
           </ListItemIcon>
-          <Stack spacing={2} direction="column">
-            <TextField
-              id="standard-basic"
-              label="Folder name"
-              variant="standard"
-              size="small"
-            />
-            <Stack spacing={2} direction="row">
-              <Button
+          <form onSubmit={handleSubmit(onSubmit)} style={{ width: '100%' }}>
+            <Stack spacing={1} direction="column">
+              <TextField
+                {...register('fileName', {
+                  minLength: {
+                    value: 2,
+                    message: '2 characters minimum',
+                  },
+                  maxLength: {
+                    value: 20,
+                    message: '20 characters maximum',
+                  },
+                })}
+                size="small"
+                error={Boolean(errors.fileName)}
+                onBlur={() => trigger('fileName')}
+                id="standard-basic"
                 variant="outlined"
-                size="small"
-                onClick={e => cancelFolder(e)}
-                sx={{ textTransform: 'capitalize' }}
+                FormHelperTextProps={{
+                  style: {
+                    textAlign: 'right',
+                  },
+                }}
+                inputProps={{
+                  style: {
+                    fontSize: '.8rem',
+                    padding: '0.25rem .5rem',
+                  },
+                }}
+              />
+              <FormHelperText
+                error={Boolean(errors.fileName)}
+                style={{ visibility: errors.fileName ? 'visible' : 'hidden' }}
               >
-                Cancel
-              </Button>
-              <Button
-                variant="contained"
-                size="small"
-                sx={{ color: 'white', textTransform: 'capitalize' }}
-              >
-                Create
-              </Button>
+                {errors.fileName && errors.fileName.message}
+              </FormHelperText>
+              <Stack spacing={1} direction="row" justifyContent="flex-end">
+                <Button
+                  variant="outlined"
+                  size="small"
+                  onClick={e => cancelFolder(e)}
+                  sx={{ textTransform: 'capitalize' }}
+                >
+                  Cancel
+                </Button>
+                <LoadingButton
+                  variant="contained"
+                  type="submit"
+                  size="small"
+                  loading={isLoadingCreate}
+                  disabled={
+                    isLoadingCreate ||
+                    Boolean(errors.fileName) ||
+                    fileName?.length === 0
+                  }
+                  sx={{
+                    '&:hover': {
+                      backgroundColor: theme.palette.primary.contrastText,
+                    },
+                    color: 'white',
+                    textTransform: 'capitalize',
+                  }}
+                >
+                  Create
+                </LoadingButton>
+              </Stack>
             </Stack>
-          </Stack>
+          </form>
         </MenuItem>
       )}
       {!isHidden && <Divider key="divider" sx={{ my: 0.5 }} />}

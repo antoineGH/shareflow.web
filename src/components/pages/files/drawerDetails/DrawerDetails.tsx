@@ -51,6 +51,8 @@ function DrawerDetails({
   const tagsFile = useSelector(selectAllTagsSelector)
   const file = useSelector(selectFileByIdSelector(fileId))
 
+  if (!file) return null
+
   const { name, size, updatedAt, isFavorite } = file
 
   const handleClickDeleteTag = (tagId: number) => {

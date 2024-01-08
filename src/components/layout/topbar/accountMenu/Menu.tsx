@@ -39,8 +39,8 @@ function Menu({ anchorEl, open, closeMenu }: Props) {
       transformOrigin={{ horizontal: 'right', vertical: 'top' }}
       anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
     >
-      {listItems.map(({ id, label, icon }) => (
-        <MenuItem key={id} onClick={() => handleDrawerNavigation(pathname)}>
+      {listItems.map(({ id, label, icon, path }) => (
+        <MenuItem key={id} onClick={() => handleDrawerNavigation(path)}>
           <ListItemIcon>
             <StyledIcon>{icon}</StyledIcon>
           </ListItemIcon>

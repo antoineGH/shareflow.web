@@ -9,8 +9,6 @@ import type {
   FileDataApi,
   GetFilesReturnType,
   PatchFileReturnType,
-  PostFileData,
-  PostFileDataApi,
   PostFileReturnType,
   PutFileReturnType,
   RestoreFilesReturnType,
@@ -68,22 +66,31 @@ const errPostFileMsg =
 
 async function postFile(
   userId: number,
-  newFile: Omit<File, 'id' | 'path'>,
+  newFile: Pick<File, 'name' | 'isFolder'>,
   signal?: AbortSignal,
 ): Promise<PostFileReturnType> {
   try {
     const url = formatURL(`${POST_FILE}`, { userId })
-    const body = JSON.stringify(newFile)
+
+    const newFileApi = convertObjectKeys<
+      Pick<File, 'name' | 'isFolder'>,
+      Pick<FileApi, 'name' | 'is_folder'>
+    >(newFile, 'snakeCase')
+
+    const body = JSON.stringify(newFileApi)
 
     const res = await rest.post({ url, body, signal })
 
     if (res?.response?.status !== 201) {
-      throw new HttpResponseError(res?.response?.status ?? null, errPostFileMsg)
+      throw new HttpResponseError(
+        res?.response?.status ?? null,
+        res?.object?.error?.message || errPostFileMsg,
+      )
     }
 
     const { object } = res
-    const fileData = convertObjectKeys<PostFileDataApi, PostFileData>(object)
-    return { fileData }
+    const file = convertObjectKeys<FileApi, File>(object)
+    return { file }
   } catch (error) {
     console.error(error)
     return { error }

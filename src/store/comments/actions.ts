@@ -1,4 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
+
 import { deleteComment, getComments, postComment } from 'api/comments'
 import { HttpResponseError } from 'helpers/errors'
 import { RootState } from 'store/store'
@@ -14,7 +15,7 @@ const fetchComments = createAsyncThunk<
   { state: RootState; rejectValue: { errorMessage: string; code?: number } }
 >(
   'comments/fetchComments',
-  async ({ userId, fileId }, { signal, rejectWithValue }) => {
+  async ({ userId, fileId }, { signal, rejectWithValue, dispatch }) => {
     try {
       const { error, comments } = await getComments(userId, fileId, signal)
 
@@ -22,7 +23,7 @@ const fetchComments = createAsyncThunk<
 
       return comments
     } catch (error) {
-      return catchAsyncThunk(error, rejectWithValue)
+      return catchAsyncThunk(error, rejectWithValue, dispatch, true)
     }
   },
 )
@@ -38,7 +39,10 @@ const createComment = createAsyncThunk<
   { state: RootState; rejectValue: { errorMessage: string; code?: number } }
 >(
   'comments/createComment',
-  async ({ userId, fileId, newComment, cb }, { signal, rejectWithValue }) => {
+  async (
+    { userId, fileId, newComment, cb },
+    { signal, rejectWithValue, dispatch },
+  ) => {
     try {
       const { error, comment } = await postComment(
         userId,
@@ -52,7 +56,7 @@ const createComment = createAsyncThunk<
       cb?.()
       return comment
     } catch (error) {
-      return catchAsyncThunk(error, rejectWithValue)
+      return catchAsyncThunk(error, rejectWithValue, dispatch, true)
     }
   },
 )
@@ -64,7 +68,7 @@ const removeComment = createAsyncThunk<
   'comments/deleteComment',
   async (
     { userId, fileId, commentToDeleteId, cb },
-    { signal, rejectWithValue },
+    { signal, rejectWithValue, dispatch },
   ) => {
     try {
       const { error, commentId } = await deleteComment(
@@ -79,7 +83,7 @@ const removeComment = createAsyncThunk<
       cb?.()
       return commentId
     } catch (error) {
-      return catchAsyncThunk(error, rejectWithValue)
+      return catchAsyncThunk(error, rejectWithValue, dispatch, true)
     }
   },
 )
