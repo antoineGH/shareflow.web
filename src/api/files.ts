@@ -2,6 +2,7 @@ import { HttpResponseError } from 'helpers/errors'
 import { rest } from 'helpers/rest'
 import type {
   DeleteFileReturnType,
+  DeleteFilesReturnType,
   File,
   FileApi,
   FileData,
@@ -12,11 +13,20 @@ import type {
   PostFileDataApi,
   PostFileReturnType,
   PutFileReturnType,
+  RestoreFilesReturnType,
 } from 'types/files'
 import { TagApi } from 'types/tags'
 import { SnakeCaseToCamelCase } from 'types/utils'
 
-import { DELETE_FILE, GET_FILES, PATCH_FILE, POST_FILE, PUT_FILE } from './urls'
+import {
+  DELETE_FILE,
+  DELETE_FILES,
+  GET_FILES,
+  PATCH_FILE,
+  PATCH_FILES,
+  POST_FILE,
+  PUT_FILE,
+} from './urls'
 import { convertObjectKeys, formatURL, generateUrlParams } from './utils'
 
 const errGetFilesMsg = 'An error occurred while getting files. Please try again'
@@ -143,6 +153,39 @@ async function patchFile(
   }
 }
 
+const errPatchFilesMsg =
+  'An error occurred while updating files. Please try again'
+
+async function patchFiles(
+  userId: number,
+  filesIds: number[],
+  updates: Partial<File>,
+  signal?: AbortSignal,
+): Promise<RestoreFilesReturnType> {
+  try {
+    const url = formatURL(`${PATCH_FILES}`, { userId })
+
+    const updatesApi = convertObjectKeys<Partial<File>, Partial<FileApi>>(
+      updates,
+      'snakeCase',
+    )
+
+    const body = JSON.stringify({ ids: filesIds, updates: updatesApi })
+    const res = await rest.patch({ url, body, signal })
+
+    if (res?.response?.status !== 204) {
+      throw new HttpResponseError(
+        res?.response?.status ?? null,
+        errPatchFilesMsg,
+      )
+    }
+    return { filesIds: filesIds }
+  } catch (error) {
+    console.error(error)
+    return { error }
+  }
+}
+
 const errDeleteFileMsg =
   'An error occurred while deleting the file. Please try again'
 
@@ -168,4 +211,38 @@ async function deleteFile(
   }
 }
 
-export { getFiles, postFile, putFile, patchFile, deleteFile }
+const errDeleteFilesMsg =
+  'An error occurred while deleting files. Please try again'
+
+async function deleteFiles(
+  userId: number,
+  filesIds: number[],
+  signal?: AbortSignal,
+): Promise<DeleteFilesReturnType> {
+  try {
+    const url = formatURL(`${DELETE_FILES}`, { userId })
+    const body = JSON.stringify({ ids: filesIds })
+    const res = await rest.delete({ url, body, signal })
+
+    if (res?.response?.status !== 204) {
+      throw new HttpResponseError(
+        res?.response?.status ?? null,
+        errDeleteFilesMsg,
+      )
+    }
+    return { filesIds: filesIds }
+  } catch (error) {
+    console.error(error)
+    return { error }
+  }
+}
+
+export {
+  getFiles,
+  postFile,
+  putFile,
+  patchFile,
+  patchFiles,
+  deleteFile,
+  deleteFiles,
+}

@@ -161,6 +161,7 @@ function FilesTable({
       <Paper sx={{ width: '100%' }}>
         {isPageFavorite || isPageTag ? null : (
           <Toolbar
+            userId={userId}
             selectedMultiActions={selectedMultiActions}
             selected={selected}
             isPageDelete={isPageDelete}

@@ -7,9 +7,11 @@ import { Status } from 'types/store'
 import {
   createFile,
   fetchFiles,
-  partialRemoveFile,
+  partialRemoveRestoreFile,
+  partialRemoveRestoreFiles,
   partialUpdateFile,
   removeFile,
+  removeFiles,
   updateFile,
 } from './actions'
 
@@ -106,19 +108,31 @@ const filesSlice = createSlice({
       state.statusAction.patch = getStateSliceFromError(action)
     })
 
-    // ### patchRemoveFile ###
-    builder.addCase(partialRemoveFile.pending, state => {
+    // ### partialRemoveRestoreFile ###
+    builder.addCase(partialRemoveRestoreFile.pending, state => {
       state.statusAction.patch = Status.PENDING
     })
-    builder.addCase(partialRemoveFile.fulfilled, (state, action) => {
+    builder.addCase(partialRemoveRestoreFile.fulfilled, (state, action) => {
       state.statusAction.patch = Status.SUCCEEDED
       FilesAdapter.removeOne(state, action.payload.id)
     })
-    builder.addCase(partialRemoveFile.rejected, (state, action) => {
+    builder.addCase(partialRemoveRestoreFile.rejected, (state, action) => {
       state.statusAction.patch = getStateSliceFromError(action)
     })
 
-    // ### permanantlyRemoveFile ###
+    // ### partialRemoveRestoreFiles ###
+    builder.addCase(partialRemoveRestoreFiles.pending, state => {
+      state.statusAction.patch = Status.PENDING
+    })
+    builder.addCase(partialRemoveRestoreFiles.fulfilled, (state, action) => {
+      state.statusAction.patch = Status.SUCCEEDED
+      FilesAdapter.removeMany(state, action.payload)
+    })
+    builder.addCase(partialRemoveRestoreFiles.rejected, (state, action) => {
+      state.statusAction.patch = getStateSliceFromError(action)
+    })
+
+    // ### permanentlyRemoveFile ###
     builder.addCase(removeFile.pending, state => {
       state.statusAction.remove = Status.PENDING
     })
@@ -127,6 +141,18 @@ const filesSlice = createSlice({
       FilesAdapter.removeOne(state, action.payload)
     })
     builder.addCase(removeFile.rejected, (state, action) => {
+      state.statusAction.remove = getStateSliceFromError(action)
+    })
+
+    // ### permanentlyRemoveFiles ###
+    builder.addCase(removeFiles.pending, state => {
+      state.statusAction.remove = Status.PENDING
+    })
+    builder.addCase(removeFiles.fulfilled, (state, action) => {
+      state.statusAction.remove = Status.SUCCEEDED
+      FilesAdapter.removeMany(state, action.payload)
+    })
+    builder.addCase(removeFiles.rejected, (state, action) => {
       state.statusAction.remove = getStateSliceFromError(action)
     })
   },
