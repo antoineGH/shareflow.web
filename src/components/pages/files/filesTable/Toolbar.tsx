@@ -10,6 +10,7 @@ import { ListItemKey } from '../fileMenu/listItems'
 type Props = {
   userId: number
   selected: number[]
+  resetSelected: () => void
   selectedMultiActions: ListItemKey[]
   isPageDelete?: boolean
 }
@@ -17,6 +18,7 @@ type Props = {
 function Toolbar({
   userId,
   selected,
+  resetSelected,
   selectedMultiActions,
   isPageDelete,
 }: Props) {
@@ -68,6 +70,7 @@ function Toolbar({
               <MultiAction
                 userId={userId}
                 selected={selected}
+                resetSelected={resetSelected}
                 selectedMultiActions={selectedMultiActions}
               />
             </Grid>

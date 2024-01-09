@@ -1,4 +1,8 @@
 import { useTheme } from '@mui/material'
+
+import { filesStateSelector } from 'store/files/selector'
+import { useSelector } from 'store/hooks'
+
 import StyledButton from './StyledButton'
 
 type Props = {
@@ -8,6 +12,7 @@ type Props = {
 }
 
 function ButtonToolBar({ label, icon, handleClickMulti }: Props) {
+  const { isLoadingPatch } = useSelector(filesStateSelector)
   const theme = useTheme()
 
   return (
@@ -15,6 +20,7 @@ function ButtonToolBar({ label, icon, handleClickMulti }: Props) {
       variant="text"
       startIcon={icon}
       theme={theme}
+      loading={isLoadingPatch}
       onClick={e => handleClickMulti(e)}
     >
       {label}
