@@ -1,11 +1,12 @@
 import { createEntityAdapter, createSlice } from '@reduxjs/toolkit'
 
 import { getStateSliceFromError } from 'store/utils'
-import type { File, FileData } from 'types/files'
+import type { FileData, FileT } from 'types/files'
 import { Status } from 'types/store'
 
 import {
   createFile,
+  createFolder,
   fetchFiles,
   partialRemoveRestoreFile,
   partialRemoveRestoreFiles,
@@ -33,7 +34,7 @@ const initialState: InitialState = {
 }
 
 export const FilesAdapter = createEntityAdapter({
-  selectId: (file: File) => file.id,
+  selectId: (file: FileT) => file.id,
 })
 
 const filesSlice = createSlice({
@@ -65,11 +66,24 @@ const filesSlice = createSlice({
       state.statusAction.fetch = getStateSliceFromError(action)
     })
 
+    // ### createFolder ###
+    builder.addCase(createFolder.pending, state => {
+      state.statusAction.create = Status.PENDING
+    })
+    builder.addCase(createFolder.fulfilled, (state, action) => {
+      state.statusAction.create = Status.SUCCEEDED
+      FilesAdapter.addOne(state, action.payload)
+    })
+    builder.addCase(createFolder.rejected, (state, action) => {
+      state.statusAction.create = getStateSliceFromError(action)
+    })
+
     // ### createFile ###
     builder.addCase(createFile.pending, state => {
       state.statusAction.create = Status.PENDING
     })
     builder.addCase(createFile.fulfilled, (state, action) => {
+      console.log('action.payload', action.payload)
       state.statusAction.create = Status.SUCCEEDED
       FilesAdapter.addOne(state, action.payload)
     })

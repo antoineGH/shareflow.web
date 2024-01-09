@@ -2,7 +2,6 @@ import { useEffect } from 'react'
 
 import CancelIcon from '@mui/icons-material/Cancel'
 import ClearIcon from '@mui/icons-material/Clear'
-import FolderIcon from '@mui/icons-material/Folder'
 import StarIcon from '@mui/icons-material/Star'
 import { ClickAwayListener, useTheme } from '@mui/material'
 import Box from '@mui/material/Box'
@@ -22,6 +21,7 @@ import { formatDate } from './Activity/utils'
 import StyledChip from './StyledChip'
 import DrawerHeader from './StyledDrawerHead'
 import Tabs from './Tabs/Tabs'
+import { getRowIcon } from '../utils'
 
 type Props = {
   open: boolean
@@ -53,7 +53,7 @@ function DrawerDetails({
 
   if (!file) return null
 
-  const { name, size, updatedAt, isFavorite } = file
+  const { name, size, updatedAt, isFavorite, isFolder } = file
 
   const handleClickDeleteTag = (tagId: number) => {
     if (!tagId) return
@@ -103,11 +103,9 @@ function DrawerDetails({
               </IconButton>
             </Box>
             <Stack direction="row" spacing={1} sx={{ width: '100%' }}>
-              <Box>
-                <FolderIcon color="secondary" sx={{ fontSize: 50 }} />
-              </Box>
+              <Box>{getRowIcon(isFolder!, name)}</Box>
               <Stack direction="column" spacing={0} sx={{ width: '100%' }}>
-                <Box sx={{ width: '100%', mt: 1 }}>
+                <Box sx={{ width: '100%', mt: 1, ml: 0.5 }}>
                   <Typography
                     variant="subtitle2"
                     color="text.secondary"
@@ -116,7 +114,11 @@ function DrawerDetails({
                     {name}
                   </Typography>
                 </Box>
-                <Stack direction="row" spacing={1} sx={{ width: '100%' }}>
+                <Stack
+                  direction="row"
+                  spacing={1}
+                  sx={{ width: '100%', mt: 0.25 }}
+                >
                   <Box display="flex" flexDirection="row" alignItems="center">
                     <StarIcon
                       sx={{
@@ -129,7 +131,7 @@ function DrawerDetails({
                     <Typography
                       variant="body2"
                       color="text.secondary"
-                      sx={{ ml: 1 }}
+                      sx={{ ml: 0.5 }}
                     >
                       {size},
                     </Typography>

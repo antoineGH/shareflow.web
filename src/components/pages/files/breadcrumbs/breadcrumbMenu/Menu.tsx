@@ -9,7 +9,7 @@ import Stack from '@mui/material/Stack'
 import TextField from '@mui/material/TextField'
 import { SubmitHandler, useForm } from 'react-hook-form'
 
-import { createFile } from 'store/files/actions'
+import { createFolder } from 'store/files/actions'
 import { filesStateSelector } from 'store/files/selector'
 import { useDispatch, useSelector } from 'store/hooks'
 import { openSnackbar } from 'store/snackbar/slice'
@@ -53,9 +53,9 @@ function Menu({ anchorEl, open, openModalAddDocs, closeMenu }: Props) {
     if (!user || !user.id) return
 
     await dispatch(
-      createFile({
+      createFolder({
         userId: user.id,
-        newFile: { name: data.fileName, isFolder: true },
+        newFolder: { name: data.fileName, isFolder: true },
         cb: () => {
           dispatch(
             openSnackbar({

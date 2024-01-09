@@ -7,12 +7,19 @@ import {
   patchFile,
   patchFiles,
   postFile,
+  postFolder,
   putFile,
 } from 'api/files'
 import { HttpResponseError } from 'helpers/errors'
 import { RootState } from 'store/store'
 import { catchAsyncThunk } from 'store/utils'
-import type { File, FileData, PutFileData } from 'types/files'
+import type {
+  FileData,
+  FileT,
+  FileUpload,
+  FolderUpload,
+  PutFileData,
+} from 'types/files'
 import { TagApi } from 'types/tags'
 import { SnakeCaseToCamelCase } from 'types/utils'
 
@@ -39,11 +46,35 @@ const fetchFiles = createAsyncThunk<
   },
 )
 
-const createFile = createAsyncThunk<
-  File,
+const createFolder = createAsyncThunk<
+  FileT,
   {
     userId: number
-    newFile: Pick<File, 'name' | 'isFolder'>
+    newFolder: FolderUpload
+    cb?: () => void
+  },
+  { state: RootState; rejectValue: { errorMessage: string; code?: number } }
+>(
+  'files/createFolder',
+  async ({ userId, newFolder, cb }, { signal, rejectWithValue, dispatch }) => {
+    try {
+      const { error, file } = await postFolder(userId, newFolder, signal)
+
+      if (error) throw new HttpResponseError(null, error.message)
+
+      cb?.()
+      return file
+    } catch (error) {
+      return catchAsyncThunk(error, rejectWithValue, dispatch, true)
+    }
+  },
+)
+
+const createFile = createAsyncThunk<
+  FileT,
+  {
+    userId: number
+    newFile: FileUpload
     cb?: () => void
   },
   { state: RootState; rejectValue: { errorMessage: string; code?: number } }
@@ -67,8 +98,8 @@ const updateFile = createAsyncThunk<
   PutFileData,
   {
     userId: number
-    fileId: File['id']
-    fileToUpdate: File
+    fileId: FileT['id']
+    fileToUpdate: FileT
   },
   { state: RootState; rejectValue: { errorMessage: string; code?: number } }
 >(
@@ -95,11 +126,11 @@ const updateFile = createAsyncThunk<
 )
 
 const partialUpdateFile = createAsyncThunk<
-  File,
+  FileT,
   {
     userId: number
-    fileId: File['id']
-    updates: Partial<File>
+    fileId: FileT['id']
+    updates: Partial<FileT>
     isFavoritePage?: boolean
     cb?: () => void
   },
@@ -125,11 +156,11 @@ const partialUpdateFile = createAsyncThunk<
 )
 
 const partialRemoveRestoreFile = createAsyncThunk<
-  File,
+  FileT,
   {
     userId: number
-    fileId: File['id']
-    updates: Partial<File>
+    fileId: FileT['id']
+    updates: Partial<FileT>
     cb?: () => void
   },
   { state: RootState; rejectValue: { errorMessage: string; code?: number } }
@@ -153,11 +184,11 @@ const partialRemoveRestoreFile = createAsyncThunk<
 )
 
 const partialRemoveRestoreFiles = createAsyncThunk<
-  File['id'][],
+  FileT['id'][],
   {
     userId: number
-    filesToRestoreIds: File['id'][]
-    updates: Partial<File>
+    filesToRestoreIds: FileT['id'][]
+    updates: Partial<FileT>
     cb?: () => void
   }
 >(
@@ -184,10 +215,10 @@ const partialRemoveRestoreFiles = createAsyncThunk<
 )
 
 const removeFile = createAsyncThunk<
-  File['id'],
+  FileT['id'],
   {
     userId: number
-    fileToDeleteId: File['id']
+    fileToDeleteId: FileT['id']
     cb?: () => void
   }
 >(
@@ -210,10 +241,10 @@ const removeFile = createAsyncThunk<
 )
 
 const removeFiles = createAsyncThunk<
-  File['id'][],
+  FileT['id'][],
   {
     userId: number
-    filesToDeleteIds: File['id'][]
+    filesToDeleteIds: FileT['id'][]
     cb?: () => void
   }
 >(
@@ -241,6 +272,7 @@ const removeFiles = createAsyncThunk<
 export {
   fetchFiles,
   createFile,
+  createFolder,
   updateFile,
   partialUpdateFile,
   partialRemoveRestoreFile,
