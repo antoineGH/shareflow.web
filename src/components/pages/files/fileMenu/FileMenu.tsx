@@ -10,7 +10,7 @@ import { partialRemoveRestoreFile, removeFile } from 'store/files/actions'
 import { useDispatch, useSelector } from 'store/hooks'
 import { openSnackbar } from 'store/snackbar/slice'
 import { selectUserSelector } from 'store/user/selector'
-import { File } from 'types/files'
+import { FileT } from 'types/files'
 
 import { getAvailableActions } from './helpers'
 import type { ListItem, ListItemKey } from './listItems'
@@ -18,7 +18,7 @@ import Menu from './Menu'
 
 type Props = {
   id: number
-  files: File[]
+  files: FileT[]
   isPageFavorite?: boolean
   isPageTag?: boolean
   isPageDelete?: boolean

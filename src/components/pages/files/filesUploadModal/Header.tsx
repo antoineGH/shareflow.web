@@ -1,8 +1,8 @@
+import CloseIcon from '@mui/icons-material/Close'
 import Box from '@mui/material/Box'
 import DialogTitle from '@mui/material/DialogTitle'
 import IconButton from '@mui/material/IconButton'
 import Typography from '@mui/material/Typography'
-import CloseIcon from '@mui/icons-material/Close'
 
 type Props = {
   close(): void

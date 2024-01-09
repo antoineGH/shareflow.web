@@ -1,8 +1,7 @@
 import { type MouseEvent, useState } from 'react'
 
-import FolderIcon from '@mui/icons-material/Folder'
 import GradeIcon from '@mui/icons-material/Grade'
-import { useTheme } from '@mui/material'
+import { Box, useTheme } from '@mui/material'
 import Checkbox from '@mui/material/Checkbox'
 import ClickAwayListener from '@mui/material/ClickAwayListener'
 import IconButton from '@mui/material/IconButton'
@@ -12,16 +11,17 @@ import TableRowMUI from '@mui/material/TableRow'
 import { useNavigate } from 'react-router-dom'
 
 import TagsTableCell from 'components/pages/tags/tagsTableCell/TagsTableCell'
-import type { File, RowFile } from 'types/files'
+import type { FileT, RowFile } from 'types/files'
 
 import { formatDate, getPath } from './helpers'
 import RenameFileForm from './RenameFileForm'
+import { getRowIcon } from './utils'
 import FileMenu from '../fileMenu/FileMenu'
 
 type Props = {
   userId: number
   row: RowFile
-  files: File[]
+  files: FileT[]
   isItemSelected: boolean
   labelId: string
   isPageFavorite?: boolean
@@ -57,6 +57,7 @@ function TableRow({
   const resetRowIdRename = () => setRowIdRename(null)
 
   const isFavorite = files.find(file => file.id === row.id)?.isFavorite || false
+  const isFolder = files.find(file => file.id === row.id)?.isFolder || false
 
   const handleCheckBoxClick = (e: MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation()
@@ -131,7 +132,7 @@ function TableRow({
                 }}
               />
             )}
-            <FolderIcon color="secondary" fontSize="medium" />
+            {getRowIcon(isFolder, row.name)}
             {rowIdRename === row.id ? (
               <RenameFileForm
                 userId={userId}
@@ -164,11 +165,14 @@ function TableRow({
                 handleChangeDrawerTab={handleChangeDrawerTab}
                 renameRow={renameRow}
               />
-              {row.size}
+              <Box sx={{ minWidth: '50px' }} justifyContent="flex-end">
+                {row.size}
+              </Box>
             </Stack>
             <Stack
               direction="row"
               alignItems="center"
+              justifyContent="flex-end"
               sx={{ minWidth: '55px' }}
             >
               {formatDate(row.updatedAt)}

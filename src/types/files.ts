@@ -1,4 +1,4 @@
-import { SnakeCaseToCamelCase } from './utils'
+import { CamelCaseToSnakeCase, SnakeCaseToCamelCase } from './utils'
 
 type ListItemKey =
   | 'download'
@@ -30,20 +30,26 @@ export type FileDataApi = {
   total_size?: string
 }
 
-export type File = SnakeCaseToCamelCase<FileApi>
+export type FileUpload = Pick<FileT, 'name' | 'isFolder'> & { file?: File }
+export type FileUploadApi = CamelCaseToSnakeCase<FileUpload>
+
+export type FolderUpload = Pick<FileT, 'name' | 'isFolder'>
+export type FolderUploadApi = CamelCaseToSnakeCase<FolderUpload>
+
+export type FileT = SnakeCaseToCamelCase<FileApi>
 export type FileData = SnakeCaseToCamelCase<FileDataApi>
 
-export type RowFile = Pick<File, 'id' | 'name' | 'size' | 'updatedAt'>
+export type RowFile = Pick<FileT, 'id' | 'name' | 'size' | 'updatedAt'>
 
 export type PutFileDataApi = {
-  file: File
+  file: FileT
   count_files: FileData['countFiles']
   count_folders: FileData['countFolders']
   total_size: FileData['totalSize']
 }
 
 export type PatchFileDataApi = {
-  file: File
+  file: FileT
   count_files: FileData['countFiles']
   count_folders: FileData['countFolders']
   total_Size: FileData['totalSize']
@@ -65,7 +71,7 @@ export type GetFilesReturnType =
 
 export type PostFileReturnType =
   | {
-      file: File
+      file: FileT
       error?: never
     }
   | {
@@ -75,7 +81,7 @@ export type PostFileReturnType =
 
 export type PutFileReturnType =
   | {
-      file: File
+      file: FileT
       error?: never
     }
   | {
@@ -85,7 +91,7 @@ export type PutFileReturnType =
 
 export type PatchFileReturnType =
   | {
-      file: File
+      file: FileT
       error?: never
     }
   | {
@@ -95,7 +101,7 @@ export type PatchFileReturnType =
 
 export type DeleteFileReturnType =
   | {
-      fileId: File['id']
+      fileId: FileT['id']
       error?: never
     }
   | {
@@ -105,7 +111,7 @@ export type DeleteFileReturnType =
 
 export type DeleteFilesReturnType =
   | {
-      filesIds: File['id'][]
+      filesIds: FileT['id'][]
       error?: never
     }
   | {
@@ -115,7 +121,7 @@ export type DeleteFilesReturnType =
 
 export type RestoreFilesReturnType =
   | {
-      filesIds: File['id'][]
+      filesIds: FileT['id'][]
       error?: never
     }
   | {

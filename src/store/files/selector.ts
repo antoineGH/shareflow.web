@@ -1,7 +1,7 @@
 import { createSelector } from '@reduxjs/toolkit'
 
 import { RootState } from 'store/store'
-import type { File } from 'types/files'
+import type { FileT } from 'types/files'
 import { Status } from 'types/store'
 
 import { selectAll, selectById } from './slice'
@@ -34,7 +34,7 @@ const selectFilesSelector = createSelector(filesStoreState, slice =>
   selectAll(slice),
 )
 
-const selectFileByIdSelector = (fileId: File['id']) =>
+const selectFileByIdSelector = (fileId: FileT['id']) =>
   createSelector(filesStoreState, files => selectById(files, fileId))
 
 export {

@@ -13,7 +13,7 @@ import { useLocation } from 'react-router-dom'
 import { partialUpdateFile } from 'store/files/actions'
 import { useDispatch } from 'store/hooks'
 import { openSnackbar } from 'store/snackbar/slice'
-import type { File, RowFile } from 'types/files'
+import type { FileT, RowFile } from 'types/files'
 
 import {
   createData,
@@ -28,7 +28,7 @@ import type { Order } from './types'
 
 type Props = {
   userId: number
-  files: File[]
+  files: FileT[]
   isPageFavorite?: boolean
   isPageTag?: boolean
   isPageDelete?: boolean

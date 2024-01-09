@@ -3,10 +3,13 @@ import { rest } from 'helpers/rest'
 import type {
   DeleteFileReturnType,
   DeleteFilesReturnType,
-  File,
   FileApi,
   FileData,
   FileDataApi,
+  FileT,
+  FileUpload,
+  FolderUpload,
+  FolderUploadApi,
   GetFilesReturnType,
   PatchFileReturnType,
   PostFileReturnType,
@@ -23,6 +26,7 @@ import {
   PATCH_FILE,
   PATCH_FILES,
   POST_FILE,
+  POST_FOLDER,
   PUT_FILE,
 } from './urls'
 import { convertObjectKeys, formatURL, generateUrlParams } from './utils'
@@ -61,35 +65,72 @@ async function getFiles(
   }
 }
 
-const errPostFileMsg =
-  'An error occurred while creating the file. Please try again'
+const errPostFolderMsg =
+  'An error occurred while creating the folder. Please try again'
 
-async function postFile(
+async function postFolder(
   userId: number,
-  newFile: Pick<File, 'name' | 'isFolder'>,
+  newFolder: FileUpload,
   signal?: AbortSignal,
 ): Promise<PostFileReturnType> {
   try {
-    const url = formatURL(`${POST_FILE}`, { userId })
+    const url = formatURL(`${POST_FOLDER}`, { userId })
 
-    const newFileApi = convertObjectKeys<
-      Pick<File, 'name' | 'isFolder'>,
-      Pick<FileApi, 'name' | 'is_folder'>
-    >(newFile, 'snakeCase')
+    const newFolderApi = convertObjectKeys<FolderUpload, FolderUploadApi>(
+      newFolder,
+      'snakeCase',
+    )
 
-    const body = JSON.stringify(newFileApi)
+    const body = JSON.stringify(newFolderApi)
 
     const res = await rest.post({ url, body, signal })
 
     if (res?.response?.status !== 201) {
       throw new HttpResponseError(
         res?.response?.status ?? null,
-        res?.object?.error?.message || errPostFileMsg,
+        res?.object?.error?.message || errPostFolderMsg,
       )
     }
 
     const { object } = res
-    const file = convertObjectKeys<FileApi, File>(object)
+    const file = convertObjectKeys<FileApi, FileT>(object)
+    return { file }
+  } catch (error) {
+    console.error(error)
+    return { error }
+  }
+}
+
+const errPostFileMsg =
+  'An error occurred while creating the file. Please try again'
+
+async function postFile(
+  userId: number,
+  newFile: FileUpload,
+  signal?: AbortSignal,
+): Promise<PostFileReturnType> {
+  try {
+    const url = formatURL(`${POST_FILE}`, { userId })
+
+    const formData = new FormData()
+    if (newFile.file) formData.append('file', newFile.file)
+    const token = localStorage.getItem('token')
+
+    const res = await fetch(url, {
+      method: 'POST',
+      body: formData,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      signal,
+    })
+
+    if (res.status !== 201) {
+      throw new HttpResponseError(res.status ?? null, errPostFileMsg)
+    }
+    const object = await res.json()
+    const file = convertObjectKeys<FileApi, FileT>(object)
+
     return { file }
   } catch (error) {
     console.error(error)
@@ -103,7 +144,7 @@ const errPutFileMsg =
 async function putFile(
   userId: number,
   fileId: number,
-  updatedFile: File,
+  updatedFile: FileT,
   signal?: AbortSignal,
 ): Promise<PutFileReturnType> {
   try {
@@ -117,7 +158,7 @@ async function putFile(
     }
 
     const { object } = res
-    const file = convertObjectKeys<FileApi, File>(object)
+    const file = convertObjectKeys<FileApi, FileT>(object)
     return { file }
   } catch (error) {
     console.error(error)
@@ -131,12 +172,12 @@ const errPatchFileMsg =
 async function patchFile(
   userId: number,
   fileId: number,
-  updates: Partial<File>,
+  updates: Partial<FileT>,
   signal?: AbortSignal,
 ): Promise<PatchFileReturnType> {
   try {
     const url = formatURL(`${PATCH_FILE}`, { userId, fileId })
-    const updatesApi = convertObjectKeys<Partial<File>, Partial<FileApi>>(
+    const updatesApi = convertObjectKeys<Partial<FileT>, Partial<FileApi>>(
       updates,
       'snakeCase',
     )
@@ -152,7 +193,7 @@ async function patchFile(
     }
 
     const { object } = res
-    const file = convertObjectKeys<FileApi, File>(object)
+    const file = convertObjectKeys<FileApi, FileT>(object)
     return { file }
   } catch (error) {
     console.error(error)
@@ -166,13 +207,13 @@ const errPatchFilesMsg =
 async function patchFiles(
   userId: number,
   filesIds: number[],
-  updates: Partial<File>,
+  updates: Partial<FileT>,
   signal?: AbortSignal,
 ): Promise<RestoreFilesReturnType> {
   try {
     const url = formatURL(`${PATCH_FILES}`, { userId })
 
-    const updatesApi = convertObjectKeys<Partial<File>, Partial<FileApi>>(
+    const updatesApi = convertObjectKeys<Partial<FileT>, Partial<FileApi>>(
       updates,
       'snakeCase',
     )
@@ -246,6 +287,7 @@ async function deleteFiles(
 
 export {
   getFiles,
+  postFolder,
   postFile,
   putFile,
   patchFile,

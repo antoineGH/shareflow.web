@@ -1,4 +1,4 @@
-import type { File } from 'types/files'
+import type { FileT } from 'types/files'
 
 import type { Order } from './types'
 import { ListItemKey } from '../fileMenu/listItems'
@@ -47,13 +47,13 @@ function stableSort<T>(array: T[], comparator: (a: T, b: T) => number) {
   return stabilizedThis.map(el => el[0])
 }
 
-function getPath(id: number, files: File[]) {
+function getPath(id: number, files: FileT[]) {
   return files.find(file => file.id === id)?.path
 }
 
 function getSelectedMultiActions(
   selectedFilesId: number[],
-  files: File[],
+  files: FileT[],
 ): ListItemKey[] {
   const selectedFiles = files.filter(file => selectedFilesId.includes(file.id))
   const actionsArrays = selectedFiles.map(file => file.actions)

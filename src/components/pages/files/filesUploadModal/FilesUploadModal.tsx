@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 import Badge from '@mui/material/Badge'
 import Dialog from '@mui/material/Dialog'
@@ -6,6 +6,11 @@ import DialogContent from '@mui/material/DialogContent'
 import Stack from '@mui/material/Stack'
 import Typography from '@mui/material/Typography'
 import { FileRejection } from 'react-dropzone'
+
+import { createFile } from 'store/files/actions'
+import { filesStateSelector } from 'store/files/selector'
+import { useDispatch, useSelector } from 'store/hooks'
+import { openSnackbar } from 'store/snackbar/slice'
 
 import DropZone from './dropzone/Dropzone'
 import { RejectedFiles, ValidFiles } from './filesUploadDragNDrop/Files'
@@ -15,12 +20,13 @@ import Header from './Header'
 import { formatAcceptedFiles } from './helpers'
 
 type Props = {
+  userId: number
   open: boolean
   close(): void
   droppedFiles: DroppedFiles
 }
 
-function DocumentsUploadModal({ open, close, droppedFiles }: Props) {
+function DocumentsUploadModal({ userId, open, close, droppedFiles }: Props) {
   const [files, setFiles] = useState<FileState[]>(() =>
     formatAcceptedFiles(droppedFiles.accept || []),
   )
@@ -33,6 +39,8 @@ function DocumentsUploadModal({ open, close, droppedFiles }: Props) {
   >({})
   const [isUploadDone, setIsUploadDone] = useState(false)
   const [submitting, setSubmitting] = useState(false)
+  const dispatch = useDispatch()
+  const { isLoadingCreate } = useSelector(filesStateSelector)
 
   const onCloseDocumentsUploaded = () => {
     close()
@@ -70,11 +78,29 @@ function DocumentsUploadModal({ open, close, droppedFiles }: Props) {
   }
 
   const uploadDocument = async (file: File) => {
-    console.log(file)
+    dispatch(
+      createFile({
+        userId,
+        newFile: {
+          name: file.name,
+          isFolder: Boolean(!file),
+          file,
+        },
+        cb: () => {
+          dispatch(
+            openSnackbar({
+              isOpen: true,
+              severity: 'success',
+              message: 'File uploaded',
+            }),
+          )
+        },
+      }),
+    )
     return { error: false }
   }
   const onUpload = async () => {
-    if (submitting) return
+    if (submitting || isLoadingCreate) return
 
     setSubmitting(true)
 
@@ -93,18 +119,23 @@ function DocumentsUploadModal({ open, close, droppedFiles }: Props) {
 
     const areAllUploaded = outcomes.every(o => o.status === 'fulfilled')
 
-    if (areAllUploaded) {
-      onClose()
+    if (areAllUploaded && !isLoadingCreate) {
       return
     }
 
     setIsUploadDone(true)
   }
 
+  useEffect(() => {
+    if (isLoadingCreate) return
+    if (isUploadDone) return
+    onClose()
+  }, [isLoadingCreate, isUploadDone])
+
   return (
     <Dialog
       open={open}
-      onClose={submitting ? undefined : onClose}
+      onClose={submitting || isLoadingCreate ? undefined : onClose}
       PaperProps={{
         sx: {
           maxWidth: '940px',
@@ -114,14 +145,14 @@ function DocumentsUploadModal({ open, close, droppedFiles }: Props) {
           width: '100%',
         },
       }}
-      disableEscapeKeyDown={submitting}
+      disableEscapeKeyDown={submitting || isLoadingCreate}
     >
-      <Header close={onClose} disabledClose={submitting} />
+      <Header close={onClose} disabledClose={submitting || isLoadingCreate} />
 
       <DialogContent sx={{ px: 0 }}>
         <DropZone
           onDrop={onDrop}
-          disabled={isUploadDone || submitting}
+          disabled={isUploadDone || submitting || isLoadingCreate}
           accept={{}}
           maxSize={104857600}
           multiple
@@ -153,17 +184,20 @@ function DocumentsUploadModal({ open, close, droppedFiles }: Props) {
           files={files}
           uploadState={uploadState}
           onRemoveFile={onRemoveFile}
-          disabled={submitting}
+          disabled={submitting || isLoadingCreate}
         />
 
-        <RejectedFiles files={rejectedFiles} disabled={submitting} />
+        <RejectedFiles
+          files={rejectedFiles}
+          disabled={submitting || isLoadingCreate}
+        />
       </DialogContent>
 
       {files.length > 0 && (
         <Footer
           isUploadDone={isUploadDone}
           close={onClose}
-          submitting={submitting}
+          submitting={submitting || isLoadingCreate}
           onUpload={onUpload}
         />
       )}

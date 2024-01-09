@@ -142,6 +142,7 @@ function Files() {
           handleDrawerClose={handleDrawerClose}
         />
         <DocumentsUploadModal
+          userId={userId}
           open={isModalAddDocumentsOpen}
           close={closeModalAddDocs}
           droppedFiles={droppedFiles}

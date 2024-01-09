@@ -1,8 +1,8 @@
 import type { ChangeEvent, MouseEvent } from 'react'
 
-import type { File, RowFile } from 'types/files'
+import type { FileT, RowFile } from 'types/files'
 
-export type Data = Omit<File, 'path' | 'action' | 'isFavorite'>
+export type Data = Omit<FileT, 'path' | 'action' | 'isFavorite'>
 
 export type Order = 'asc' | 'desc'
 
