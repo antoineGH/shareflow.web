@@ -17,9 +17,15 @@ type Props = {
   userId: number
   selectedMultiActions: ListItemKey[]
   selected: number[]
+  resetSelected: () => void
 }
 
-function MultiAction({ userId, selectedMultiActions, selected }: Props) {
+function MultiAction({
+  userId,
+  selectedMultiActions,
+  selected,
+  resetSelected,
+}: Props) {
   const dispatch = useDispatch()
   const multipleActions = useMemo(() => {
     const result: ListItem[] = []
@@ -53,6 +59,7 @@ function MultiAction({ userId, selectedMultiActions, selected }: Props) {
               message: 'Files removed',
             }),
           )
+          resetSelected()
         },
       }),
     )
@@ -72,6 +79,7 @@ function MultiAction({ userId, selectedMultiActions, selected }: Props) {
               message: 'Files restored',
             }),
           )
+          resetSelected()
         },
       }),
     )
@@ -90,6 +98,7 @@ function MultiAction({ userId, selectedMultiActions, selected }: Props) {
               message: 'Files removed',
             }),
           )
+          resetSelected()
         },
       }),
     )

@@ -76,6 +76,8 @@ function FilesTable({
     filteredSelectedActions,
   )
 
+  const resetSelected = () => setSelected([])
+
   const onCheckBoxClick = (id: number) => {
     const selectedIndex = selected.indexOf(id)
     let newSelected: number[] = []
@@ -163,6 +165,7 @@ function FilesTable({
             userId={userId}
             selectedMultiActions={selectedMultiActions}
             selected={selected}
+            resetSelected={resetSelected}
             isPageDelete={isPageDelete}
           />
         )}

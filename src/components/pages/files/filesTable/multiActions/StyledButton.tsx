@@ -1,7 +1,7 @@
+import LoadingButton from '@mui/lab/LoadingButton'
 import { styled } from '@mui/material'
-import Button from '@mui/material/Button'
 
-const StyledButton = styled(Button)(({ theme }) => ({
+const StyledButton = styled(LoadingButton)(({ theme }) => ({
   color: theme.palette.secondary.main,
   textTransform: 'capitalize',
   fontSize: '0.8rem',
