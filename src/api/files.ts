@@ -66,14 +66,21 @@ const downloadFiles = async ({
         Authorization: `Bearer ${token}`,
       },
     })
+
     if (!response.ok) {
       throw new Error('HTTP error ' + response.status)
     }
+
+    const contentDisposition = response.headers.get('Content-Disposition')
+    const fileName = contentDisposition
+      ? contentDisposition.split('filename=')[1]
+      : 'default-filename.ext'
+
     const blob = await response.blob()
     const downloadUrl = window.URL.createObjectURL(blob)
     const link = document.createElement('a')
     link.href = downloadUrl
-    link.download = 'filename.ext'
+    link.download = fileName.slice(1, -1)
     document.body.appendChild(link)
     link.click()
     document.body.removeChild(link)
