@@ -3,6 +3,7 @@ import { useMemo } from 'react'
 import DeleteIcon from '@mui/icons-material/Delete'
 import Grid from '@mui/material/Grid'
 
+import { downloadFiles } from 'api/files'
 import { partialRemoveRestoreFiles, removeFiles } from 'store/files/actions'
 import { useDispatch } from 'store/hooks'
 import { openSnackbar } from 'store/snackbar/slice'
@@ -41,8 +42,38 @@ function MultiAction({
   }, [selectedMultiActions])
 
   const handleClickMultiDownload = () => {
-    console.log('Selected Ids: ', selected)
-    console.log('Clicked Download Multi')
+    if (!selected.length) return
+
+    let messageSuccess =
+      selected.length === 1 ? 'File downloaded' : 'Files downloaded'
+    const messageError =
+      selected.length === 1
+        ? 'Error downloading file'
+        : 'Error downloading files'
+
+    downloadFiles({
+      userId,
+      fileIds: selected,
+      cb: () => {
+        resetSelected()
+        dispatch(
+          openSnackbar({
+            isOpen: true,
+            severity: 'success',
+            message: messageSuccess,
+          }),
+        )
+      },
+      cbError: () => {
+        dispatch(
+          openSnackbar({
+            isOpen: true,
+            severity: 'error',
+            message: messageError,
+          }),
+        )
+      },
+    })
   }
 
   const handleClickMultiDelete = () => {

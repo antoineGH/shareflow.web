@@ -22,6 +22,7 @@ import { SnakeCaseToCamelCase } from 'types/utils'
 import {
   DELETE_FILE,
   DELETE_FILES,
+  DOWNLOAD_FILES,
   GET_FILES,
   PATCH_FILE,
   PATCH_FILES,
@@ -32,6 +33,64 @@ import {
 import { convertObjectKeys, formatURL, generateUrlParams } from './utils'
 
 const errGetFilesMsg = 'An error occurred while getting files. Please try again'
+
+const downloadFiles = async ({
+  userId,
+  fileIds,
+  cb,
+  cbError,
+}: {
+  userId: number
+  fileIds: number[]
+  cb?: () => void
+  cbError?: () => void
+}): Promise<void> => {
+  try {
+    let queries = ''
+    if (fileIds && fileIds.length > 0) {
+      if (fileIds.length === 1) {
+        queries += '&fileIds=' + fileIds[0]
+      } else {
+        queries += '&fileIds=' + fileIds.join(',')
+      }
+    }
+
+    const baseUrl = formatURL(`${DOWNLOAD_FILES}`, { userId })
+    const url = `${baseUrl}?${queries}`
+
+    const token = localStorage.getItem('token')
+
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+
+    if (!response.ok) {
+      throw new Error('HTTP error ' + response.status)
+    }
+
+    const contentDisposition = response.headers.get('Content-Disposition')
+    const fileName = contentDisposition
+      ? contentDisposition.split('filename=')[1]
+      : 'default-filename.ext'
+
+    const blob = await response.blob()
+    const downloadUrl = window.URL.createObjectURL(blob)
+    const link = document.createElement('a')
+    link.href = downloadUrl
+    link.download = fileName.slice(1, -1)
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+
+    cb?.()
+  } catch (error) {
+    console.error('Error, failed to download file')
+    cbError?.()
+  }
+}
 
 async function getFiles(
   userId: number,
@@ -286,6 +345,7 @@ async function deleteFiles(
 }
 
 export {
+  downloadFiles,
   getFiles,
   postFolder,
   postFile,

@@ -34,6 +34,7 @@ const PATCH_FILE = `${BASE_API}/users/{userId}/files/{fileId}`
 const DELETE_FILE = `${BASE_API}/users/{userId}/files/{fileId}`
 const DELETE_FILES = `${BASE_API}/users/{userId}/files`
 const PATCH_FILES = `${BASE_API}/users/{userId}/files`
+const DOWNLOAD_FILES = `${BASE_API}/users/{userId}/files/download`
 
 export {
   GET_STORAGE,
@@ -57,4 +58,5 @@ export {
   DELETE_FILE,
   DELETE_FILES,
   PATCH_FILES,
+  DOWNLOAD_FILES,
 }

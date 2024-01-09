@@ -6,6 +6,7 @@ import MoreHorizIcon from '@mui/icons-material/MoreHoriz'
 import { useTheme } from '@mui/material'
 import IconButton from '@mui/material/IconButton'
 
+import { downloadFiles } from 'api/files'
 import { partialRemoveRestoreFile, removeFile } from 'store/files/actions'
 import { useDispatch, useSelector } from 'store/hooks'
 import { openSnackbar } from 'store/snackbar/slice'
@@ -17,6 +18,7 @@ import type { ListItem, ListItemKey } from './listItems'
 import Menu from './Menu'
 
 type Props = {
+  userId: number
   id: number
   files: FileT[]
   isPageFavorite?: boolean
@@ -30,6 +32,7 @@ type Props = {
 }
 
 function FileMenu({
+  userId,
   id,
   files,
   isPageFavorite,
@@ -98,8 +101,30 @@ function FileMenu({
   const handleClickDownload = (
     e: MouseEvent<HTMLButtonElement> | MouseEvent<HTMLLIElement>,
   ) => {
-    console.log('Clicked Download')
-    closeMenu(e)
+    downloadFiles({
+      userId,
+      fileIds: [id],
+      cb: () => {
+        closeMenu(e)
+        dispatch(
+          openSnackbar({
+            isOpen: true,
+            severity: 'success',
+            message: 'File downloaded',
+          }),
+        )
+      },
+      cbError: () => {
+        closeMenu(e)
+        dispatch(
+          openSnackbar({
+            isOpen: true,
+            severity: 'error',
+            message: 'Error downloading file',
+          }),
+        )
+      },
+    })
   }
 
   const handleClickRename = (

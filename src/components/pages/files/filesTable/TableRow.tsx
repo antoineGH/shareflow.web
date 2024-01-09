@@ -154,6 +154,7 @@ function TableRow({
             )}
             <Stack direction="row" alignItems="center" gap={2}>
               <FileMenu
+                userId={userId}
                 id={row.id}
                 files={files}
                 isPageFavorite={isPageFavorite}
