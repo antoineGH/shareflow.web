@@ -1,8 +1,13 @@
-import { Stack, useTheme } from '@mui/material'
+import { Stack, styled, SvgIcon, useTheme } from '@mui/material'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 
 import { formatDate, getActivityIcon } from './utils'
+
+export const StyledIcon = styled(SvgIcon)(({ theme }) => ({
+  color: theme.palette.primary.main,
+  fontSize: '1.4rem',
+}))
 
 type Props = {
   activity: string
@@ -27,7 +32,7 @@ function Activity({ activity, createdAt }: Props) {
       gap={1.5}
     >
       <Box display="flex" alignItems="center" ml={0.5}>
-        {getActivityIcon(activity, theme)}
+        <StyledIcon theme={theme}>{getActivityIcon(activity)}</StyledIcon>
       </Box>
       <Box display="flex" flexDirection="column" alignItems="flex-start">
         <Typography variant="body2">{activity}</Typography>

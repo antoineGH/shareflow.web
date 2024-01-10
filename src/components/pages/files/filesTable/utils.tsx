@@ -8,37 +8,43 @@ import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf'
 import SlideshowIcon from '@mui/icons-material/Slideshow'
 import TableChartIcon from '@mui/icons-material/TableChart'
 import VideoFileIcon from '@mui/icons-material/VideoFile'
+import { styled, SvgIcon } from '@mui/material'
+
+export const StyledIcon = styled(SvgIcon)({
+  color: '#6c63ff91',
+  fontSize: '1.5rem',
+})
 
 export function getRowIcon(isFolder: boolean, name: string) {
   if (!isFolder) {
     const ext = name.split('.').pop()?.toLowerCase()
     switch (ext) {
       case 'pdf':
-        return <PictureAsPdfIcon color="secondary" fontSize="medium" />
+        return <PictureAsPdfIcon />
       case 'doc':
       case 'docx':
-        return <DescriptionIcon color="secondary" fontSize="medium" />
+        return <DescriptionIcon />
       case 'xls':
       case 'xlsx':
-        return <TableChartIcon color="secondary" fontSize="medium" />
+        return <TableChartIcon />
       case 'ppt':
       case 'pptx':
-        return <SlideshowIcon color="secondary" fontSize="medium" />
+        return <SlideshowIcon />
       case 'zip':
       case 'rar':
-        return <ArchiveIcon color="secondary" fontSize="medium" />
+        return <ArchiveIcon />
       case 'mp3':
-        return <AudioFileIcon color="secondary" fontSize="medium" />
+        return <AudioFileIcon />
       case 'mp4':
-        return <VideoFileIcon color="secondary" fontSize="medium" />
+        return <VideoFileIcon />
       case 'jpg':
       case 'jpeg':
       case 'png':
       case 'gif':
         return <ImageIcon color="secondary" fontSize="medium" />
       default:
-        return <InsertDriveFileIcon color="secondary" fontSize="medium" />
+        return <InsertDriveFileIcon />
     }
   }
-  return <FolderIcon color="secondary" fontSize="medium" />
+  return <FolderIcon />
 }

@@ -1,11 +1,14 @@
+import CommentIcon from '@mui/icons-material/Comment'
+import CommentsDisabledIcon from '@mui/icons-material/CommentsDisabled'
 import DeleteIcon from '@mui/icons-material/Delete'
 import DriveFileRenameOutlineIcon from '@mui/icons-material/DriveFileRenameOutline'
 import GradeIcon from '@mui/icons-material/Grade'
+import LabelIcon from '@mui/icons-material/Label'
+import LabelOffIcon from '@mui/icons-material/LabelOff'
 import NoteAddIcon from '@mui/icons-material/NoteAdd'
 import RestoreIcon from '@mui/icons-material/Restore'
 import RssFeedIcon from '@mui/icons-material/RssFeed'
 import StarBorderIcon from '@mui/icons-material/StarBorder'
-import { Theme } from '@mui/material'
 
 export function formatDate(dateString: string): string {
   const date = new Date(dateString)
@@ -29,58 +32,34 @@ export function formatDate(dateString: string): string {
   return formattedDate
 }
 
-export function getActivityIcon(activity: string, theme: Theme) {
+export function getActivityIcon(activity: string) {
   const words = activity.split(' ')
   const lastWord = words[words.length - 1]
 
   switch (lastWord) {
     case 'created':
-      return (
-        <NoteAddIcon
-          sx={{ color: theme.palette.primary.main, fontSize: '1.4rem' }}
-        />
-      )
+      return <NoteAddIcon />
     case 'renamed':
-      return (
-        <DriveFileRenameOutlineIcon
-          sx={{ color: theme.palette.primary.main, fontSize: '1.4rem' }}
-        />
-      )
+      return <DriveFileRenameOutlineIcon />
     case 'updated':
-      return (
-        <RssFeedIcon
-          sx={{ color: theme.palette.primary.main, fontSize: '1.4rem' }}
-        />
-      )
+      return <RssFeedIcon />
+    case 'commented':
+      return <CommentIcon />
+    case 'uncommented':
+      return <CommentsDisabledIcon />
     case 'deleted':
-      return (
-        <DeleteIcon
-          sx={{ color: theme.palette.primary.main, fontSize: '1.4rem' }}
-        />
-      )
+      return <DeleteIcon />
     case 'restored':
-      return (
-        <RestoreIcon
-          sx={{ color: theme.palette.primary.main, fontSize: '1.4rem' }}
-        />
-      )
+      return <RestoreIcon />
     case 'favorite':
-      return (
-        <GradeIcon
-          sx={{ color: theme.palette.primary.main, fontSize: '1.4rem' }}
-        />
-      )
+      return <GradeIcon />
     case 'unfavorite':
-      return (
-        <StarBorderIcon
-          sx={{ color: theme.palette.primary.main, fontSize: '1.4rem' }}
-        />
-      )
+      return <StarBorderIcon />
+    case 'added':
+      return <LabelIcon />
+    case 'removed':
+      return <LabelOffIcon />
     default:
-      return (
-        <RssFeedIcon
-          sx={{ color: theme.palette.primary.main, fontSize: '1.4rem' }}
-        />
-      )
+      return <RssFeedIcon />
   }
 }

@@ -15,7 +15,7 @@ import type { FileT, RowFile } from 'types/files'
 
 import { formatDate, getPath } from './helpers'
 import RenameFileForm from './RenameFileForm'
-import { getRowIcon } from './utils'
+import { getRowIcon, StyledIcon } from './utils'
 import FileMenu from '../fileMenu/FileMenu'
 
 type Props = {
@@ -58,6 +58,7 @@ function TableRow({
 
   const isFavorite = files.find(file => file.id === row.id)?.isFavorite || false
   const isFolder = files.find(file => file.id === row.id)?.isFolder || false
+  const isNotClickable = rowIdRename === row.id || !isFolder
 
   const handleCheckBoxClick = (e: MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation()
@@ -86,14 +87,14 @@ function TableRow({
     <ClickAwayListener onClickAway={resetRowIdRename}>
       <TableRowMUI
         hover
-        onClick={rowIdRename === row.id ? () => {} : e => handleClickRow(e)}
+        onClick={isNotClickable ? () => {} : e => handleClickRow(e)}
         role="checkbox"
         aria-checked={isItemSelected}
         tabIndex={-1}
         key={row.id}
         selected={isItemSelected}
         sx={{
-          cursor: rowIdRename === row.id ? 'default' : 'pointer',
+          cursor: isNotClickable ? 'default' : 'pointer',
           height: '67px',
         }}
       >
@@ -132,7 +133,7 @@ function TableRow({
                 }}
               />
             )}
-            {getRowIcon(isFolder, row.name)}
+            <StyledIcon>{getRowIcon(isFolder, row.name)}</StyledIcon>
             {rowIdRename === row.id ? (
               <RenameFileForm
                 userId={userId}

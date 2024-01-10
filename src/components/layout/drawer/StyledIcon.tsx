@@ -1,5 +1,5 @@
-import SvgIcon, { type SvgIconProps } from '@mui/material/SvgIcon'
 import { styled } from '@mui/material/styles'
+import SvgIcon, { type SvgIconProps } from '@mui/material/SvgIcon'
 
 interface StyledIconButtonProps extends SvgIconProps {
   activeState: 'active' | 'inactive'
