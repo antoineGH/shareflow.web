@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 
-import { useTheme } from '@mui/material'
+import { Skeleton, useTheme } from '@mui/material'
 import Link from '@mui/material/Link'
 import Typography from '@mui/material/Typography'
 import { Link as RouterLink, useLocation, useNavigate } from 'react-router-dom'
@@ -28,31 +28,22 @@ function useBreadcrumbs({ userId, openModalAddDocs }: Props) {
   const excludedPathName = ['auth', 'files', '']
   let accumulatedPath = ''
 
-  const {
-    isLoadingFetch: isLoadingFetchBreadcrumb,
-    hasErrorFetch: hasErrorFetchBreadcrumb,
-  } = useSelector(breadcrumbsStateSelector)
+  const { isLoadingFetch: isLoadingFetchBreadcrumb } = useSelector(
+    breadcrumbsStateSelector,
+  )
 
   const pathnames = location.pathname
     .split('/')
     .filter(pathname => !excludedPathName.includes(pathname))
 
-  console.log('location.pathname', location.pathname)
-  console.log('pathnames', pathnames)
-
   const folderIds = pathnames.map(pathname => Number(pathname))
-  console.log('folderIds', folderIds)
 
   useEffect(() => {
     if (!userId || !folderIds.length) return
-    console.log('UE, useBreadcrumbs: userId, folderIds', userId, folderIds)
     dispatch(getBreadcrumbs({ userId, folderIds }))
   }, [])
 
   const pathnamesWithFiles = useSelector(selectbreadcrumbsSelector)
-  console.log('isLoadingFetchBreadcrumb', isLoadingFetchBreadcrumb)
-  console.log('hasErrorFetchBreadcrumb', hasErrorFetchBreadcrumb)
-  console.log('pathnamesWithFiles', pathnamesWithFiles)
 
   const handleClick = (
     event: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
@@ -64,7 +55,8 @@ function useBreadcrumbs({ userId, openModalAddDocs }: Props) {
     navigate(`/auth/files${path}`)
   }
 
-  if (isLoadingFetchBreadcrumb) return <p>Loading !!!</p>
+  if (isLoadingFetchBreadcrumb)
+    return <Skeleton variant="text" width={300} height="32px" />
   if (!userId || !pathnamesWithFiles.length) return null
 
   const breadcrumbs = [

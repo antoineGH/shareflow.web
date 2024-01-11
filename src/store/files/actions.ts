@@ -85,14 +85,18 @@ const createFile = createAsyncThunk<
   {
     userId: number
     newFile: FileUpload
+    parentId?: number
     cb?: () => void
   },
   { state: RootState; rejectValue: { errorMessage: string; code?: number } }
 >(
   'files/createFile',
-  async ({ userId, newFile, cb }, { signal, rejectWithValue, dispatch }) => {
+  async (
+    { userId, newFile, parentId, cb },
+    { signal, rejectWithValue, dispatch },
+  ) => {
     try {
-      const { error, file } = await postFile(userId, newFile, signal)
+      const { error, file } = await postFile(userId, newFile, parentId, signal)
 
       if (error) throw new HttpResponseError(null, error.message)
 

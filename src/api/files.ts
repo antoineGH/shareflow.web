@@ -168,10 +168,13 @@ const errPostFileMsg =
 async function postFile(
   userId: number,
   newFile: FileUpload,
+  parentId?: number,
   signal?: AbortSignal,
 ): Promise<PostFileReturnType> {
   try {
-    const url = formatURL(`${POST_FILE}`, { userId })
+    const queries = generateUrlParams({ parentId })
+    const baseUrl = formatURL(`${POST_FILE}`, { userId })
+    const url = `${baseUrl}?${queries}`
 
     const formData = new FormData()
     if (newFile.file) formData.append('file', newFile.file)
