@@ -1,22 +1,25 @@
-import { useContext, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { AuthContext } from 'components/auth/AuthContext'
-import { SubmitHandler, useForm } from 'react-hook-form'
-import { alpha } from '@mui/material/styles'
-import TextField from '@mui/material/TextField'
+import { useContext, useEffect, useState } from 'react'
+
+import { FormHelperText, useTheme } from '@mui/material'
+import AlertTitle from '@mui/material/AlertTitle'
+import Box from '@mui/material/Box'
 import Container from '@mui/material/Container'
 import Grid from '@mui/material/Grid'
 import Paper from '@mui/material/Paper'
-import Box from '@mui/material/Box'
-import AlertTitle from '@mui/material/AlertTitle'
+import { alpha } from '@mui/material/styles'
+import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
-import StyledButton from './StyledButton'
-import { FormHelperText, useTheme } from '@mui/material'
-import { Status } from 'types/store'
+import { SubmitHandler, useForm } from 'react-hook-form'
+import { useNavigate } from 'react-router-dom'
+
+import backgroundSVG from 'assets/stacked-waves.svg'
+import { AuthContext } from 'components/auth/AuthContext'
 import { useDispatch } from 'store/hooks'
 import { openSnackbar } from 'store/snackbar/slice'
+import { Status } from 'types/store'
+
 import StyledAlert from './StyledAlert'
-import backgroundSVG from 'assets/stacked-waves.svg'
+import StyledButton from './StyledButton'
 
 type FormData = {
   email: string
@@ -25,7 +28,7 @@ type FormData = {
 
 const Login = () => {
   const [status, setStatus] = useState<Status>(Status.IDLE)
-  const { login } = useContext(AuthContext)
+  const { login, isAuthenticated } = useContext(AuthContext)
   const theme = useTheme()
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -38,6 +41,11 @@ const Login = () => {
 
   const disabledSubmit = Boolean(errors.email) || Boolean(errors.password)
   const isLoading = status === Status.PENDING
+
+  useEffect(() => {
+    if (!isAuthenticated) return
+    navigate('/auth/files')
+  }, [isAuthenticated])
 
   const onLoadingSuccess = () => {
     setStatus(Status.SUCCEEDED)
