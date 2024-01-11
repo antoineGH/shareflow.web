@@ -83,7 +83,6 @@ const filesSlice = createSlice({
       state.statusAction.create = Status.PENDING
     })
     builder.addCase(createFile.fulfilled, (state, action) => {
-      console.log('action.payload', action.payload)
       state.statusAction.create = Status.SUCCEEDED
       FilesAdapter.addOne(state, action.payload)
     })

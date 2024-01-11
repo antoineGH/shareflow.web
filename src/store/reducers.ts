@@ -1,6 +1,7 @@
 import { combineReducers } from 'redux'
 
 import activities from './activities/slice'
+import breadcrumbs from './breadcrumbs/slice'
 import comments from './comments/slice'
 import files from './files/slice'
 import storage from './settings/storage/slice'
@@ -20,6 +21,7 @@ const rootReducer = combineReducers({
   user,
   settings,
   files,
+  breadcrumbs,
 })
 
 function reducer(state = {}, action) {

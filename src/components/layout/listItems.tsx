@@ -1,8 +1,8 @@
+import DeleteIcon from '@mui/icons-material/Delete'
 import FolderIcon from '@mui/icons-material/Folder'
 import GradeIcon from '@mui/icons-material/Grade'
-import StyleIcon from '@mui/icons-material/Style'
-import DeleteIcon from '@mui/icons-material/Delete'
 import SettingsIcon from '@mui/icons-material/Settings'
+import StyleIcon from '@mui/icons-material/Style'
 
 export type ListItem = {
   id: string

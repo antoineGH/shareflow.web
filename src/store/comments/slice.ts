@@ -1,8 +1,10 @@
 import { createEntityAdapter, createSlice } from '@reduxjs/toolkit'
-import { Status } from 'types/store'
-import type { Comment } from 'types/comments'
-import { createComment, fetchComments, removeComment } from './actions'
+
 import { getStateSliceFromError } from 'store/utils'
+import type { Comment } from 'types/comments'
+import { Status } from 'types/store'
+
+import { createComment, fetchComments, removeComment } from './actions'
 
 type InitialState = {
   statusActions: Record<string, Status>

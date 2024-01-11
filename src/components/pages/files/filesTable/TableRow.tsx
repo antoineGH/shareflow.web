@@ -76,7 +76,7 @@ function TableRow({
     if (isPageDelete) return handleDrawerOpen(row.id)
 
     const path = getPath(row.id, files)
-    if (path) return navigate(`/auth/files${path}`)
+    if (path) return navigate(`/auth/files/${path}`)
   }
 
   const renameRow = () => {

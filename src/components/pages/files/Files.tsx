@@ -34,9 +34,9 @@ function Files() {
   const [hasStartedFetching, setHasStartedFetching] = useState(false)
   const dispatch = useDispatch()
   const params = useParams<{ path: string }>()
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+
   const routingParams = extractRoutingParams(params)
-  // TODO: use routingParams to fetch files in context from the API
+  const parentId = Number(routingParams[routingParams.length - 1])
 
   // ### User ###
   const user = useSelector(selectUserSelector)
@@ -49,8 +49,8 @@ function Files() {
   useEffect(() => {
     if (!userId) return
     if (!user) dispatch(fetchUser({ userId }))
-    dispatch(fetchFiles({ userId, filter: 'all_files' }))
-  }, [userId])
+    dispatch(fetchFiles({ userId, filter: 'all_files', parentId }))
+  }, [userId, parentId])
 
   // ### Files ###
   const fileData: FileData = useSelector(filesDataStateSelector)
@@ -119,7 +119,7 @@ function Files() {
           width: isDrawerOpen ? 'calc(100% - 320px)' : '100%',
         }}
       >
-        <Breadcrumbs openModalAddDocs={openModalAddDocs} />
+        <Breadcrumbs userId={userId} openModalAddDocs={openModalAddDocs} />
         <TextContainer />
         <FilesTable
           userId={userId}
