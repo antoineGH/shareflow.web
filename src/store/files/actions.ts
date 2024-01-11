@@ -29,13 +29,23 @@ const fetchFiles = createAsyncThunk<
     userId: number
     filter: 'all_files' | 'is_deleted' | 'is_favorite'
     tags?: (SnakeCaseToCamelCase<TagApi> | string)[]
+    parentId?: number
   },
   { state: RootState; rejectValue: { errorMessage: string; code?: number } }
 >(
   'files/fetchFiles',
-  async ({ userId, filter, tags }, { signal, rejectWithValue, dispatch }) => {
+  async (
+    { userId, filter, tags, parentId },
+    { signal, rejectWithValue, dispatch },
+  ) => {
     try {
-      const { error, filesData } = await getFiles(userId, filter, tags, signal)
+      const { error, filesData } = await getFiles(
+        userId,
+        filter,
+        tags,
+        parentId,
+        signal,
+      )
 
       if (error) throw new HttpResponseError(null, error.message)
 

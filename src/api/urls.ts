@@ -36,6 +36,9 @@ const DELETE_FILES = `${BASE_API}/users/{userId}/files`
 const PATCH_FILES = `${BASE_API}/users/{userId}/files`
 const DOWNLOAD_FILES = `${BASE_API}/users/{userId}/files/download`
 
+// ### BREADCRUMBS ###
+const GET_BREADCRUMBS = `${BASE_API}/users/{userId}/files/breadcrumbs`
+
 export {
   GET_STORAGE,
   POST_AUTH,
@@ -59,4 +62,5 @@ export {
   DELETE_FILES,
   PATCH_FILES,
   DOWNLOAD_FILES,
+  GET_BREADCRUMBS,
 }

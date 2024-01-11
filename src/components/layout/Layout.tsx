@@ -1,14 +1,17 @@
 import { useContext, useEffect, useState } from 'react'
-import { useTheme } from '@mui/material/styles'
-import { useNavigate } from 'react-router-dom'
-import useMediaQuery from '@mui/material/useMediaQuery'
-import { AuthContext } from 'components/auth/AuthContext'
-import CssBaseline from '@mui/material/CssBaseline'
+
 import Box from '@mui/material/Box'
+import CssBaseline from '@mui/material/CssBaseline'
+import { useTheme } from '@mui/material/styles'
+import useMediaQuery from '@mui/material/useMediaQuery'
+import { useNavigate } from 'react-router-dom'
+
+import { AuthContext } from 'components/auth/AuthContext'
+import useTitle from 'hooks/useTitle'
+
 import Content from './Content'
 import Drawer from './drawer/Drawer'
 import TopBar from './topbar/TopBar'
-import useTitle from 'hooks/useTitle'
 
 const drawerWidth = 160
 const appBarHeight = 42

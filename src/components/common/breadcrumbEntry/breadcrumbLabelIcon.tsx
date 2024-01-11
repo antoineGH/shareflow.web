@@ -1,8 +1,9 @@
-import FolderIcon from '@mui/icons-material/Folder'
 import DeleteIcon from '@mui/icons-material/Delete'
+import FolderIcon from '@mui/icons-material/Folder'
 import GradeIcon from '@mui/icons-material/Grade'
-import StyleIcon from '@mui/icons-material/Style'
 import SettingsIcon from '@mui/icons-material/Settings'
+import StyleIcon from '@mui/icons-material/Style'
+
 import type { BreadcrumbsLabelIcon } from './types'
 
 const breadcrumbsLabelIcon: BreadcrumbsLabelIcon = {

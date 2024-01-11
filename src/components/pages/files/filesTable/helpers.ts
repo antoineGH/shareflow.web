@@ -48,7 +48,7 @@ function stableSort<T>(array: T[], comparator: (a: T, b: T) => number) {
 }
 
 function getPath(id: number, files: FileT[]) {
-  return files.find(file => file.id === id)?.path
+  return files.find(file => file.id === id)?.id
 }
 
 function getSelectedMultiActions(

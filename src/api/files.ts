@@ -96,11 +96,13 @@ async function getFiles(
   userId: number,
   filter: 'all_files' | 'is_deleted' | 'is_favorite',
   tags?: (SnakeCaseToCamelCase<TagApi> | string)[],
+  parentId?: number,
   signal?: AbortSignal,
 ): Promise<GetFilesReturnType> {
   try {
     let queries = generateUrlParams({
       [filter]: 1,
+      parentId,
     })
 
     if (tags && tags.length > 0) {

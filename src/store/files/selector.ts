@@ -37,9 +37,15 @@ const selectFilesSelector = createSelector(filesStoreState, slice =>
 const selectFileByIdSelector = (fileId: FileT['id']) =>
   createSelector(filesStoreState, files => selectById(files, fileId))
 
+const selectFilesByIdsSelector = (fileIds: FileT['id'][]) =>
+  createSelector(filesStoreState, files =>
+    fileIds.map(fileId => selectById(files, fileId)),
+  )
+
 export {
   filesStateSelector,
   filesDataStateSelector,
   selectFilesSelector,
   selectFileByIdSelector,
+  selectFilesByIdsSelector,
 }
