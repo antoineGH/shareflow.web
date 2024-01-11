@@ -12,7 +12,7 @@ type ListItemKey =
 export type FileApi = {
   id: number
   name: string
-  size: string
+  size: number
   modified: string
   path?: string
   created_at: string
@@ -27,7 +27,7 @@ export type FileDataApi = {
   files: SnakeCaseToCamelCase<FileApi>[]
   count_files?: number
   count_folders?: number
-  total_size?: string
+  total_size?: number
 }
 
 export type FileUpload = Pick<FileT, 'name' | 'isFolder'> & {

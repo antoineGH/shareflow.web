@@ -8,6 +8,12 @@ import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf'
 import SlideshowIcon from '@mui/icons-material/Slideshow'
 import TableChartIcon from '@mui/icons-material/TableChart'
 import VideoFileIcon from '@mui/icons-material/VideoFile'
+import { styled, SvgIcon } from '@mui/material'
+
+export const StyledIcon = styled(SvgIcon)({
+  color: '#6c63ff91',
+  fontSize: '1.5rem',
+})
 
 export function getRowIcon(isFolder: boolean, name: string) {
   if (!isFolder) {

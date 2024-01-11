@@ -8,14 +8,14 @@ import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf'
 import SlideshowIcon from '@mui/icons-material/Slideshow'
 import TableChartIcon from '@mui/icons-material/TableChart'
 import VideoFileIcon from '@mui/icons-material/VideoFile'
-import { styled, SvgIcon } from '@mui/material'
+import { styled, SvgIcon, Theme } from '@mui/material'
 
 export const StyledIcon = styled(SvgIcon)({
-  color: '#6c63ff91',
+  color: '#6c63ffcf',
   fontSize: '1.5rem',
 })
 
-export function getRowIcon(isFolder: boolean, name: string) {
+export function getRowIcon(isFolder: boolean, name: string, theme: Theme) {
   if (!isFolder) {
     const ext = name.split('.').pop()?.toLowerCase()
     switch (ext) {
@@ -41,10 +41,10 @@ export function getRowIcon(isFolder: boolean, name: string) {
       case 'jpeg':
       case 'png':
       case 'gif':
-        return <ImageIcon color="secondary" fontSize="medium" />
+        return <ImageIcon />
       default:
         return <InsertDriveFileIcon />
     }
   }
-  return <FolderIcon />
+  return <FolderIcon sx={{ color: theme.palette.primary.main }} />
 }

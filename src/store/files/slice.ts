@@ -18,9 +18,9 @@ import {
 
 type InitialState = {
   statusAction: Record<string, Status>
-  countFiles?: FileData['countFiles']
-  countFolders?: FileData['countFolders']
-  totalSize?: FileData['totalSize']
+  countFiles: FileData['countFiles']
+  countFolders: FileData['countFolders']
+  totalSize: FileData['totalSize']
 }
 
 const initialState: InitialState = {
@@ -31,6 +31,9 @@ const initialState: InitialState = {
     patch: Status.IDLE,
     remove: Status.IDLE,
   },
+  countFiles: 0,
+  countFolders: 0,
+  totalSize: 0,
 }
 
 export const FilesAdapter = createEntityAdapter({
@@ -72,6 +75,11 @@ const filesSlice = createSlice({
     })
     builder.addCase(createFolder.fulfilled, (state, action) => {
       state.statusAction.create = Status.SUCCEEDED
+      if (state.countFolders) {
+        state.countFolders += 1
+      } else {
+        state.countFolders = 1
+      }
       FilesAdapter.addOne(state, action.payload)
     })
     builder.addCase(createFolder.rejected, (state, action) => {
@@ -84,6 +92,17 @@ const filesSlice = createSlice({
     })
     builder.addCase(createFile.fulfilled, (state, action) => {
       state.statusAction.create = Status.SUCCEEDED
+      if (state.totalSize) {
+        state.totalSize += action.payload.size
+      } else {
+        state.totalSize = action.payload.size
+      }
+      if (state.countFiles) {
+        state.countFiles += 1
+      } else {
+        state.countFiles = 1
+      }
+
       FilesAdapter.addOne(state, action.payload)
     })
     builder.addCase(createFile.rejected, (state, action) => {
@@ -124,6 +143,18 @@ const filesSlice = createSlice({
     })
     builder.addCase(partialRemoveRestoreFile.fulfilled, (state, action) => {
       state.statusAction.patch = Status.SUCCEEDED
+      const updates = action.meta.arg.updates
+      const multiplier = updates.isDeleted ? -1 : 1
+
+      if (state.totalSize) {
+        state.totalSize += multiplier * state.totalSize
+      }
+      if (state.countFiles) {
+        state.countFiles += multiplier * state.countFiles
+      }
+      if (state.countFolders) {
+        state.countFolders += multiplier * state.countFolders
+      }
       FilesAdapter.removeOne(state, action.payload.id)
     })
     builder.addCase(partialRemoveRestoreFile.rejected, (state, action) => {
@@ -136,6 +167,25 @@ const filesSlice = createSlice({
     })
     builder.addCase(partialRemoveRestoreFiles.fulfilled, (state, action) => {
       state.statusAction.patch = Status.SUCCEEDED
+      const fileSelectors = FilesAdapter.getSelectors()
+      const files = action.payload.map(id =>
+        fileSelectors.selectById(state, id),
+      )
+      const updates = action.meta.arg.updates
+      const totalSizeChange = files.reduce((acc, file) => acc + file.size, 0)
+      const countFilesChange = files.filter(file => !file.isFolder).length
+      const countFoldersChange = files.filter(file => file.isFolder).length
+      const multiplier = updates.isDeleted ? -1 : 1
+
+      if (state.totalSize) {
+        state.totalSize += multiplier * totalSizeChange
+      }
+      if (state.countFiles) {
+        state.countFiles += multiplier * countFilesChange
+      }
+      if (state.countFolders) {
+        state.countFolders += multiplier * countFoldersChange
+      }
       FilesAdapter.removeMany(state, action.payload)
     })
     builder.addCase(partialRemoveRestoreFiles.rejected, (state, action) => {

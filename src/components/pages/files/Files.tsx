@@ -139,7 +139,7 @@ function Files() {
             <CountFiles
               countFiles={countFiles || 0}
               countFolders={countFolders || 0}
-              totalSize={totalSize || '0'}
+              totalSize={totalSize || 0}
             />
             <DrawerDetails
               open={isDrawerOpen}
@@ -163,9 +163,6 @@ function Files() {
         />
       </Grid>
     )
-
-  // if (files.length === 0 && !hasError && hasStartedFetching)
-  //   return <EmptyFiles pageName="Files" emptyText="No files yet" />
 
   return null
 }
