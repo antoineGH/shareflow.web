@@ -57,7 +57,7 @@ function useBreadcrumbs({ userId, openModalAddDocs }: Props) {
 
   if (isLoadingFetchBreadcrumb)
     return <Skeleton variant="text" width={300} height="32px" />
-  if (!userId || !pathnamesWithFiles.length) return null
+  if (!userId) return null
 
   const breadcrumbs = [
     <Link

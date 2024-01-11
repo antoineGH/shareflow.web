@@ -1,7 +1,7 @@
 import { type MouseEvent, useState } from 'react'
 
 import GradeIcon from '@mui/icons-material/Grade'
-import { Box, useTheme } from '@mui/material'
+import { Box, Typography, useTheme } from '@mui/material'
 import Checkbox from '@mui/material/Checkbox'
 import ClickAwayListener from '@mui/material/ClickAwayListener'
 import IconButton from '@mui/material/IconButton'
@@ -17,6 +17,7 @@ import { formatDate, getPath } from './helpers'
 import RenameFileForm from './RenameFileForm'
 import { getRowIcon, StyledIcon } from './utils'
 import FileMenu from '../fileMenu/FileMenu'
+import { getSizeFile } from '../helpers'
 
 type Props = {
   userId: number
@@ -133,7 +134,7 @@ function TableRow({
                 }}
               />
             )}
-            <StyledIcon>{getRowIcon(isFolder, row.name)}</StyledIcon>
+            <StyledIcon>{getRowIcon(isFolder, row.name, theme)}</StyledIcon>
             {rowIdRename === row.id ? (
               <RenameFileForm
                 userId={userId}
@@ -142,7 +143,15 @@ function TableRow({
                 resetRowIdRename={resetRowIdRename}
               />
             ) : (
-              row.name
+              <Typography
+                variant="body1"
+                fontWeight={isFolder ? 'bold' : 'normal'}
+                sx={{
+                  fontSize: '.8rem',
+                }}
+              >
+                {row.name}
+              </Typography>
             )}
           </Stack>
         </TableCell>
@@ -168,7 +177,7 @@ function TableRow({
                 renameRow={renameRow}
               />
               <Box sx={{ minWidth: '50px' }} justifyContent="flex-end">
-                {row.size}
+                {getSizeFile(row.size)}
               </Box>
             </Stack>
             <Stack

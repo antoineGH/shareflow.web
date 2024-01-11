@@ -3,7 +3,7 @@ import type { FileT } from 'types/files'
 import type { Order } from './types'
 import { ListItemKey } from '../fileMenu/listItems'
 
-function createData(id: number, name: string, size: string, updatedAt: string) {
+function createData(id: number, name: string, size: number, updatedAt: string) {
   return {
     id,
     name,

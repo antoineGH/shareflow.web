@@ -1,10 +1,12 @@
 import Stack from '@mui/material/Stack'
 import Typography from '@mui/material/Typography'
 
+import { getSizeFile } from '../helpers'
+
 type Props = {
   countFiles: number
   countFolders: number
-  totalSize: string
+  totalSize: number
 }
 
 function CountFiles({ countFiles, countFolders, totalSize }: Props) {
@@ -14,7 +16,7 @@ function CountFiles({ countFiles, countFolders, totalSize }: Props) {
         countFiles > 1 ? 's' : ''
       }, ${countFolders} folder${
         countFolders > 1 ? 's' : ''
-      }. Total size: ${totalSize}`}</Typography>
+      }. Total size: ${getSizeFile(totalSize)}`}</Typography>
     </Stack>
   )
 }
