@@ -30,10 +30,15 @@ export type FileDataApi = {
   total_size?: string
 }
 
-export type FileUpload = Pick<FileT, 'name' | 'isFolder'> & { file?: File }
+export type FileUpload = Pick<FileT, 'name' | 'isFolder'> & {
+  file?: File
+  parentId?: number
+}
 export type FileUploadApi = CamelCaseToSnakeCase<FileUpload>
 
-export type FolderUpload = Pick<FileT, 'name' | 'isFolder'>
+export type FolderUpload = Pick<FileT, 'name' | 'isFolder'> & {
+  parentId?: number
+}
 export type FolderUploadApi = CamelCaseToSnakeCase<FolderUpload>
 
 export type FileT = SnakeCaseToCamelCase<FileApi>

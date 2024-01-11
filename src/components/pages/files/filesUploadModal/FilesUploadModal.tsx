@@ -6,6 +6,7 @@ import DialogContent from '@mui/material/DialogContent'
 import Stack from '@mui/material/Stack'
 import Typography from '@mui/material/Typography'
 import { FileRejection } from 'react-dropzone'
+import { useLocation } from 'react-router-dom'
 
 import { createFile } from 'store/files/actions'
 import { filesStateSelector } from 'store/files/selector'
@@ -41,6 +42,15 @@ function DocumentsUploadModal({ userId, open, close, droppedFiles }: Props) {
   const [submitting, setSubmitting] = useState(false)
   const dispatch = useDispatch()
   const { isLoadingCreate } = useSelector(filesStateSelector)
+
+  const location = useLocation()
+  const excludedPathName = ['auth', 'files', '']
+
+  const pathnames = location.pathname
+    .split('/')
+    .filter(pathname => !excludedPathName.includes(pathname))
+
+  const parentId = Number(pathnames[pathnames.length - 1]) || undefined
 
   const onCloseDocumentsUploaded = () => {
     close()
@@ -86,6 +96,7 @@ function DocumentsUploadModal({ userId, open, close, droppedFiles }: Props) {
           isFolder: Boolean(!file),
           file,
         },
+        parentId,
         cb: () => {
           dispatch(
             openSnackbar({

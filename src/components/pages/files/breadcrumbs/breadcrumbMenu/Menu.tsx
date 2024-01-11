@@ -8,6 +8,7 @@ import MenuItem from '@mui/material/MenuItem'
 import Stack from '@mui/material/Stack'
 import TextField from '@mui/material/TextField'
 import { SubmitHandler, useForm } from 'react-hook-form'
+import { useLocation } from 'react-router-dom'
 
 import { createFolder } from 'store/files/actions'
 import { filesStateSelector } from 'store/files/selector'
@@ -33,6 +34,15 @@ type Props = {
 }
 
 function Menu({ anchorEl, open, openModalAddDocs, closeMenu }: Props) {
+  const location = useLocation()
+  const excludedPathName = ['auth', 'files', '']
+
+  const pathnames = location.pathname
+    .split('/')
+    .filter(pathname => !excludedPathName.includes(pathname))
+
+  const parentId = Number(pathnames[pathnames.length - 1]) || undefined
+
   const { isHidden, openFolder, closeFolder } = useFolderMenu()
   const user = useSelector(selectUserSelector)
   const { isLoadingCreate } = useSelector(filesStateSelector)
@@ -55,7 +65,7 @@ function Menu({ anchorEl, open, openModalAddDocs, closeMenu }: Props) {
     await dispatch(
       createFolder({
         userId: user.id,
-        newFolder: { name: data.fileName, isFolder: true },
+        newFolder: { name: data.fileName, isFolder: true, parentId },
         cb: () => {
           dispatch(
             openSnackbar({
