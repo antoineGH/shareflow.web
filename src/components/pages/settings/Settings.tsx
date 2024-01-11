@@ -1,22 +1,26 @@
 import { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'store/hooks'
-import { selectUserSelector, userStateSelector } from 'store/user/selector'
-import Grid from '@mui/material/Grid'
+
 import Breadcrumbs from '@mui/material/Breadcrumbs'
-import Storage from './storage/Storage'
-import AccountInfo from './accountInfo/AccountInfo'
-import Password from './password/Password'
-import Language from './Language'
-import Version from './version/Version'
+import Grid from '@mui/material/Grid'
+
 import BreadcrumbEntry from 'components/common/breadcrumbEntry/BreadcrumbEntry'
-import { fetchUser } from 'store/user/actions'
-import { fetchStorage } from 'store/settings/storage/actions'
 import useFetchUserFromToken from 'hooks/useFetchUserFromToken'
-import { openSnackbar } from 'store/snackbar/slice'
+import { useDispatch, useSelector } from 'store/hooks'
+import { fetchStorage } from 'store/settings/storage/actions'
 import { selectStorageSelector } from 'store/settings/storage/selector'
+import { openSnackbar } from 'store/snackbar/slice'
+import { fetchUser } from 'store/user/actions'
+import { selectUserSelector, userStateSelector } from 'store/user/selector'
+
+import AccountInfo from './accountInfo/AccountInfo'
+import Language from './Language'
+import Password from './password/Password'
+import Storage from './storage/Storage'
+import Version from './version/Version'
 
 function Settings() {
   const [editMode, setEditMode] = useState<'userInfo' | 'password' | null>(null)
+  const [hasStartedFetching, setHasStartedFetching] = useState(false)
   const dispatch = useDispatch()
 
   // ### User ###
@@ -41,6 +45,7 @@ function Settings() {
 
   useEffect(() => {
     if (!userId || Object.keys(storage).length !== 0) return
+    setHasStartedFetching(true)
     dispatch(fetchStorage({ userId }))
   }, [userId, dispatch, storage])
 
@@ -82,7 +87,7 @@ function Settings() {
         </Breadcrumbs>
       </Grid>
       <Grid item sx={{ width: '100%' }} py={0} px={1}>
-        <Storage />
+        <Storage hasStartedFetching={hasStartedFetching} />
         <AccountInfo
           user={user}
           isLoading={isLoadingFetch}
