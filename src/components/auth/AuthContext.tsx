@@ -1,5 +1,6 @@
-import { postLogin } from 'api/users'
 import { createContext, useState } from 'react'
+
+import { postLogin } from 'api/users'
 import { useDispatch } from 'store/hooks'
 import { openSnackbar } from 'store/snackbar/slice'
 
@@ -33,8 +34,8 @@ export const AuthProvider = ({ children }) => {
     cbError?: () => void,
   ) => {
     try {
-      const isAuthenticated = await postLogin(email, password)
-      if (!isAuthenticated) throw new Error('Invalid credentials')
+      const isConnected = await postLogin(email, password)
+      if (!isConnected) throw new Error('Invalid credentials')
 
       setIsAuthenticated(true)
       cbSuccess?.()
