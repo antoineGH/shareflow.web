@@ -109,7 +109,7 @@ function Files() {
 
   if (hasError) return <ErrorFiles pageName="Files" />
 
-  if (files.length >= 1 && !isLoading && !hasError)
+  if (!isLoading && !hasError)
     return (
       <Grid
         container
@@ -128,19 +128,29 @@ function Files() {
           handleDrawerOpen={handleDrawerOpen}
           toggleDrawer={toggleDrawer}
         />
-        <CountFiles
-          countFiles={countFiles || 0}
-          countFolders={countFolders || 0}
-          totalSize={totalSize || '0'}
-        />
-        <DrawerDetails
-          open={isDrawerOpen}
-          userId={userId}
-          fileId={drawerFileId}
-          activeDrawerTab={activeDrawerTab}
-          handleChangeDrawerTab={handleChangeDrawerTab}
-          handleDrawerClose={handleDrawerClose}
-        />
+        {files.length === 0 && !hasError && hasStartedFetching ? (
+          <EmptyFiles
+            pageName="Files"
+            emptyText="No files yet"
+            hasHeader={false}
+          />
+        ) : (
+          <>
+            <CountFiles
+              countFiles={countFiles || 0}
+              countFolders={countFolders || 0}
+              totalSize={totalSize || '0'}
+            />
+            <DrawerDetails
+              open={isDrawerOpen}
+              userId={userId}
+              fileId={drawerFileId}
+              activeDrawerTab={activeDrawerTab}
+              handleChangeDrawerTab={handleChangeDrawerTab}
+              handleDrawerClose={handleDrawerClose}
+            />
+          </>
+        )}
         <DocumentsUploadModal
           userId={userId}
           open={isModalAddDocumentsOpen}
@@ -154,8 +164,8 @@ function Files() {
       </Grid>
     )
 
-  if (files.length === 0 && !hasError && hasStartedFetching)
-    return <EmptyFiles pageName="Files" emptyText="No files yet" />
+  // if (files.length === 0 && !hasError && hasStartedFetching)
+  //   return <EmptyFiles pageName="Files" emptyText="No files yet" />
 
   return null
 }
