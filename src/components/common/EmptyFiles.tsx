@@ -9,16 +9,23 @@ import { PageName } from './breadcrumbEntry/types'
 type Props = {
   pageName: PageName
   emptyText?: string
+  hasHeader?: boolean
 }
 
-function EmptyFiles({ emptyText = 'No files', pageName }: Props) {
+function EmptyFiles({
+  emptyText = 'No files',
+  pageName,
+  hasHeader = true,
+}: Props) {
   return (
     <Grid container sx={{ height: 'calc(100vh - 800px)', mt: '42px' }}>
-      <Grid item px={1.5} pt={2} pb={1} xs={12}>
-        <Breadcrumbs aria-label="breadcrumb">
-          <BreadcrumbEntry pageName={pageName} />
-        </Breadcrumbs>
-      </Grid>
+      {hasHeader && (
+        <Grid item px={1.5} pt={2} pb={1} xs={12}>
+          <Breadcrumbs aria-label="breadcrumb">
+            <BreadcrumbEntry pageName={pageName} />
+          </Breadcrumbs>
+        </Grid>
+      )}
       <Grid
         container
         sx={{
