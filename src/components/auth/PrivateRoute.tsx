@@ -1,6 +1,8 @@
 import { useContext } from 'react'
-import { AuthContext } from './AuthContext'
+
 import { Navigate } from 'react-router-dom'
+
+import { AuthContext } from './AuthContext'
 
 const PrivateComponent = ({ Layout, Component }) => {
   const { isAuthenticated } = useContext(AuthContext)

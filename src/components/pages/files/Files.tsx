@@ -25,7 +25,6 @@ import CountFiles from './countFiles/CountFiles'
 import DrawerDetails from './drawerDetails/DrawerDetails'
 import useDrawerDetails from './drawerDetails/useDrawerDetails'
 import FilesTable from './filesTable/FilesTable'
-import TextContainer from './filesUploadModal/filesUploadDragNDrop/TextContainer'
 import useAddDocumentsDropZone from './filesUploadModal/filesUploadDragNDrop/useAddDocumentsDropZone'
 import DocumentsUploadModal from './filesUploadModal/FilesUploadModal'
 import FirstLoginModal from './firstLoginModal/FirstLoginModal'
@@ -56,7 +55,6 @@ function Files() {
   }, [userId, parentId])
 
   // ### Storage ###
-
   const storage = useSelector(selectStorageSelector)
   const { hasErrorFetch: hasErrorFetchStorage } = useSelector(userStateSelector)
 
@@ -141,7 +139,6 @@ function Files() {
         }}
       >
         <Breadcrumbs userId={userId} openModalAddDocs={openModalAddDocs} />
-        <TextContainer />
         <FilesTable
           userId={userId}
           files={files}

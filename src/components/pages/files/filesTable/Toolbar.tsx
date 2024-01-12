@@ -48,13 +48,11 @@ function Toolbar({
   return (
     <MUIToolbar
       sx={{
-        pl: { sm: 2 },
-        pr: { xs: 1, sm: 1 },
         mt: 0.5,
-        [theme.breakpoints.up('sm')]: {
-          minHeight: '36px',
-          height: '36px',
-          paddingLeft: '16px',
+        '@media (min-width: 0px)': {
+          p: 0,
+          m: 0,
+          minHeight: '38px',
         },
         ...(numSelected > 0 && {
           bgcolor: alpha(
@@ -71,14 +69,13 @@ function Toolbar({
           flexDirection: 'row',
           justifyContent: 'space-between',
           alignItems: 'center',
-          pr: 3,
         }}
       >
         {numSelected > 0 ? (
           <>
-            <Grid item>
+            <Grid item sx={{ pl: 2 }}>
               <Typography
-                sx={{ flex: '1 1 100%' }}
+                sx={{ flex: '1 1 100%', fontSize: '.8rem' }}
                 color="inherit"
                 variant="body1"
                 component="div"
@@ -86,7 +83,7 @@ function Toolbar({
                 {numSelected} selected
               </Typography>
             </Grid>
-            <Grid item>
+            <Grid item sx={{ pr: 4 }}>
               <MultiAction
                 userId={userId}
                 selected={selected}

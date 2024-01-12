@@ -8,6 +8,7 @@ function Content({ Component }) {
       sx={{
         height: '100vh',
         width: '100%',
+        overflow: 'hidden',
       }}
     >
       <Container
@@ -15,9 +16,10 @@ function Content({ Component }) {
           '@media (min-width: 1200px)': {
             maxWidth: '100%',
           },
-          '@media (min-width: 600px)': {
+          '@media (min-width: 0px)': {
             p: 0,
             m: 0,
+            maxWidth: '100%',
           },
         }}
       >
