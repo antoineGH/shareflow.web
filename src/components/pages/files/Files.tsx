@@ -13,6 +13,8 @@ import {
   filesStateSelector,
 } from 'store/files/selector'
 import { useDispatch, useSelector } from 'store/hooks'
+import { fetchStorage } from 'store/settings/storage/actions'
+import { selectStorageSelector } from 'store/settings/storage/selector'
 import { openSnackbar } from 'store/snackbar/slice'
 import { fetchUser } from 'store/user/actions'
 import { selectUserSelector, userStateSelector } from 'store/user/selector'
@@ -32,6 +34,7 @@ import { extractRoutingParams } from './helpers'
 
 function Files() {
   const [hasStartedFetching, setHasStartedFetching] = useState(false)
+  const [hasFetchedStorage, setHasFetchedStorage] = useState(false)
   const dispatch = useDispatch()
   const params = useParams<{ path: string }>()
 
@@ -52,6 +55,23 @@ function Files() {
     dispatch(fetchFiles({ userId, filter: 'all_files', parentId }))
   }, [userId, parentId])
 
+  // ### Storage ###
+
+  const storage = useSelector(selectStorageSelector)
+  const { hasErrorFetch: hasErrorFetchStorage } = useSelector(userStateSelector)
+
+  useEffect(() => {
+    if (!userId || hasFetchedStorage) return
+    dispatch(fetchStorage({ userId }))
+    setHasFetchedStorage(true)
+  }, [userId, dispatch, hasFetchedStorage])
+
+  useEffect(() => {
+    if (storage.storageUsed !== undefined) {
+      setHasFetchedStorage(false)
+    }
+  }, [storage.storageUsed])
+
   // ### Files ###
   const fileData: FileData = useSelector(filesDataStateSelector)
   const {
@@ -61,7 +81,8 @@ function Files() {
 
   // ### Error ###
   const isLoading = isLoadingFetchUser || isLoadingFetchFiles
-  const hasError = hasErrorFetchUser || hasErrorFetchFiles || error
+  const hasError =
+    hasErrorFetchUser || hasErrorFetchFiles || hasErrorFetchStorage || error
 
   useEffect(() => {
     if (!isLoading) return

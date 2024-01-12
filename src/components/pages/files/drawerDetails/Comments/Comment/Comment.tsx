@@ -44,10 +44,15 @@ function CommentsSection({
         }}
       >
         <Stack direction="row" alignItems="center" spacing={1}>
-          <Skeleton variant="circular" width={24} height={24} />
-          <Skeleton variant="text" width={100} height={24} />
+          <Skeleton
+            animation="wave"
+            variant="circular"
+            width={24}
+            height={24}
+          />
+          <Skeleton animation="wave" variant="text" width={100} height={24} />
           <Box flexGrow={1} />
-          <Skeleton variant="text" width={100} height={24} />
+          <Skeleton animation="wave" variant="text" width={100} height={24} />
         </Stack>
         <Card
           sx={{
@@ -66,8 +71,8 @@ function CommentsSection({
               },
             }}
           >
-            <Skeleton variant="text" />
-            <Skeleton variant="text" />
+            <Skeleton animation="wave" variant="text" />
+            <Skeleton animation="wave" variant="text" />
           </CardContent>
         </Card>
       </Box>

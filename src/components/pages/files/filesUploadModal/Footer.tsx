@@ -4,11 +4,18 @@ import { Button, DialogActions } from '@mui/material'
 type Props = {
   isUploadDone: boolean
   submitting: boolean
+  isUploadDisabled: boolean
   close(): void
   onUpload(): Promise<void>
 }
 
-function Footer({ isUploadDone, submitting, close, onUpload }: Props) {
+function Footer({
+  isUploadDone,
+  submitting,
+  isUploadDisabled,
+  close,
+  onUpload,
+}: Props) {
   return (
     <DialogActions sx={{ px: 0 }}>
       {isUploadDone ? (
@@ -34,6 +41,7 @@ function Footer({ isUploadDone, submitting, close, onUpload }: Props) {
             variant="contained"
             onClick={onUpload}
             loading={submitting}
+            disabled={isUploadDisabled}
             sx={{ color: 'white', textTransform: 'capitalize' }}
           >
             Add

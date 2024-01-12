@@ -20,7 +20,7 @@ import Version from './version/Version'
 
 function Settings() {
   const [editMode, setEditMode] = useState<'userInfo' | 'password' | null>(null)
-  const [hasStartedFetching, setHasStartedFetching] = useState(false)
+  const [hasFetchedStorage, setHasFetchedStorage] = useState(false)
   const dispatch = useDispatch()
 
   // ### User ###
@@ -44,10 +44,16 @@ function Settings() {
   } = useSelector(userStateSelector)
 
   useEffect(() => {
-    if (!userId || Object.keys(storage).length !== 0) return
-    setHasStartedFetching(true)
+    if (!userId || hasFetchedStorage) return
     dispatch(fetchStorage({ userId }))
-  }, [userId, dispatch, storage])
+    setHasFetchedStorage(true)
+  }, [userId, dispatch, hasFetchedStorage])
+
+  useEffect(() => {
+    if (storage.storageUsed !== undefined) {
+      setHasFetchedStorage(true)
+    }
+  }, [storage.storageUsed])
 
   // ### Error ###
   useEffect(() => {
@@ -87,7 +93,7 @@ function Settings() {
         </Breadcrumbs>
       </Grid>
       <Grid item sx={{ width: '100%' }} py={0} px={1}>
-        <Storage hasStartedFetching={hasStartedFetching} />
+        <Storage hasStartedFetching={hasFetchedStorage} />
         <AccountInfo
           user={user}
           isLoading={isLoadingFetch}

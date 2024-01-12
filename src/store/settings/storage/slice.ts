@@ -1,8 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit'
+
+import { getStateSliceFromError } from 'store/utils'
 import { Settings } from 'types/settings'
 import { Status } from 'types/store'
+
 import { fetchStorage } from './actions'
-import { getStateSliceFromError } from 'store/utils'
 
 type InitialState = {
   statusAction: Record<string, Status>
@@ -19,7 +21,11 @@ const initialState: InitialState = {
 const storageSlice = createSlice({
   name: 'settings/storage',
   initialState: initialState,
-  reducers: {},
+  reducers: {
+    incrementStorageUsed: (state, action) => {
+      state.storage.storageUsed += action.payload
+    },
+  },
   extraReducers: builder => {
     // ### fetchStorage ###
     builder.addCase(fetchStorage.pending, state => {
@@ -34,5 +40,7 @@ const storageSlice = createSlice({
     })
   },
 })
+
+export const { incrementStorageUsed } = storageSlice.actions
 
 export default storageSlice.reducer

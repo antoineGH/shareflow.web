@@ -37,7 +37,7 @@ function Storage({ hasStartedFetching }: Props) {
       <Box p={1}>
         <Box position="relative" display="inline-flex" width="100%">
           <Box sx={{ width: '100%' }}>
-            <Skeleton variant="rectangular" height={36} />
+            <Skeleton animation="wave" variant="rectangular" height={36} />
           </Box>
         </Box>
       </Box>

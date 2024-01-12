@@ -71,10 +71,15 @@ function AccountInfo({
   if (isLoading) {
     return (
       <Box p={2} pt={0}>
-        <Skeleton variant="text" width={200} height={50} />
-        <Skeleton variant="circular" width={150} height={150} />
-        <Skeleton variant="text" width={200} height={40} />
-        <Skeleton variant="text" width={200} height={40} />
+        <Skeleton animation="wave" variant="text" width={200} height={50} />
+        <Skeleton
+          animation="wave"
+          variant="circular"
+          width={150}
+          height={150}
+        />
+        <Skeleton animation="wave" variant="text" width={200} height={40} />
+        <Skeleton animation="wave" variant="text" width={200} height={40} />
       </Box>
     )
   }
