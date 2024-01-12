@@ -24,3 +24,16 @@ export type EnhancedTableProps = {
   isPageTag?: boolean
   isPageDelete?: boolean
 }
+
+export type AlertMessage = {
+  severity: 'info' | 'warning' | 'error'
+  message: string
+}
+
+type AlertKey =
+  | 'warningStorage'
+  | 'errorStorage'
+  | 'isPageDelete'
+  | 'isPageUpload'
+
+export type AlertMessages = Record<AlertKey, AlertMessage>

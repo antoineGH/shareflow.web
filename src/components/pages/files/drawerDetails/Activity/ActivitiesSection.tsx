@@ -29,8 +29,13 @@ function ActivitySection({ activities, isLoading, hasError }: Props) {
           marginRight: '1rem',
         }}
       >
-        <Skeleton variant="text" width="60%" />
-        <Skeleton variant="text" width="30%" sx={{ alignSelf: 'flex-end' }} />
+        <Skeleton animation="wave" variant="text" width="60%" />
+        <Skeleton
+          animation="wave"
+          variant="text"
+          width="30%"
+          sx={{ alignSelf: 'flex-end' }}
+        />
       </Box>
     ))
 

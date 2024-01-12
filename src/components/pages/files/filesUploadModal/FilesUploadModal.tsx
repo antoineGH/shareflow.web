@@ -11,6 +11,8 @@ import { useLocation } from 'react-router-dom'
 import { createFile } from 'store/files/actions'
 import { filesStateSelector } from 'store/files/selector'
 import { useDispatch, useSelector } from 'store/hooks'
+import { selectStorageUploadDisableSelector } from 'store/settings/storage/selector'
+import { incrementStorageUsed } from 'store/settings/storage/slice'
 import { openSnackbar } from 'store/snackbar/slice'
 
 import DropZone from './dropzone/Dropzone'
@@ -19,6 +21,8 @@ import type { DroppedFiles, FileState } from './filesUploadDragNDrop/types'
 import Footer from './Footer'
 import Header from './Header'
 import { formatAcceptedFiles } from './helpers'
+import StyledAlert from './StyledAlert'
+import { pickAlertMessage } from '../filesTable/utils'
 
 type Props = {
   userId: number
@@ -42,6 +46,8 @@ function DocumentsUploadModal({ userId, open, close, droppedFiles }: Props) {
   const [submitting, setSubmitting] = useState(false)
   const dispatch = useDispatch()
   const { isLoadingCreate } = useSelector(filesStateSelector)
+  const isUploadDisabled = useSelector(selectStorageUploadDisableSelector)
+  const alertMessage = pickAlertMessage({ isErrorStorage: true })
 
   const location = useLocation()
   const excludedPathName = ['auth', 'files', '']
@@ -88,7 +94,7 @@ function DocumentsUploadModal({ userId, open, close, droppedFiles }: Props) {
   }
 
   const uploadDocument = async (file: File) => {
-    dispatch(
+    const result = await dispatch(
       createFile({
         userId,
         newFile: {
@@ -107,11 +113,15 @@ function DocumentsUploadModal({ userId, open, close, droppedFiles }: Props) {
           )
         },
       }),
-    )
+    ).unwrap()
+    if (result.size) {
+      dispatch(incrementStorageUsed(result.size))
+    }
+
     return { error: false }
   }
   const onUpload = async () => {
-    if (submitting || isLoadingCreate) return
+    if (submitting || isLoadingCreate || isUploadDisabled) return
 
     setSubmitting(true)
 
@@ -159,6 +169,11 @@ function DocumentsUploadModal({ userId, open, close, droppedFiles }: Props) {
       disableEscapeKeyDown={submitting || isLoadingCreate}
     >
       <Header close={onClose} disabledClose={submitting || isLoadingCreate} />
+      {isUploadDisabled && (
+        <StyledAlert severity={alertMessage.severity}>
+          {alertMessage.message}
+        </StyledAlert>
+      )}
 
       <DialogContent sx={{ px: 0 }}>
         <DropZone
@@ -190,23 +205,25 @@ function DocumentsUploadModal({ userId, open, close, droppedFiles }: Props) {
             )}
           </Stack>
         )}
+        <Stack sx={{ maxHeight: 'calc(100vh - 1000px)', overflowY: 'scroll' }}>
+          <ValidFiles
+            files={files}
+            uploadState={uploadState}
+            onRemoveFile={onRemoveFile}
+            disabled={submitting || isLoadingCreate}
+          />
 
-        <ValidFiles
-          files={files}
-          uploadState={uploadState}
-          onRemoveFile={onRemoveFile}
-          disabled={submitting || isLoadingCreate}
-        />
-
-        <RejectedFiles
-          files={rejectedFiles}
-          disabled={submitting || isLoadingCreate}
-        />
+          <RejectedFiles
+            files={rejectedFiles}
+            disabled={submitting || isLoadingCreate}
+          />
+        </Stack>
       </DialogContent>
 
       {files.length > 0 && (
         <Footer
           isUploadDone={isUploadDone}
+          isUploadDisabled={isUploadDisabled}
           close={onClose}
           submitting={submitting || isLoadingCreate}
           onUpload={onUpload}

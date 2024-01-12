@@ -1,19 +1,20 @@
-import { type SubmitHandler, useForm } from 'react-hook-form'
-import Box from '@mui/material/Box'
-import Grid from '@mui/material/Grid'
-import Typography from '@mui/material/Typography'
-import TextField from '@mui/material/TextField'
-import Avatar from '@mui/material/Avatar'
-import Skeleton from '@mui/material/Skeleton'
-import type { User } from 'types/users'
-import { FormHelperText, useTheme } from '@mui/material'
-import Button from '@mui/material/Button'
-import LoadingButton from '@mui/lab/LoadingButton'
 import EditIcon from '@mui/icons-material/Edit'
+import LoadingButton from '@mui/lab/LoadingButton'
+import { FormHelperText, useTheme } from '@mui/material'
+import Avatar from '@mui/material/Avatar'
+import Box from '@mui/material/Box'
+import Button from '@mui/material/Button'
+import Grid from '@mui/material/Grid'
+import Skeleton from '@mui/material/Skeleton'
+import TextField from '@mui/material/TextField'
+import Typography from '@mui/material/Typography'
+import { type SubmitHandler, useForm } from 'react-hook-form'
+
 import { useDispatch, useSelector } from 'store/hooks'
+import { openSnackbar } from 'store/snackbar/slice'
 import { updateUser } from 'store/user/actions'
 import { userStateSelector } from 'store/user/selector'
-import { openSnackbar } from 'store/snackbar/slice'
+import type { User } from 'types/users'
 
 type FormData = {
   fullName: string
@@ -70,10 +71,15 @@ function AccountInfo({
   if (isLoading) {
     return (
       <Box p={2} pt={0}>
-        <Skeleton variant="text" width={200} height={50} />
-        <Skeleton variant="circular" width={120} height={120} />
-        <Skeleton variant="text" width={200} height={40} />
-        <Skeleton variant="text" width={200} height={40} />
+        <Skeleton animation="wave" variant="text" width={200} height={50} />
+        <Skeleton
+          animation="wave"
+          variant="circular"
+          width={150}
+          height={150}
+        />
+        <Skeleton animation="wave" variant="text" width={200} height={40} />
+        <Skeleton animation="wave" variant="text" width={200} height={40} />
       </Box>
     )
   }

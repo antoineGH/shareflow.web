@@ -1,10 +1,18 @@
-import { alpha, useTheme } from '@mui/material'
+import { alpha, Skeleton, useTheme } from '@mui/material'
 import Grid from '@mui/material/Grid'
 import MUIToolbar from '@mui/material/Toolbar'
 import Typography from '@mui/material/Typography'
 
+import { useSelector } from 'store/hooks'
+import {
+  selectStorageWarningErrorSelector,
+  storageStateSelector,
+} from 'store/settings/storage/selector'
+
 import MultiAction from './multiActions/MultiActions'
 import StyledAlert from './StyledAlert'
+import { AlertMessage } from './types'
+import { pickAlertMessage } from './utils'
 import { ListItemKey } from '../fileMenu/listItems'
 
 type Props = {
@@ -24,6 +32,18 @@ function Toolbar({
 }: Props) {
   const theme = useTheme()
   const numSelected = selected.length
+
+  const { isWarning: isWarningStorage, isError: isErrorStorage } = useSelector(
+    selectStorageWarningErrorSelector,
+  )
+  const { isLoadingFetch: isLoadingFetchStorage } =
+    useSelector(storageStateSelector)
+
+  const alertMessage: AlertMessage = pickAlertMessage({
+    isPageDelete,
+    isWarningStorage,
+    isErrorStorage,
+  })
 
   return (
     <MUIToolbar
@@ -77,11 +97,18 @@ function Toolbar({
           </>
         ) : (
           <Grid item sx={{ width: '100%' }}>
-            <StyledAlert severity={isPageDelete ? 'warning' : 'info'}>
-              {isPageDelete
-                ? 'You will be able to recover deleted files from here for 30 days.'
-                : 'Save, organize, and tidy up your files effortlessly in shareFlow'}
-            </StyledAlert>
+            {isLoadingFetchStorage ? (
+              <Skeleton
+                animation="wave"
+                variant="text"
+                width="100%"
+                height="62px"
+              />
+            ) : (
+              <StyledAlert severity={alertMessage.severity}>
+                {alertMessage.message}
+              </StyledAlert>
+            )}
           </Grid>
         )}
       </Grid>

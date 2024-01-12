@@ -190,8 +190,13 @@ async function postFile(
     })
 
     if (res.status !== 201) {
-      throw new HttpResponseError(res.status ?? null, errPostFileMsg)
+      const object = await res.json()
+      throw new HttpResponseError(
+        object.status ?? null,
+        object.error.message || errPostFileMsg,
+      )
     }
+
     const object = await res.json()
     const file = convertObjectKeys<FileApi, FileT>(object)
 

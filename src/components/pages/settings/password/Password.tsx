@@ -81,8 +81,8 @@ function Password({
           }}
         >
           <Grid item>
-            <Skeleton variant="text" width={200} height={50} />
-            <Skeleton variant="text" width={200} height={40} />
+            <Skeleton animation="wave" variant="text" width={200} height={50} />
+            <Skeleton animation="wave" variant="text" width={200} height={40} />
           </Grid>
         </Grid>
       </Box>

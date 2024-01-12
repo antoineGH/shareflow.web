@@ -141,18 +141,13 @@ function Tags() {
               toggleDrawer={() => {}}
             />
           ) : (
-            <Typography sx={{ fontSize: '.9rem', px: 2 }}>
+            <Typography sx={{ fontSize: '.85rem', px: 2, ml: 1 }}>
               No files found
             </Typography>
           )}
         </Grid>
       </Grid>
     )
-
-  // if (files.length === 0 && !hasError && hasStartedFetching)
-  //   return <EmptyFiles pageName="Tags" emptyText="No files yet" />
-
-  // return null
 }
 
 export default Tags
