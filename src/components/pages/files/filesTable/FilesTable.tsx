@@ -35,6 +35,7 @@ type Props = {
   toggleDrawer: (fileId: number) => void
   handleDrawerOpen: (fileId: number) => void
   handleChangeDrawerTab: (tab: number) => void
+  setPreviewUrlCallback?: (url: string, fileId: number) => void
 }
 
 function FilesTable({
@@ -46,6 +47,7 @@ function FilesTable({
   toggleDrawer,
   handleDrawerOpen,
   handleChangeDrawerTab,
+  setPreviewUrlCallback,
 }: Props) {
   const [selected, setSelected] = useState<number[]>([])
   const [order, setOrder] = useState<Order>('asc')
@@ -200,6 +202,7 @@ function FilesTable({
                     handleChangeDrawerTab={handleChangeDrawerTab}
                     handleDrawerOpen={handleDrawerOpen}
                     toggleDrawer={toggleDrawer}
+                    setPreviewUrlCallback={setPreviewUrlCallback}
                   />
                 )
               })}
