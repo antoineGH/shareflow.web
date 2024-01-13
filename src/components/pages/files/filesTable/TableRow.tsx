@@ -176,14 +176,20 @@ function TableRow({
                 handleChangeDrawerTab={handleChangeDrawerTab}
                 renameRow={renameRow}
               />
-              <Box sx={{ minWidth: '50px' }} justifyContent="flex-end">
+              <Box
+                sx={{
+                  minWidth: '50px',
+                  display: 'flex',
+                  justifyContent: 'center',
+                }}
+              >
                 {getSizeFile(row.size)}
               </Box>
             </Stack>
             <Stack
               direction="row"
               alignItems="center"
-              justifyContent="flex-end"
+              justifyContent="center"
               sx={{ minWidth: '55px' }}
             >
               {formatDate(row.updatedAt)}
