@@ -56,7 +56,7 @@ function FilesTable({
   const dispatch = useDispatch()
 
   const isFavoritePage = location.pathname === '/auth/favorites'
-  const rowsPerPage = 20
+  const rowsPerPage = 10
 
   const rows: RowFile[] = files.map(file =>
     createData(file.id, file.name, file.size, file.updatedAt),
@@ -157,7 +157,6 @@ function FilesTable({
   )
 
   return (
-    // <>
     <Box sx={{ width: '100%' }}>
       <Paper sx={{ width: '100%' }}>
         {isPageFavorite || isPageTag ? null : (
@@ -207,7 +206,7 @@ function FilesTable({
               {emptyRows > 0 && (
                 <TableRowMUI
                   style={{
-                    height: 53 * emptyRows,
+                    height: 67 * emptyRows,
                   }}
                 >
                   <TableCell colSpan={6} />
@@ -217,9 +216,13 @@ function FilesTable({
           </Table>
         </TableContainer>
 
-        {rows.length >= 19 && (
+        {rows.length >= 5 && (
           <TablePagination
-            rowsPerPageOptions={[]}
+            sx={{
+              mr: 2,
+              display: 'flex',
+            }}
+            rowsPerPageOptions={[15]}
             component="div"
             count={rows.length}
             rowsPerPage={rowsPerPage}

@@ -8,7 +8,7 @@ function Content({ Component }) {
       sx={{
         height: '100vh',
         width: '100%',
-        overflow: 'hidden',
+        overflow: 'auto',
       }}
     >
       <Container

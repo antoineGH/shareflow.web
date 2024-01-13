@@ -235,7 +235,7 @@ function FileMenu({
           </IconButton>
           {filteredAction.length > 0 && (
             <>
-              <IconButton size="small" sx={{ mr: 3 }} onClick={openMenu}>
+              <IconButton size="small" onClick={openMenu}>
                 <MoreHorizIcon
                   sx={{ color: theme.palette.primary.contrastText }}
                 />

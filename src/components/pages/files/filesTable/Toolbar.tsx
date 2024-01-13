@@ -1,3 +1,5 @@
+import { useEffect, useState } from 'react'
+
 import { alpha, Skeleton, useTheme } from '@mui/material'
 import Grid from '@mui/material/Grid'
 import MUIToolbar from '@mui/material/Toolbar'
@@ -30,6 +32,7 @@ function Toolbar({
   selectedMultiActions,
   isPageDelete,
 }: Props) {
+  const [isLoading, setIsLoading] = useState(true)
   const theme = useTheme()
   const numSelected = selected.length
 
@@ -38,6 +41,12 @@ function Toolbar({
   )
   const { isLoadingFetch: isLoadingFetchStorage } =
     useSelector(storageStateSelector)
+
+  useEffect(() => {
+    if (!isLoadingFetchStorage) {
+      setIsLoading(false)
+    }
+  }, [isLoadingFetchStorage])
 
   const alertMessage: AlertMessage = pickAlertMessage({
     isPageDelete,
@@ -52,7 +61,7 @@ function Toolbar({
         '@media (min-width: 0px)': {
           p: 0,
           m: 0,
-          minHeight: '38px',
+          minHeight: '28px',
         },
         ...(numSelected > 0 && {
           bgcolor: alpha(
@@ -73,9 +82,29 @@ function Toolbar({
       >
         {numSelected > 0 ? (
           <>
-            <Grid item sx={{ pl: 2 }}>
+            <Grid
+              item
+              sx={{
+                minHeight: '36px',
+                height: '36px',
+                p: 0,
+                m: 0,
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+
+                alignContent: 'center',
+                alignItems: 'center',
+                pl: 2,
+              }}
+            >
               <Typography
-                sx={{ flex: '1 1 100%', fontSize: '.8rem' }}
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignContent: 'center',
+                  fontSize: '.8rem',
+                }}
                 color="inherit"
                 variant="body1"
                 component="div"
@@ -93,13 +122,31 @@ function Toolbar({
             </Grid>
           </>
         ) : (
-          <Grid item sx={{ width: '100%' }}>
-            {isLoadingFetchStorage ? (
+          <Grid
+            item
+            sx={{
+              width: '100%',
+              minHeight: '36px',
+              height: '36px',
+              p: 0,
+              m: 0,
+              display: 'flex',
+              justifyContent: 'flex-start',
+              alignContent: 'flex-start',
+              alignItems: 'center',
+            }}
+          >
+            {isLoading ? (
               <Skeleton
                 animation="wave"
                 variant="text"
                 width="100%"
-                height="62px"
+                sx={{
+                  borderRadius: '3px',
+                  height: '58px',
+                  p: 0,
+                  m: 0,
+                }}
               />
             ) : (
               <StyledAlert severity={alertMessage.severity}>
