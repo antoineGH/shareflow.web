@@ -1,8 +1,7 @@
-import FolderIcon from '@mui/icons-material/Folder'
+import CreateNewFolderIcon from '@mui/icons-material/CreateNewFolder'
 import LoadingButton from '@mui/lab/LoadingButton'
 import { FormHelperText, useTheme } from '@mui/material'
 import Button from '@mui/material/Button'
-import ListItemIcon from '@mui/material/ListItemIcon'
 import MenuItem from '@mui/material/MenuItem'
 import Stack from '@mui/material/Stack'
 import TextField from '@mui/material/TextField'
@@ -51,7 +50,7 @@ function Menu({ anchorEl, open, closeMenu }: Props) {
     watch,
   } = useForm<FormData>()
 
-  const fileName = watch('fileName')
+  const fileName = watch('fileName', '')
 
   const onSubmit: SubmitHandler<FormData> = async data => {
     if (!user || !user.id) return
@@ -88,21 +87,23 @@ function Menu({ anchorEl, open, closeMenu }: Props) {
       open={open}
       onClose={closeMenu}
       onClick={closeMenu}
-      transformOrigin={{ horizontal: 'right', vertical: 'top' }}
-      anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+      transformOrigin={{ horizontal: 'left', vertical: 'top' }}
+      anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
+      sx={{ mt: 0.5 }}
     >
-      <MenuItem
-        key="menu-item-folder"
-        disableRipple
-        onClick={event => event.stopPropagation()}
-      >
-        <ListItemIcon>
-          <StyledIcon>
-            <FolderIcon />
-          </StyledIcon>
-        </ListItemIcon>
-        <form onSubmit={handleSubmit(onSubmit)} style={{ width: '100%' }}>
-          <Stack spacing={1} direction="column">
+      <form onSubmit={handleSubmit(onSubmit)} style={{ width: '100%' }}>
+        <Stack
+          spacing={1}
+          p={1.5}
+          direction="column"
+          onClick={e => {
+            e.stopPropagation()
+          }}
+        >
+          <Stack spacing={1} direction="row">
+            <StyledIcon theme={theme}>
+              <CreateNewFolderIcon />
+            </StyledIcon>
             <TextField
               {...register('fileName', {
                 minLength: {
@@ -131,46 +132,45 @@ function Menu({ anchorEl, open, closeMenu }: Props) {
                 },
               }}
             />
-            <FormHelperText
-              error={Boolean(errors.fileName)}
-              style={{ visibility: errors.fileName ? 'visible' : 'hidden' }}
-            >
-              {errors.fileName && errors.fileName.message}
-            </FormHelperText>
-            <Stack spacing={1} direction="row" justifyContent="flex-end">
-              <Button
-                variant="outlined"
-                size="small"
-                onClick={e => cancelFolder(e)}
-                sx={{ textTransform: 'capitalize' }}
-              >
-                Cancel
-              </Button>
-              <LoadingButton
-                variant="contained"
-                type="submit"
-                size="small"
-                loading={isLoadingCreate}
-                disabled={
-                  isLoadingCreate ||
-                  Boolean(errors.fileName) ||
-                  fileName?.length === 0
-                }
-                sx={{
-                  '&:hover': {
-                    backgroundColor: theme.palette.primary.contrastText,
-                  },
-                  color: 'white',
-                  textTransform: 'capitalize',
-                }}
-              >
-                Create
-              </LoadingButton>
-            </Stack>
           </Stack>
-        </form>
-      </MenuItem>
-      {/* {!isHidden && <Divider key="divider" sx={{ my: 0.5 }} />} */}
+          <FormHelperText sx={{ textAlign: 'left', pl: 4 }}>
+            {errors.fileName
+              ? errors.fileName.message
+              : `${20 - (fileName.length || 0)} characters left`}
+            {errors.fileName && errors.fileName.message}
+          </FormHelperText>
+          <Stack spacing={1} direction="row" justifyContent="flex-end">
+            <Button
+              variant="outlined"
+              size="small"
+              onClick={e => cancelFolder(e)}
+              sx={{ textTransform: 'capitalize' }}
+            >
+              Cancel
+            </Button>
+            <LoadingButton
+              variant="contained"
+              type="submit"
+              size="small"
+              loading={isLoadingCreate}
+              disabled={
+                isLoadingCreate ||
+                Boolean(errors.fileName) ||
+                fileName?.length === 0
+              }
+              sx={{
+                '&:hover': {
+                  backgroundColor: theme.palette.primary.contrastText,
+                },
+                color: 'white',
+                textTransform: 'capitalize',
+              }}
+            >
+              Create
+            </LoadingButton>
+          </Stack>
+        </Stack>
+      </form>
     </StyledMenu>
   )
 }
