@@ -23,9 +23,13 @@ import { FileData } from 'types/files'
 import TagsSeachField from './tagsSearchField/TagsSearchField'
 import { getSelectedTagsName } from './utils'
 import FilesTable from '../files/filesTable/FilesTable'
+import FilePreview from '../files/previewModal/FilePreview'
+import PreviewModal from '../files/previewModal/PreviewModal'
 
 function Tags() {
   const [hasStartedFetching, setHasStartedFetching] = useState(false)
+  const [previewFile, setPreviewFile] = useState<string | null>(null)
+  const [previewFileId, setPreviewFileId] = useState<number | null>(null)
   const dispatch = useDispatch()
 
   // ### User ###
@@ -105,6 +109,16 @@ function Tags() {
     }
   }, [dispatch, error])
 
+  const setPreviewUrlCallback = (url: string, fileId: number) => {
+    setPreviewFile(url)
+    setPreviewFileId(fileId)
+  }
+
+  const closePreviewModal = () => {
+    setPreviewFile(null)
+    setPreviewFileId(null)
+  }
+
   const { files } = fileData
 
   if (isLoading || !userId || !hasStartedFetching)
@@ -139,6 +153,7 @@ function Tags() {
               handleChangeDrawerTab={() => {}}
               handleDrawerOpen={() => {}}
               toggleDrawer={() => {}}
+              setPreviewUrlCallback={setPreviewUrlCallback}
             />
           ) : (
             <Typography sx={{ fontSize: '.85rem', px: 2, ml: 1 }}>
@@ -146,6 +161,17 @@ function Tags() {
             </Typography>
           )}
         </Grid>
+        <PreviewModal
+          userId={userId}
+          open={!!previewFile}
+          close={closePreviewModal}
+          previewFileId={previewFileId || 0}
+        >
+          <FilePreview
+            previewFileUrl={previewFile || ''}
+            previewFileId={previewFileId || 0}
+          />
+        </PreviewModal>
       </Grid>
     )
 }
