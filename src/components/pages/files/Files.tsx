@@ -30,10 +30,14 @@ import DocumentsUploadModal from './filesUploadModal/FilesUploadModal'
 import FirstLoginModal from './firstLoginModal/FirstLoginModal'
 import useFirstConnect from './firstLoginModal/useFirstConnect'
 import { extractRoutingParams } from './helpers'
+import FilePreview from './previewModal/FilePreview'
+import PreviewModal from './previewModal/PreviewModal'
 
 function Files() {
   const [hasStartedFetching, setHasStartedFetching] = useState(false)
   const [hasFetchedStorage, setHasFetchedStorage] = useState(false)
+  const [previewFile, setPreviewFile] = useState<string | null>(null)
+  const [previewFileId, setPreviewFileId] = useState<number | null>(null)
   const dispatch = useDispatch()
   const params = useParams<{ path: string }>()
 
@@ -121,6 +125,16 @@ function Files() {
     toggleDrawer,
   } = useDrawerDetails()
 
+  const setPreviewUrlCallback = (url: string, fileId: number) => {
+    setPreviewFile(url)
+    setPreviewFileId(fileId)
+  }
+
+  const closePreviewModal = () => {
+    setPreviewFile(null)
+    setPreviewFileId(null)
+  }
+
   const { files, countFiles, countFolders, totalSize } = fileData
 
   if (isLoading || !userId || !hasStartedFetching)
@@ -145,6 +159,7 @@ function Files() {
           handleChangeDrawerTab={handleChangeDrawerTab}
           handleDrawerOpen={handleDrawerOpen}
           toggleDrawer={toggleDrawer}
+          setPreviewUrlCallback={setPreviewUrlCallback}
         />
         {files.length === 0 && !hasError && hasStartedFetching ? (
           <EmptyFiles
@@ -179,6 +194,17 @@ function Files() {
           open={openFirstConnectModal}
           handleClose={handleCloseFirstConnectModal}
         />
+        <PreviewModal
+          userId={userId}
+          open={!!previewFile}
+          close={closePreviewModal}
+          previewFileId={previewFileId || 0}
+        >
+          <FilePreview
+            previewFileUrl={previewFile || ''}
+            previewFileId={previewFileId || 0}
+          />
+        </PreviewModal>
       </Grid>
     )
 

@@ -10,6 +10,7 @@ import TableCell from '@mui/material/TableCell'
 import TableRowMUI from '@mui/material/TableRow'
 import { useNavigate } from 'react-router-dom'
 
+import { previewFile } from 'api/files'
 import TagsTableCell from 'components/pages/tags/tagsTableCell/TagsTableCell'
 import type { FileT, RowFile } from 'types/files'
 
@@ -33,6 +34,7 @@ type Props = {
   handleChangeDrawerTab: (tab: number) => void
   handleDrawerOpen: (fileId: number) => void
   toggleDrawer: (fileId: number) => void
+  setPreviewUrlCallback?: (url: string, fileId: number) => void
 }
 
 function TableRow({
@@ -49,6 +51,7 @@ function TableRow({
   handleChangeDrawerTab,
   handleDrawerOpen,
   toggleDrawer,
+  setPreviewUrlCallback,
 }: Props) {
   const navigate = useNavigate()
   const theme = useTheme()
@@ -57,9 +60,10 @@ function TableRow({
 
   const resetRowIdRename = () => setRowIdRename(null)
 
-  const isFavorite = files.find(file => file.id === row.id)?.isFavorite || false
-  const isFolder = files.find(file => file.id === row.id)?.isFolder || false
-  const isNotClickable = rowIdRename === row.id || !isFolder
+  const isNotClickable = rowIdRename === row.id
+  const currentFile = files.find(file => file.id === row.id)
+  const isFolder = currentFile?.isFolder || false
+  const isFavorite = currentFile?.isFavorite || false
 
   const handleCheckBoxClick = (e: MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation()
@@ -71,8 +75,19 @@ function TableRow({
     onFavoriteClick(row.id, isFavorite)
   }
 
-  const handleClickRow = (e: MouseEvent<HTMLTableRowElement>) => {
+  const handleClickRow = async (e: MouseEvent<HTMLTableRowElement>) => {
     e.stopPropagation()
+
+    if (!isFolder) {
+      if (!currentFile?.id || !setPreviewUrlCallback) return
+      await previewFile({
+        userId,
+        fileId: currentFile?.id,
+        cb: (url: string, fileId: number) => setPreviewUrlCallback(url, fileId),
+      })
+
+      return
+    }
 
     if (isPageDelete) return handleDrawerOpen(row.id)
 

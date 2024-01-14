@@ -34,6 +34,44 @@ import { convertObjectKeys, formatURL, generateUrlParams } from './utils'
 
 const errGetFilesMsg = 'An error occurred while getting files. Please try again'
 
+const previewFile = async ({
+  userId,
+  fileId,
+  cb,
+  cbError,
+}: {
+  userId: number
+  fileId: number
+  cb?: (url: string, fileId: number) => void
+  cbError?: () => void
+}): Promise<void> => {
+  try {
+    const baseUrl = formatURL(`${DOWNLOAD_FILES}`, { userId })
+    const url = `${baseUrl}?fileIds=${fileId}`
+
+    const token = localStorage.getItem('token')
+
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+
+    if (!response.ok) {
+      throw new Error('HTTP error ' + response.status)
+    }
+
+    const blob = await response.blob()
+    const previewUrl = window.URL.createObjectURL(blob)
+
+    cb?.(previewUrl, fileId)
+  } catch (error) {
+    console.error(errGetFilesMsg)
+    cbError?.()
+  }
+}
+
 const downloadFiles = async ({
   userId,
   fileIds,
@@ -355,6 +393,7 @@ async function deleteFiles(
 }
 
 export {
+  previewFile,
   downloadFiles,
   getFiles,
   postFolder,
