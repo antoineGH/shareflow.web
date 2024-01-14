@@ -94,7 +94,6 @@ export function formatDate(dateString: string): string {
 
 export {
   createData,
-  descendingComparator,
   getComparator,
   stableSort,
   getPath,

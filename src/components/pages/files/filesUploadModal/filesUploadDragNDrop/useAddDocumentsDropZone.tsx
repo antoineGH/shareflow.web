@@ -2,7 +2,7 @@ import { useCallback, useState } from 'react'
 
 import { DropzoneState, FileRejection, useDropzone } from 'react-dropzone'
 
-export type DroppedFiles = {
+type DroppedFiles = {
   accept: File[]
   reject: FileRejection[]
 }

@@ -4,7 +4,7 @@ import GradeIcon from '@mui/icons-material/Grade'
 import SettingsIcon from '@mui/icons-material/Settings'
 import StyleIcon from '@mui/icons-material/Style'
 
-export type ListItem = {
+type ListItem = {
   id: string
   label: string
   icon: JSX.Element

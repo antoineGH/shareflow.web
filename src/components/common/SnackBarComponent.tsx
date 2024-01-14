@@ -1,9 +1,11 @@
-import Snackbar from '@mui/material/Snackbar'
+import { useEffect } from 'react'
+
 import Alert from '@mui/material/Alert'
+import Snackbar from '@mui/material/Snackbar'
+
 import { useDispatch, useSelector } from 'store/hooks'
 import { selectSnackbarSelector } from 'store/snackbar/selector'
 import { closeSnackbar } from 'store/snackbar/slice'
-import { useEffect } from 'react'
 
 function SnackBarComponent() {
   const dispatch = useDispatch()

@@ -1,9 +1,9 @@
-import SvgIcon from '@mui/material/SvgIcon'
 import { styled } from '@mui/material/styles'
+import SvgIcon from '@mui/material/SvgIcon'
 
-const StyledIcon = styled(SvgIcon)({
-  fontSize: '1.1rem',
-  color: 'grey',
-})
+const StyledIcon = styled(SvgIcon)(({ theme }) => ({
+  fontSize: '1.5rem',
+  color: theme.palette.primary.main,
+}))
 
 export default StyledIcon

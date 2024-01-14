@@ -1,7 +1,7 @@
 import { FileError } from 'react-dropzone'
 import { v4 as uuidV4 } from 'uuid'
 
-export type DropzoneErrorMessageType =
+type DropzoneErrorMessageType =
   | 'file-invalid-type'
   | 'file-too-large'
   | 'too-many-files'
@@ -35,23 +35,6 @@ export const getFileErrorMessage = (
 
   return undefined
 }
-
-export const fileSx = () => ({
-  '.MuiTypography-root:not(.MuiTypography-caption)': {
-    color: 'text.default',
-
-    '&.disabled': { color: 'text.default' },
-  },
-  '.MuiPaper-root': {
-    cursor: 'default',
-    maxWidth: 'calc(100% - 2px)',
-    '&.disabled': { cursor: 'default' },
-  },
-
-  '.MuiTypography-caption': {
-    lineHeight: 2,
-  },
-})
 
 export function formatAcceptedFiles(files: File[]) {
   return files.map(file => ({ id: uuidV4(), file }))

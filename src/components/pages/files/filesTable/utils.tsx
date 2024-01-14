@@ -12,7 +12,7 @@ import { styled, SvgIcon, Theme } from '@mui/material'
 
 import type { AlertMessage, AlertMessages } from './types'
 
-export const alertMessages: AlertMessages = {
+const alertMessages: AlertMessages = {
   warningStorage: {
     severity: 'warning',
     message: 'Your storage is almost full, please delete some files',

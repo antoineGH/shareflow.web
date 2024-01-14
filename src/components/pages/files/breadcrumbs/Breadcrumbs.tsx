@@ -14,7 +14,7 @@ function Breadcrumbs({ userId, openModalAddDocs }: Props) {
   const breadcrumbs = useBreadcrumbs({ userId, openModalAddDocs })
 
   return (
-    <Grid item py={1} px={2}>
+    <Grid item py={1.5} px={1.5}>
       <BreadcrumbsMUI
         separator={
           <StyledSeparatorIcon>
