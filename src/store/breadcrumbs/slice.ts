@@ -23,7 +23,9 @@ export const BreadcrumbsAdapter = createEntityAdapter({
 const breadcrumbSlice = createSlice({
   name: 'breadcrumbs',
   initialState: BreadcrumbsAdapter.getInitialState(initialState),
-  reducers: {},
+  reducers: {
+    resetBreadcrumbs: () => BreadcrumbsAdapter.getInitialState(initialState),
+  },
   extraReducers: builder => {
     // ### fetchBreadcrumbs ###
     builder.addCase(getBreadcrumbs.pending, state => {
@@ -38,6 +40,8 @@ const breadcrumbSlice = createSlice({
     })
   },
 })
+
+export const { resetBreadcrumbs } = breadcrumbSlice.actions
 
 export default breadcrumbSlice.reducer
 

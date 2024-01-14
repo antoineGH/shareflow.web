@@ -47,8 +47,15 @@ function stableSort<T>(array: T[], comparator: (a: T, b: T) => number) {
   return stabilizedThis.map(el => el[0])
 }
 
-function getPath(id: number, files: FileT[]) {
-  return files.find(file => file.id === id)?.id
+function getExistingPath(pathname: string) {
+  const toExclude = ['auth', 'files', '']
+  return pathname.split('/').filter(path => !toExclude.includes(path))
+}
+
+function getPath(id: number, pathname: string, files: FileT[]) {
+  const existingPath = getExistingPath(pathname)
+  const currentPath = files.find(file => file.id === id)?.id
+  return [...existingPath, currentPath].join('/')
 }
 
 function getSelectedMultiActions(

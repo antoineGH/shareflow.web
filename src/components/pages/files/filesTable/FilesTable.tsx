@@ -197,6 +197,7 @@ function FilesTable({
                     isPageFavorite={isPageFavorite}
                     isPageTag={isPageTag}
                     isPageDelete={isPageDelete}
+                    pathname={location.pathname}
                     onCheckBoxClick={onCheckBoxClick}
                     onFavoriteClick={onFavoriteClick}
                     handleChangeDrawerTab={handleChangeDrawerTab}
