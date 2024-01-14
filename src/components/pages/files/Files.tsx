@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
 
 import Grid from '@mui/material/Grid'
-import { set } from 'react-hook-form'
 import { useParams } from 'react-router-dom'
 
 import EmptyFiles from 'components/common/EmptyFiles'
@@ -195,7 +194,12 @@ function Files() {
           open={openFirstConnectModal}
           handleClose={handleCloseFirstConnectModal}
         />
-        <PreviewModal open={!!previewFile} close={closePreviewModal}>
+        <PreviewModal
+          userId={userId}
+          open={!!previewFile}
+          close={closePreviewModal}
+          previewFileId={previewFileId || 0}
+        >
           <FilePreview
             previewFileUrl={previewFile || ''}
             previewFileId={previewFileId || 0}
