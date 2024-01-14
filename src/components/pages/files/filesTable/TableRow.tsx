@@ -62,7 +62,7 @@ function TableRow({
 
   const resetRowIdRename = () => setRowIdRename(null)
 
-  const isNotClickable = rowIdRename === row.id
+  const isNotClickable = rowIdRename === row.id || isPageDelete
   const currentFile = files.find(file => file.id === row.id)
   const isFolder = currentFile?.isFolder || false
   const isFavorite = currentFile?.isFavorite || false

@@ -22,9 +22,13 @@ import type { FileData } from 'types/files'
 import DrawerDetails from '../files/drawerDetails/DrawerDetails'
 import useDrawerDetails from '../files/drawerDetails/useDrawerDetails'
 import FilesTable from '../files/filesTable/FilesTable'
+import FilePreview from '../files/previewModal/FilePreview'
+import PreviewModal from '../files/previewModal/PreviewModal'
 
 function Favorites() {
   const [hasStartedFetching, setHasStartedFetching] = useState(false)
+  const [previewFile, setPreviewFile] = useState<string | null>(null)
+  const [previewFileId, setPreviewFileId] = useState<number | null>(null)
   const dispatch = useDispatch()
 
   // ### User ###
@@ -80,6 +84,16 @@ function Favorites() {
     toggleDrawer,
   } = useDrawerDetails()
 
+  const setPreviewUrlCallback = (url: string, fileId: number) => {
+    setPreviewFile(url)
+    setPreviewFileId(fileId)
+  }
+
+  const closePreviewModal = () => {
+    setPreviewFile(null)
+    setPreviewFileId(null)
+  }
+
   const { files } = fileData
 
   if (isLoading || !userId || !hasStartedFetching)
@@ -108,6 +122,7 @@ function Favorites() {
           handleChangeDrawerTab={handleChangeDrawerTab}
           handleDrawerOpen={handleDrawerOpen}
           toggleDrawer={toggleDrawer}
+          setPreviewUrlCallback={setPreviewUrlCallback}
         />
         <DrawerDetails
           userId={userId}
@@ -117,6 +132,17 @@ function Favorites() {
           handleChangeDrawerTab={handleChangeDrawerTab}
           handleDrawerClose={handleDrawerClose}
         />
+        <PreviewModal
+          userId={userId}
+          open={!!previewFile}
+          close={closePreviewModal}
+          previewFileId={previewFileId || 0}
+        >
+          <FilePreview
+            previewFileUrl={previewFile || ''}
+            previewFileId={previewFileId || 0}
+          />
+        </PreviewModal>
       </Grid>
     )
 
