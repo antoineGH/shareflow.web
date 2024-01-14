@@ -29,6 +29,7 @@ type Props = {
   isPageFavorite?: boolean
   isPageTag?: boolean
   isPageDelete?: boolean
+  pathname: string
   onCheckBoxClick: (id: number) => void
   onFavoriteClick: (id: number, fileFavState: boolean) => void
   handleChangeDrawerTab: (tab: number) => void
@@ -46,6 +47,7 @@ function TableRow({
   isPageFavorite,
   isPageTag,
   isPageDelete,
+  pathname,
   onCheckBoxClick,
   onFavoriteClick,
   handleChangeDrawerTab,
@@ -91,7 +93,8 @@ function TableRow({
 
     if (isPageDelete) return handleDrawerOpen(row.id)
 
-    const path = getPath(row.id, files)
+    const path = getPath(row.id, pathname, files)
+
     if (path) return navigate(`/auth/files/${path}`)
   }
 

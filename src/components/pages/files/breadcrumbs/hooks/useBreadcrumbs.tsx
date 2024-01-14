@@ -11,6 +11,7 @@ import {
   breadcrumbsStateSelector,
   selectbreadcrumbsSelector,
 } from 'store/breadcrumbs/selector'
+import { resetBreadcrumbs } from 'store/breadcrumbs/slice'
 import { useDispatch, useSelector } from 'store/hooks'
 
 import BreadcrumbMenu from '../breadcrumbMenu/breadcrumbMenu'
@@ -45,6 +46,11 @@ function useBreadcrumbs({ userId, openModalAddDocs }: Props) {
 
   const pathnamesWithFiles = useSelector(selectbreadcrumbsSelector)
 
+  const handleClickAllFiles = () => {
+    dispatch(resetBreadcrumbs())
+    navigate('/auth/files')
+  }
+
   const handleClick = (
     event: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
     index: number,
@@ -68,7 +74,7 @@ function useBreadcrumbs({ userId, openModalAddDocs }: Props) {
       underline="none"
       color="inherit"
       key="home"
-      onClick={() => navigate('/auth/files')}
+      onClick={handleClickAllFiles}
     >
       <BreadcrumbEntry pageName="Files" />
     </Link>,
