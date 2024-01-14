@@ -106,7 +106,7 @@ function useBreadcrumbs({ userId, openModalAddDocs }: Props) {
     }),
   ]
 
-  breadcrumbs.push(
+  breadcrumbs.unshift(
     <BreadcrumbMenu key="0" openModalAddDocs={openModalAddDocs} />,
   )
 

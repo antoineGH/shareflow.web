@@ -34,7 +34,6 @@ export type FileUpload = Pick<FileT, 'name' | 'isFolder'> & {
   file?: File
   parentId?: number
 }
-export type FileUploadApi = CamelCaseToSnakeCase<FileUpload>
 
 export type FolderUpload = Pick<FileT, 'name' | 'isFolder'> & {
   parentId?: number
@@ -46,23 +45,14 @@ export type FileData = SnakeCaseToCamelCase<FileDataApi>
 
 export type RowFile = Pick<FileT, 'id' | 'name' | 'size' | 'updatedAt'>
 
-export type PutFileDataApi = {
+type PutFileDataApi = {
   file: FileT
   count_files: FileData['countFiles']
   count_folders: FileData['countFolders']
   total_size: FileData['totalSize']
 }
 
-export type PatchFileDataApi = {
-  file: FileT
-  count_files: FileData['countFiles']
-  count_folders: FileData['countFolders']
-  total_Size: FileData['totalSize']
-}
-
 export type PutFileData = SnakeCaseToCamelCase<PutFileDataApi>
-
-export type PatchFileData = SnakeCaseToCamelCase<PatchFileDataApi>
 
 export type GetFilesReturnType =
   | {

@@ -1,5 +1,3 @@
-const DEFAULT_ERROR_MSG = 'An error has occurred. Please try again'
-
 enum StatusMessages {
   BAD_REQUEST = 'An error has occurred. Please try again',
   ACCESS_DENIED = 'Access denied',
@@ -43,10 +41,4 @@ function isErrorStatus(status: number): boolean {
   )
 }
 
-export {
-  getErrorStatusMessage,
-  HttpResponseError,
-  isErrorStatus,
-  StatusMessages,
-  DEFAULT_ERROR_MSG,
-}
+export { getErrorStatusMessage, HttpResponseError, isErrorStatus }

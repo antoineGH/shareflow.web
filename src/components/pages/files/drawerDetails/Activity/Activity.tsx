@@ -1,13 +1,9 @@
-import { Stack, styled, SvgIcon, useTheme } from '@mui/material'
+import { Stack, useTheme } from '@mui/material'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 
+import { StyledIcon } from './StyledIcon'
 import { formatDate, getActivityIcon } from './utils'
-
-export const StyledIcon = styled(SvgIcon)(({ theme }) => ({
-  color: theme.palette.primary.main,
-  fontSize: '1.4rem',
-}))
 
 type Props = {
   activity: string

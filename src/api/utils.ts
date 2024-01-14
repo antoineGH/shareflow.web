@@ -14,15 +14,6 @@ function generateUrlParams<T extends object>(params: T): string {
   return qs.stringify(formattedParams, { arrayFormat: 'bracket' })
 }
 
-function generateBodyParams<T extends object>(params: T): string {
-  const formattedParams = Object.entries(params).reduce(
-    (acc, [key, value]) => ({ ...acc, [snakeCase(key)]: value }),
-    {},
-  )
-
-  return JSON.stringify(formattedParams)
-}
-
 function formatPath(
   baseURL: string,
   argsToReplace?: Record<string, string | number>,
@@ -79,27 +70,4 @@ function convertObjectKeys<T extends object, U extends object>(
   return result
 }
 
-function filterObject<T extends object>(
-  obj: T,
-  keysToRemove: Array<keyof T>,
-): Omit<T, keyof T> {
-  if (!keysToRemove.length || isEmpty(obj)) {
-    return obj
-  }
-
-  const clonedObject = { ...obj }
-
-  keysToRemove.forEach(key => {
-    delete clonedObject[key]
-  })
-
-  return clonedObject
-}
-
-export {
-  formatURL,
-  generateUrlParams,
-  generateBodyParams,
-  convertObjectKeys,
-  filterObject,
-}
+export { formatURL, generateUrlParams, convertObjectKeys }

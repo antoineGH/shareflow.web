@@ -1,7 +1,7 @@
 import { type MouseEvent, useState } from 'react'
 
-import BreadcrumbButton from './breadcrumbButton'
 import Menu from './Menu'
+import BreadCrumpUploadFile from '../breadcrumbAction/BreadCrumbUploadFile'
 
 type Props = {
   openModalAddDocs(): void
@@ -20,13 +20,11 @@ function BreadcrumbMenu({ openModalAddDocs }: Props) {
 
   return (
     <>
-      <BreadcrumbButton openMenu={openMenu} />
-      <Menu
-        anchorEl={anchorEl}
-        open={open}
-        closeMenu={closeMenu}
+      <BreadCrumpUploadFile
+        openMenu={openMenu}
         openModalAddDocs={openModalAddDocs}
       />
+      <Menu anchorEl={anchorEl} open={open} closeMenu={closeMenu} />
     </>
   )
 }
