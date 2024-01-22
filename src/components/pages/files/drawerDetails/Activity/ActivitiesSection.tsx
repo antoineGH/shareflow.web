@@ -19,7 +19,6 @@ function ActivitySection({ activities, isLoading, hasError }: Props) {
       <Box
         key={index}
         sx={{
-          maxHeight: 'calc(100vh - 440px)',
           my: 1.5,
           display: 'flex',
           flexDirection: 'column',
