@@ -24,9 +24,9 @@ function FirstLoginModal({ open, handleClose }: Props) {
       PaperProps={{
         sx: {
           maxWidth: '1240px',
+          width: '100%',
           padding: 1,
-          position: 'absolute',
-          top: '15%',
+          // position: 'absolute',
         },
       }}
     >
@@ -44,12 +44,11 @@ function FirstLoginModal({ open, handleClose }: Props) {
           <CloseIcon fontSize="inherit" />
         </IconButton>
       </DialogTitle>
-      <DialogContent sx={{ px: 0 }}>
+      <DialogContent sx={{ px: '1rem' }}>
         <Box sx={{ flex: 1, mr: 1, my: 3 }}>
           <Typography
             variant="h4"
             sx={{
-              minWidth: '960px',
               fontSize: '1.8rem',
               textAlign: 'center',
             }}

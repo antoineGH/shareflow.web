@@ -1,5 +1,5 @@
 import MenuIcon from '@mui/icons-material/Menu'
-import { Button, Link } from '@mui/material'
+import { Button, Link, useMediaQuery, useTheme } from '@mui/material'
 import IconButton from '@mui/material/IconButton'
 import Toolbar from '@mui/material/Toolbar'
 import Typography from '@mui/material/Typography'
@@ -14,6 +14,9 @@ type Props = {
 }
 
 function TopBar({ drawerWidth, appBarHeight, toggleDrawer }: Props) {
+  const theme = useTheme()
+  const isBigScreen = useMediaQuery(theme.breakpoints.up('sm'))
+
   return (
     <StyledTopBar
       position="absolute"
@@ -25,14 +28,16 @@ function TopBar({ drawerWidth, appBarHeight, toggleDrawer }: Props) {
           pr: '24px',
         }}
       >
-        <IconButton
-          edge="start"
-          color="inherit"
-          aria-label="open drawer"
-          onClick={toggleDrawer}
-        >
-          <MenuIcon sx={{ color: 'white' }} />
-        </IconButton>
+        {isBigScreen && (
+          <IconButton
+            edge="start"
+            color="inherit"
+            aria-label="open drawer"
+            onClick={toggleDrawer}
+          >
+            <MenuIcon sx={{ color: 'white' }} />
+          </IconButton>
+        )}
         <Button
           component={Link}
           href="/auth/files"

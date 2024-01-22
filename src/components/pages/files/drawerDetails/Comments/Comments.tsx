@@ -1,17 +1,20 @@
-import Stack from '@mui/material/Stack'
-import Box from '@mui/material/Box'
-import CommentsSection from './Comment/Comment'
-import Header from './Header/Header'
-import type { Comment } from 'types/comments'
-import { useDispatch, useSelector } from 'store/hooks'
 import { useEffect } from 'react'
+
+import Box from '@mui/material/Box'
+import Stack from '@mui/material/Stack'
+
 import { fetchComments, removeComment } from 'store/comments/actions'
 import {
   commentsStatesStateSelector,
   selectCommentsSelector,
 } from 'store/comments/selector'
-import { selectUserSelector } from 'store/user/selector'
+import { useDispatch, useSelector } from 'store/hooks'
 import { openSnackbar } from 'store/snackbar/slice'
+import { selectUserSelector } from 'store/user/selector'
+import type { Comment } from 'types/comments'
+
+import CommentsSection from './Comment/Comment'
+import Header from './Header/Header'
 
 type Props = {
   fileId: number
