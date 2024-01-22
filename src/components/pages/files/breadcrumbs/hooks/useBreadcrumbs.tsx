@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 
-import { Skeleton, useTheme } from '@mui/material'
+import { Grid, Skeleton, useTheme } from '@mui/material'
 import Link from '@mui/material/Link'
 import Typography from '@mui/material/Typography'
 import { Link as RouterLink, useLocation, useNavigate } from 'react-router-dom'

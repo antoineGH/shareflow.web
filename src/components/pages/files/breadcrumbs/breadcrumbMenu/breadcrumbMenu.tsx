@@ -1,5 +1,7 @@
 import { type MouseEvent, useState } from 'react'
 
+import { Grid } from '@mui/material'
+
 import Menu from './Menu'
 import BreadCrumpUploadFile from '../breadcrumbAction/BreadCrumbUploadFile'
 
@@ -19,13 +21,13 @@ function BreadcrumbMenu({ openModalAddDocs }: Props) {
   }
 
   return (
-    <>
+    <Grid item xs={12}>
       <BreadCrumpUploadFile
         openMenu={openMenu}
         openModalAddDocs={openModalAddDocs}
       />
       <Menu anchorEl={anchorEl} open={open} closeMenu={closeMenu} />
-    </>
+    </Grid>
   )
 }
 export default BreadcrumbMenu

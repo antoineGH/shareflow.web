@@ -79,10 +79,10 @@ function DrawerDetails({
     <ClickAwayListener onClickAway={handleDrawerClose}>
       <Drawer
         sx={{
-          width: 320,
+          width: { xs: '100%', md: 320 },
           flexShrink: 0,
           '& .MuiDrawer-paper': {
-            width: 320,
+            width: { xs: '100%', md: 320 },
           },
         }}
         variant="persistent"
@@ -96,15 +96,16 @@ function DrawerDetails({
             pb: 1,
           }}
         >
-          <Stack direction="column" sx={{ width: '100%' }}>
-            <Box sx={{ alignSelf: 'flex-end' }}>
-              <IconButton onClick={handleDrawerClose}>
-                <ClearIcon fontSize="small" />
-              </IconButton>
-            </Box>
+          <Stack direction="column" sx={{ width: '100%', height: '100%' }}>
             <Stack direction="row" spacing={1} sx={{ width: '100%' }}>
-              <Box>{getRowIcon(isFolder!, name)}</Box>
-              <Stack direction="column" spacing={0} sx={{ width: '100%' }}>
+              <Box style={{ paddingTop: '.8rem' }}>
+                {getRowIcon(isFolder!, name)}
+              </Box>
+              <Stack
+                direction="column"
+                spacing={0}
+                sx={{ width: '100%', paddingTop: '.5rem' }}
+              >
                 <Box sx={{ width: '100%', mt: 1, ml: 0.5 }}>
                   <Typography
                     variant="subtitle2"
@@ -145,6 +146,11 @@ function DrawerDetails({
                   </Box>
                 </Stack>
               </Stack>
+              <Box sx={{ alignSelf: 'flex-start' }}>
+                <IconButton onClick={handleDrawerClose}>
+                  <ClearIcon fontSize="small" />
+                </IconButton>
+              </Box>
             </Stack>
             <Stack direction="row" spacing={0.5} sx={{ width: '100%' }} mb={1}>
               {tagsFile.slice(0, 3).map(tag => (

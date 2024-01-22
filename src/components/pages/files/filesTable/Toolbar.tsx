@@ -61,6 +61,7 @@ function Toolbar({
         '@media (min-width: 0px)': {
           p: 0,
           m: 0,
+          pb: { xs: '.5rem', md: '0rem' },
           minHeight: '28px',
         },
         ...(numSelected > 0 && {
@@ -92,7 +93,6 @@ function Toolbar({
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'center',
-
                 alignContent: 'center',
                 alignItems: 'center',
                 pl: 2,
@@ -112,7 +112,13 @@ function Toolbar({
                 {numSelected} selected
               </Typography>
             </Grid>
-            <Grid item sx={{ pr: 4 }}>
+            <Grid
+              item
+              sx={{
+                pr: { xs: 1, sm: 4 },
+                pl: { xs: 1, sm: 0 },
+              }}
+            >
               <MultiAction
                 userId={userId}
                 selected={selected}

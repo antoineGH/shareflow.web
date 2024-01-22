@@ -21,6 +21,14 @@ function Breadcrumbs({ userId, openModalAddDocs }: Props) {
             <ArrowForwardIosIcon fontSize="small" />
           </StyledSeparatorIcon>
         }
+        sx={{
+          rowGap: '.5rem',
+          pb: { xs: '.5rem', sm: '0rem' },
+          '& .MuiBreadcrumbs-ol': { rowGap: '.7rem' },
+          '& .MuiBreadcrumbs-li:first-child + .MuiBreadcrumbs-separator': {
+            display: 'none',
+          },
+        }}
         aria-label="breadcrumb"
       >
         {breadcrumbs}

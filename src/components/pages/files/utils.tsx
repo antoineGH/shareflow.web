@@ -14,31 +14,31 @@ export function getRowIcon(isFolder: boolean, name: string) {
     const ext = name.split('.').pop()?.toLowerCase()
     switch (ext) {
       case 'pdf':
-        return <PictureAsPdfIcon color="secondary" sx={{ fontSize: 50 }} />
+        return <PictureAsPdfIcon color="secondary" sx={{ fontSize: 40 }} />
       case 'doc':
       case 'docx':
-        return <DescriptionIcon color="secondary" sx={{ fontSize: 50 }} />
+        return <DescriptionIcon color="secondary" sx={{ fontSize: 40 }} />
       case 'xls':
       case 'xlsx':
-        return <TableChartIcon color="secondary" sx={{ fontSize: 50 }} />
+        return <TableChartIcon color="secondary" sx={{ fontSize: 40 }} />
       case 'ppt':
       case 'pptx':
-        return <SlideshowIcon color="secondary" sx={{ fontSize: 50 }} />
+        return <SlideshowIcon color="secondary" sx={{ fontSize: 40 }} />
       case 'zip':
       case 'rar':
-        return <ArchiveIcon color="secondary" sx={{ fontSize: 50 }} />
+        return <ArchiveIcon color="secondary" sx={{ fontSize: 40 }} />
       case 'mp3':
-        return <AudioFileIcon color="secondary" sx={{ fontSize: 50 }} />
+        return <AudioFileIcon color="secondary" sx={{ fontSize: 40 }} />
       case 'mp4':
-        return <VideoFileIcon color="secondary" sx={{ fontSize: 50 }} />
+        return <VideoFileIcon color="secondary" sx={{ fontSize: 40 }} />
       case 'jpg':
       case 'jpeg':
       case 'png':
       case 'gif':
-        return <ImageIcon color="secondary" sx={{ fontSize: 50 }} />
+        return <ImageIcon color="secondary" sx={{ fontSize: 40 }} />
       default:
-        return <InsertDriveFileIcon color="secondary" sx={{ fontSize: 50 }} />
+        return <InsertDriveFileIcon color="secondary" sx={{ fontSize: 40 }} />
     }
   }
-  return <FolderIcon color="secondary" sx={{ fontSize: 50 }} />
+  return <FolderIcon color="secondary" sx={{ fontSize: 40 }} />
 }

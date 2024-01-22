@@ -1,4 +1,4 @@
-import { useTheme } from '@mui/material'
+import { useMediaQuery, useTheme } from '@mui/material'
 import Grid from '@mui/material/Grid'
 import Typography from '@mui/material/Typography'
 
@@ -14,8 +14,18 @@ function BreadcrumbEntry({ pageName }: Props) {
   const theme = useTheme()
   const { label, icon } = breadcrumbsLabelIcon[pageName as BreadcrumbPageName]
 
+  const isFilesPage = pageName === 'Files'
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'))
+
   return (
-    <Grid container sx={{ display: 'flex', flexDirection: 'row' }}>
+    <Grid
+      container
+      sx={{
+        display: 'flex',
+        flexDirection: 'row',
+        pl: isFilesPage && isSmallScreen ? '0rem' : '1rem',
+      }}
+    >
       <Grid item>
         <StyledIcon
           sx={{
