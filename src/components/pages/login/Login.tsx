@@ -20,8 +20,6 @@ import { Status } from 'types/store'
 import StyledAlert from './StyledAlert'
 import StyledButton from './StyledButton'
 
-import backgroundSVG from '/assets/stacked-waves.svg?url'
-
 type FormData = {
   email: string
   password: string
@@ -42,6 +40,8 @@ const Login = () => {
 
   const disabledSubmit = Boolean(errors.email) || Boolean(errors.password)
   const isLoading = status === Status.PENDING
+
+  const backgroundSVG = '/stacked-waves.svg'
 
   useEffect(() => {
     if (!isAuthenticated) return
