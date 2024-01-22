@@ -64,6 +64,7 @@ function Comments({ fileId }: Props) {
           p: 2,
           pt: 0.5,
           pr: 0,
+          height: 'calc(100vh - 440px)',
         }}
       >
         <CommentsSection

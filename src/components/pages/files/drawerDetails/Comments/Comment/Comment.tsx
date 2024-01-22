@@ -38,10 +38,7 @@ function CommentsSection({
       <Box
         key={index}
         sx={{
-          mt: 2,
-          mb: 3,
-          mr: 2,
-          height: 'calc(100vh - 440px)',
+          overflowY: 'hidden',
         }}
       >
         <Stack direction="row" alignItems="center" spacing={1}>
