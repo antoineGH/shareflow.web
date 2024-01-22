@@ -10,6 +10,7 @@ import viteTsconfigPaths from 'vite-tsconfig-paths'
 export default defineConfig(() => {
   return {
     base: '/shareflow',
+    assetsInclude: ['**/*.svg'],
     plugins: [
       checker({
         typescript: true,
