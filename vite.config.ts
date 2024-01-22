@@ -11,6 +11,7 @@ export default defineConfig(({ mode }) => {
   const processEnv = loadEnv(mode, process.cwd(), '')
 
   return {
+    base: '/shareflow',
     plugins: [
       checker({
         typescript: true,
