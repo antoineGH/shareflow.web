@@ -7,9 +7,7 @@ import envCompatible from 'vite-plugin-env-compatible'
 import basicSsl from '@vitejs/plugin-basic-ssl'
 import { polyfillNode } from 'esbuild-plugin-polyfill-node'
 
-export default defineConfig(({ mode }) => {
-  const processEnv = loadEnv(mode, process.cwd(), '')
-
+export default defineConfig(() => {
   return {
     base: '/shareflow',
     plugins: [
@@ -56,7 +54,7 @@ export default defineConfig(({ mode }) => {
     build: {
       outDir: 'build',
       chunkSizeWarningLimit: 3000,
-      minify: processEnv.MINIFY_FRONT === 'true',
+      minify: 'true',
       commonjsOptions: {
         transformMixedEsModules: true,
       },
