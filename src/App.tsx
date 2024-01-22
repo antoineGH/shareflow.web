@@ -1,5 +1,4 @@
 import { ThemeProvider } from '@mui/material/styles'
-import dotenv from 'dotenv'
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom'
 
 import { AuthProvider } from 'components/auth/AuthContext'
@@ -12,11 +11,10 @@ import { theme } from 'constants/theme'
 import './App.css'
 
 function App() {
-  dotenv.config()
   return (
     <ThemeProvider theme={theme}>
       <AuthProvider>
-        <Router basename={process.env.VHOST_URL || ''}>
+        <Router basename="/shareflow">
           <Routes>
             <Route path="/" element={<Login />} />
             <Route path="/login" element={<Login />} />

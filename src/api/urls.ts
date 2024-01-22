@@ -1,4 +1,4 @@
-const BASE_API = process.env.BASE_API || 'http://localhost:8080'
+const BASE_API = 'https://antoineratat.xyz/api_shareflow'
 
 // ### STORAGE ###
 const GET_STORAGE = `${BASE_API}/users/{userId}/settings`

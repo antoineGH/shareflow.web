@@ -1,11 +1,11 @@
-import { defineConfig, loadEnv } from 'vite'
-import checker from 'vite-plugin-checker'
+import basicSsl from '@vitejs/plugin-basic-ssl'
 import react from '@vitejs/plugin-react'
+import { polyfillNode } from 'esbuild-plugin-polyfill-node'
+import { defineConfig } from 'vite'
+import { checker } from 'vite-plugin-checker'
+import envCompatible from 'vite-plugin-env-compatible'
 import svgr from 'vite-plugin-svgr'
 import viteTsconfigPaths from 'vite-tsconfig-paths'
-import envCompatible from 'vite-plugin-env-compatible'
-import basicSsl from '@vitejs/plugin-basic-ssl'
-import { polyfillNode } from 'esbuild-plugin-polyfill-node'
 
 export default defineConfig(() => {
   return {
@@ -25,7 +25,7 @@ export default defineConfig(() => {
       svgr(),
       envCompatible(),
       viteTsconfigPaths(),
-
+      polyfillNode(), // Add this line
       basicSsl(),
     ],
     optimizeDeps: {
@@ -34,17 +34,16 @@ export default defineConfig(() => {
     server: {
       host: 'localhost',
       port: 3000,
-      https: true,
+      // https: true,
       open: true,
     },
     build: {
       outDir: 'build',
       chunkSizeWarningLimit: 3000,
-      minify: 'true',
+      minify: true, // Change this line
       commonjsOptions: {
         transformMixedEsModules: true,
       },
-
       rollupOptions: {
         cache: false,
         output: [
@@ -61,7 +60,7 @@ export default defineConfig(() => {
     test: {
       globals: true,
       environment: 'jsdom',
-      setupFiles: './src/setupTests.ts',
+      setupFiles: ['./src/setupTests.ts'], // Change this line
     },
   }
 })
