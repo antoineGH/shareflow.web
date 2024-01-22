@@ -29,21 +29,7 @@ export default defineConfig(() => {
       basicSsl(),
     ],
     optimizeDeps: {
-      esbuildOptions: {
-        plugins: [
-          polyfillNode({
-            globals: {
-              buffer: false,
-              process: false,
-              __dirname: false,
-            },
-            polyfills: {
-              fs: true,
-              crypto: true,
-            },
-          }),
-        ],
-      },
+      esbuildOptions: {},
     },
     server: {
       host: 'localhost',
