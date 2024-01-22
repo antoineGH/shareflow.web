@@ -19,7 +19,8 @@ import { Status } from 'types/store'
 
 import StyledAlert from './StyledAlert'
 import StyledButton from './StyledButton'
-import backgroundSVG from '../../../assets/stacked-waves.svg?url'
+
+import backgroundSVG from '/assets/stacked-waves.svg?url'
 
 type FormData = {
   email: string
