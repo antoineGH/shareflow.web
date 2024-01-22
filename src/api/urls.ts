@@ -1,4 +1,8 @@
-const BASE_API = 'http://localhost:8080'
+import dotenv from 'dotenv'
+
+dotenv.config()
+
+const BASE_API = process.env.BASE_API || 'http://localhost:8080'
 
 // ### STORAGE ###
 const GET_STORAGE = `${BASE_API}/users/{userId}/settings`
