@@ -9,10 +9,10 @@ import Paper from '@mui/material/Paper'
 import { alpha } from '@mui/material/styles'
 import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
-import BackgroundSVG from 'assets/stacked-waves.svg?react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 
+import BackgroundSVG from 'assets/stacked-waves.svg'
 import { AuthContext } from 'components/auth/AuthContext'
 import { useDispatch } from 'store/hooks'
 import { openSnackbar } from 'store/snackbar/slice'
@@ -86,6 +86,7 @@ const Login = () => {
 
   return (
     <Container
+      id="container-login"
       sx={{
         display: 'flex',
         flexDirection: 'column',
