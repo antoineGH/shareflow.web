@@ -19,6 +19,7 @@ function ActivitySection({ activities, isLoading, hasError }: Props) {
       <Box
         key={index}
         sx={{
+          maxHeight: 'calc(100vh - 440px)',
           my: 1.5,
           display: 'flex',
           flexDirection: 'column',
@@ -61,7 +62,7 @@ function ActivitySection({ activities, isLoading, hasError }: Props) {
       sx={{
         width: '100%',
         overflowY: 'auto',
-        maxHeight: 'calc(100vh - 250px)',
+        maxHeight: 'calc(100vh - 440px)',
       }}
     >
       {activities.map(({ id, activity, createdAt }) => (
