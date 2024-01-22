@@ -9,7 +9,8 @@ import Paper from '@mui/material/Paper'
 import { alpha } from '@mui/material/styles'
 import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
-import backgroundSVG from 'assets/stacked-waves.svg?react'
+import BackgroundSVG from 'assets/stacked-waves.svg?react'
+
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 
@@ -91,7 +92,7 @@ const Login = () => {
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundImage: `url(${backgroundSVG})`,
+        backgroundImage: `url(${BackgroundSVG})`,
         height: '100vh',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
