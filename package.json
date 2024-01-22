@@ -1,6 +1,7 @@
 {
   "name": "shareflow.web",
   "repository": "https://github.com/antoineGH/shareflow.web",
+  "homepage": "https://antoineratat.xyz/shareflow",
   "private": true,
   "version": "0.0.0",
   "type": "module",

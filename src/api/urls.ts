@@ -1,7 +1,3 @@
-import dotenv from 'dotenv'
-
-dotenv.config()
-
 const BASE_API = process.env.BASE_API || 'http://localhost:8080'
 
 // ### STORAGE ###
