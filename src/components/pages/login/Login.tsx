@@ -41,7 +41,7 @@ const Login = () => {
   const disabledSubmit = Boolean(errors.email) || Boolean(errors.password)
   const isLoading = status === Status.PENDING
 
-  const backgroundSVG = '/stacked-waves.svg'
+  const backgroundSVG = '/shareflow/stacked-waves.svg'
 
   useEffect(() => {
     if (!isAuthenticated) return
