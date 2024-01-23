@@ -17,10 +17,11 @@ import { openSnackbar } from 'store/snackbar/slice'
 import { fetchTags, removeTag } from 'store/tags/actions'
 import { selectAllTagsSelector } from 'store/tags/selector'
 
-import { formatDate } from './Activity/utils'
 import StyledChip from './StyledChip'
 import DrawerHeader from './StyledDrawerHead'
 import Tabs from './Tabs/Tabs'
+import { formatDate } from './utils'
+import { getSizeFile } from '../helpers'
 import { getRowIcon } from '../utils'
 
 type Props = {
@@ -134,7 +135,7 @@ function DrawerDetails({
                       color="text.secondary"
                       sx={{ ml: 0.5 }}
                     >
-                      {size},
+                      {getSizeFile(size)},
                     </Typography>
                     <Typography
                       variant="body2"

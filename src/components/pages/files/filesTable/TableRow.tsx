@@ -208,7 +208,7 @@ function TableRow({
               direction="row"
               alignItems="center"
               justifyContent="center"
-              sx={{ minWidth: '55px' }}
+              sx={{ minWidth: '60px' }}
             >
               {formatDate(row.updatedAt)}
             </Stack>
