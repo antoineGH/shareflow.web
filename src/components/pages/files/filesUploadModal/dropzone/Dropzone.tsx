@@ -1,8 +1,9 @@
-import { useDropzone, DropzoneProps } from 'react-dropzone'
-import Box from '@mui/material/Box'
-import Typography from '@mui/material/Typography'
 import UploadIcon from '@mui/icons-material/Upload'
 import { type SxProps } from '@mui/material'
+import Box from '@mui/material/Box'
+import Typography from '@mui/material/Typography'
+import { DropzoneProps, useDropzone } from 'react-dropzone'
+
 import { DropzoneContainer } from './StyledDropzone'
 
 type Props = Omit<DropzoneProps, 'children'> & {

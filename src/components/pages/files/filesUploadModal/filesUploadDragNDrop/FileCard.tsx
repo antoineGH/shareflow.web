@@ -1,10 +1,10 @@
+import ClearIcon from '@mui/icons-material/Clear'
 import Card from '@mui/material/Card'
 import CardContent from '@mui/material/CardContent'
 import CircularProgress from '@mui/material/CircularProgress'
 import IconButton from '@mui/material/IconButton'
 import Stack from '@mui/material/Stack'
 import Typography from '@mui/material/Typography'
-import ClearIcon from '@mui/icons-material/Clear'
 
 type FileCardProps = {
   id: string
@@ -29,7 +29,11 @@ function FileCard({
       sx={{
         width: '100%',
         mb: 0.5,
+        mr: 0.5,
+        ml: 0.5,
         p: 0,
+        boxShadow:
+          'rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px',
         '& .MuiCardContent-root': {
           py: 0,
           px: 1.5,

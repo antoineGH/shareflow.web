@@ -85,8 +85,6 @@ function PreviewModal({ userId, open, close, children, previewFileId }: Props) {
           justifyContent: 'center',
           p: 0,
           borderRadius: '3px',
-          position: { lg: 'absolute' },
-          top: { lg: '2%' },
         },
       }}
     >

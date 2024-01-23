@@ -180,9 +180,9 @@ function DocumentsUploadModal({ userId, open, close, droppedFiles }: Props) {
           onDrop={onDrop}
           disabled={isUploadDone || submitting || isLoadingCreate}
           accept={{}}
-          maxSize={104857600}
+          maxSize={1000000}
           multiple
-          subtitle="Maximum file size is 12Mb"
+          subtitle="Maximum file size is 1Mb"
         />
 
         {(files.length > 0 || rejectedFiles.length > 0) && (
