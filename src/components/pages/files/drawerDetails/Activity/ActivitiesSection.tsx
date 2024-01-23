@@ -61,7 +61,7 @@ function ActivitySection({ activities, isLoading, hasError }: Props) {
       sx={{
         width: '100%',
         overflowY: 'auto',
-        maxHeight: 'calc(100vh - 440px)',
+        maxHeight: 'calc(100vh - 200px)',
       }}
     >
       {activities.map(({ id, activity, createdAt }) => (
