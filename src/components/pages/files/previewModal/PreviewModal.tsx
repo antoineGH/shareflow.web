@@ -1,5 +1,6 @@
 import { ReactNode, useState } from 'react'
 
+import CloseIcon from '@mui/icons-material/Close'
 import GradeIcon from '@mui/icons-material/Grade'
 import LoadingButton from '@mui/lab/LoadingButton'
 import {
@@ -7,6 +8,7 @@ import {
   Dialog,
   DialogActions,
   Divider,
+  IconButton,
   Typography,
   useTheme,
 } from '@mui/material'
@@ -83,6 +85,8 @@ function PreviewModal({ userId, open, close, children, previewFileId }: Props) {
           justifyContent: 'center',
           p: 0,
           borderRadius: '3px',
+          position: { lg: 'absolute' },
+          top: { lg: '2%' },
         },
       }}
     >
@@ -98,9 +102,9 @@ function PreviewModal({ userId, open, close, children, previewFileId }: Props) {
       >
         <Box
           sx={{
-            display: 'flex',
             alignItems: 'center',
             gap: '8px',
+            display: { xs: 'none', sm: 'flex' },
           }}
         >
           <Typography
@@ -158,7 +162,14 @@ function PreviewModal({ userId, open, close, children, previewFileId }: Props) {
             }}
           />
         </Box>
-        <Box>
+        <Box
+          sx={{
+            display: 'flex',
+            gap: '1.5rem',
+            justifyContent: 'flex-end',
+            width: { xs: '100%', sm: 'auto' },
+          }}
+        >
           <LoadingButton
             variant="contained"
             onClick={handleClickDownload}
@@ -174,6 +185,9 @@ function PreviewModal({ userId, open, close, children, previewFileId }: Props) {
           >
             Download
           </LoadingButton>
+          <IconButton onClick={close}>
+            <CloseIcon fontSize="inherit" />
+          </IconButton>
         </Box>
       </DialogActions>
     </Dialog>

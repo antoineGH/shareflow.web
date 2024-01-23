@@ -17,7 +17,10 @@ function Header({ close, disabledClose }: Props) {
     >
       <Box sx={{ flex: 1, mr: 1 }}>
         <Typography variant="h6">Add files</Typography>
-        <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+        <Typography
+          variant="body2"
+          sx={{ color: 'text.secondary', display: { xs: 'none', sm: 'block' } }}
+        >
           Import all your files in this area. After processing, they will be
           available in the Shareflow application.
         </Typography>

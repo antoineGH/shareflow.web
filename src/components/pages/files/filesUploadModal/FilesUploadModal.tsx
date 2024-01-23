@@ -160,7 +160,7 @@ function DocumentsUploadModal({ userId, open, close, droppedFiles }: Props) {
       PaperProps={{
         sx: {
           maxWidth: '940px',
-          padding: { xs: '.5rem', sm: '1rem', lg: '1.5rem' },
+          padding: { xs: '1rem', lg: '1.5rem' },
           width: '100%',
           position: { md: 'absolute' },
           top: { md: '15%' },
@@ -205,7 +205,7 @@ function DocumentsUploadModal({ userId, open, close, droppedFiles }: Props) {
             )}
           </Stack>
         )}
-        <Stack sx={{ maxHeight: 'calc(100vh - 1000px)', overflowY: 'scroll' }}>
+        <Stack sx={{ maxHeight: '16vh', overflowY: 'auto' }}>
           <ValidFiles
             files={files}
             uploadState={uploadState}
