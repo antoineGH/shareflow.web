@@ -47,7 +47,7 @@ function useAddDocumentsDropZone({
 
   const { getInputProps, getRootProps, isDragActive } = useDropzone({
     accept: { 'application/pdf': ['.pdf'] },
-    maxSize: 104_857_600, // 12Mb
+    maxSize: 1000000, // 1Mb
     multiple: true,
     onDrop: onDropFiles,
     noClick: true,

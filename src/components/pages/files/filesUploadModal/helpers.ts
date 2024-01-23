@@ -12,7 +12,7 @@ export const fileErrorsMessages: Partial<
 > = {
   'file-invalid-type': 'The type is invalid, PDF only accepted.',
   'api-error': 'An error has occurred. Please try again',
-  'file-too-large': 'Maximum 12Mb file.',
+  'file-too-large': 'Maximum 1Mb file.',
 }
 
 export const getFileErrorMessage = (

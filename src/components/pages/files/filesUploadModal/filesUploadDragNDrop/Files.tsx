@@ -1,8 +1,9 @@
-import { FileRejection } from 'react-dropzone'
 import Stack from '@mui/material/Stack'
-import { fileErrorsMessages, getFileErrorMessage } from '../helpers'
+import { FileRejection } from 'react-dropzone'
+
 import FileCard from './FileCard'
 import type { FileState } from './types'
+import { fileErrorsMessages, getFileErrorMessage } from '../helpers'
 
 type ValidFilesProps = {
   files: FileState[]
