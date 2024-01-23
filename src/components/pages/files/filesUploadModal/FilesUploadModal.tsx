@@ -160,10 +160,10 @@ function DocumentsUploadModal({ userId, open, close, droppedFiles }: Props) {
       PaperProps={{
         sx: {
           maxWidth: '940px',
-          padding: 3,
-          position: 'absolute',
-          top: '15%',
+          padding: { xs: '.5rem', sm: '1rem', lg: '1.5rem' },
           width: '100%',
+          position: { md: 'absolute' },
+          top: { md: '15%' },
         },
       }}
       disableEscapeKeyDown={submitting || isLoadingCreate}
