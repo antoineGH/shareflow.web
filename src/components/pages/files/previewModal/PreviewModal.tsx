@@ -109,7 +109,7 @@ function PreviewModal({ userId, open, close, children, previewFileId }: Props) {
               mr: '8px',
             }}
           >
-            Name:{' '}
+            name:{' '}
             <Typography
               component="span"
               sx={{
@@ -118,11 +118,11 @@ function PreviewModal({ userId, open, close, children, previewFileId }: Props) {
                 color: theme.palette.primary.main,
               }}
             >
-              {name}
+              <strong>{name}</strong>
             </Typography>
           </Typography>
           <Typography variant="body2">
-            Last modified:{' '}
+            last modified:{' '}
             <Typography
               component="span"
               sx={{
@@ -131,7 +131,7 @@ function PreviewModal({ userId, open, close, children, previewFileId }: Props) {
                 color: theme.palette.primary.main,
               }}
             >
-              {formatDate(updatedAt)}
+              <strong>{formatDate(updatedAt)}</strong>
             </Typography>
           </Typography>
 
@@ -141,7 +141,7 @@ function PreviewModal({ userId, open, close, children, previewFileId }: Props) {
               mr: '8px',
             }}
           >
-            Size:{' '}
+            size:{' '}
             <Typography
               component="span"
               sx={{
@@ -149,7 +149,7 @@ function PreviewModal({ userId, open, close, children, previewFileId }: Props) {
                 color: theme.palette.primary.main,
               }}
             >
-              {getSizeFile(size)}
+              <strong>{getSizeFile(size)}</strong>
             </Typography>
           </Typography>
           <GradeIcon
