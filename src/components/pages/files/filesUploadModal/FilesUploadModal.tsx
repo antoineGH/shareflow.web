@@ -205,7 +205,7 @@ function DocumentsUploadModal({ userId, open, close, droppedFiles }: Props) {
             )}
           </Stack>
         )}
-        <Stack sx={{ maxHeight: '16vh', overflowY: 'scroll' }}>
+        <Stack sx={{ maxHeight: '16vh', overflowY: 'auto' }}>
           <ValidFiles
             files={files}
             uploadState={uploadState}
