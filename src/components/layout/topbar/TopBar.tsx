@@ -3,6 +3,7 @@ import { Button, Link, useMediaQuery, useTheme } from '@mui/material'
 import IconButton from '@mui/material/IconButton'
 import Toolbar from '@mui/material/Toolbar'
 import Typography from '@mui/material/Typography'
+import { useNavigate } from 'react-router-dom'
 
 import AccountMenu from './accountMenu/AccountMenu'
 import StyledTopBar from './StyledTopBar'
@@ -16,6 +17,11 @@ type Props = {
 function TopBar({ drawerWidth, appBarHeight, toggleDrawer }: Props) {
   const theme = useTheme()
   const isBigScreen = useMediaQuery(theme.breakpoints.up('sm'))
+  const navigate = useNavigate()
+
+  function handleLogoClick() {
+    navigate('/auth/files')
+  }
 
   return (
     <StyledTopBar
@@ -40,8 +46,8 @@ function TopBar({ drawerWidth, appBarHeight, toggleDrawer }: Props) {
         )}
         <Button
           component={Link}
-          href="/auth/files"
           color="inherit"
+          onClick={handleLogoClick}
           sx={{
             flexGrow: 1,
             '&:hover': {
