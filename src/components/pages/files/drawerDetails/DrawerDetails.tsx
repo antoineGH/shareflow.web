@@ -91,10 +91,14 @@ function DrawerDetails({
         open={open}
       >
         <DrawerHeader
+          id="drawer-details"
           sx={{
             mt: '42px',
             pl: 2,
             pb: 1,
+            '@media (min-width: 600px)': {
+              minHeight: '100px',
+            },
           }}
         >
           <Stack direction="column" sx={{ width: '100%', height: '100%' }}>
