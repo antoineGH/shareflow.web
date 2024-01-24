@@ -1,6 +1,7 @@
 import Stack from '@mui/material/Stack'
-import Avatar from './Avatar'
+
 import AddCommentForm from './AddCommentForm'
+import Avatar from './Avatar'
 
 type Props = {
   fileId: number
