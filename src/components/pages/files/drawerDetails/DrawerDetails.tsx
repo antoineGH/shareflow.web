@@ -96,7 +96,7 @@ function DrawerDetails({
             mt: '42px',
             pl: 2,
             pb: 1,
-            '@media (min-width: 600px)': {
+            '@media (min-width: 0px)': {
               minHeight: '100px',
             },
           }}
