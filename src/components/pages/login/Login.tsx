@@ -130,7 +130,10 @@ const Login = () => {
             <StyledAlert severity="info">
               <AlertTitle>Demo App</AlertTitle>
               <Grid container>
-                <Grid item xs={12} my={0.75}>
+                <Grid item xs={12} my={1} paddingRight='1rem'>
+                  This is only a demo app, contact me for access
+                  </Grid>
+                {/* <Grid item xs={12} my={0.75}>
                   <Box
                     onClick={() => copyToClipboard('demo@demo.au')}
                     style={{ cursor: 'pointer' }}
@@ -145,7 +148,7 @@ const Login = () => {
                   >
                     password: <strong>demo1234</strong>
                   </Box>
-                </Grid>
+                </Grid> */}
               </Grid>
             </StyledAlert>
             <TextField
