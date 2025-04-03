@@ -1,4 +1,4 @@
-const BASE_API = 'https://antoineratat.xyz/api_shareflow'
+const BASE_API = 'https://antoineratat.online/api_shareflow'
 
 // ### STORAGE ###
 const GET_STORAGE = `${BASE_API}/users/{userId}/settings`
